@@ -41,6 +41,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.android)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -51,7 +52,26 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-//            implementation(libs.valuepickerslider)
+            implementation(libs.androidx.material.icons.extended)
+
+            // coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
+            implementation(libs.coil.gif)
+
+            // sketch
+            implementation(libs.sketch.compose)
+            implementation(libs.sketch.http)
+            implementation(libs.sketch.animated.gif)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
+        wasmJsMain.dependencies {
+            implementation(libs.ktor.client.wasm)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -89,4 +109,3 @@ android {
 dependencies {
     debugImplementation(libs.compose.uiTooling)
 }
-
