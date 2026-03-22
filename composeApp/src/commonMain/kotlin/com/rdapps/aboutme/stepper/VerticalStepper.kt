@@ -1,19 +1,14 @@
 package com.rdapps.aboutme.stepper
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationConstants
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -34,10 +29,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.rdapps.aboutme.PortfolioTheme
-import kotlin.reflect.KClass
+import com.rdapps.aboutme.utils.doIf
 import kotlinx.coroutines.delay
+import kotlin.reflect.KClass
 
 sealed class AnimationElement(open val isDone: Boolean) {
     data class Indicator(override val isDone: Boolean = false) : AnimationElement(isDone)
@@ -95,13 +93,25 @@ fun Step(
         }
     }
 
+    val density = LocalDensity.current
+    var isContentExpanding by remember { mutableStateOf(true) }
+    var contentHeightPx by remember { mutableStateOf(0) }
+    val animatedContentHeightPx by animateIntAsState(
+        targetValue = contentHeightPx,
+        animationSpec = tween(easing = LinearOutSlowInEasing)
+    )
+
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
+        modifier = modifier.fillMaxWidth().doIf(isContentExpanding) {
+            animateContentSize()
+        }
     ) {
+        // Left indicator section
         Column(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.height(with(density) { animatedContentHeightPx.toDp() })
+                .doIf(!isContentExpanding) {
+                    animateContentSize()
+                },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IndicatorIcon(
@@ -165,16 +175,26 @@ fun Step(
             }
         }
 
+        // Title and content
         Column(
             modifier = Modifier
                 .padding(start = 12.dp)
                 .weight(1f)
+                .onGloballyPositioned {
+                    if (it.size.height != contentHeightPx) {
+                        print("isContentExpanding: $isContentExpanding, contentHeightPx: $contentHeightPx, it.size.height: ${it.size.height}")
+                        isContentExpanding = it.size.height > contentHeightPx
+                    }
+                    contentHeightPx = it.size.height
+                }
         ) {
             var animatedTitle by remember {
                 mutableStateOf("")
             }
+            print("animatedTitle: $animatedTitle")
 
             LaunchedEffect(stepData.title, animationSequence) {
+                print("LaunchedEffect animationSequence: $animationSequence currentAnimationElement: $currentAnimationElement stepData.stepState: ${stepData.stepState}")
                 if (currentAnimationElement is AnimationElement.Title && stepData.stepState == StepState.InitiallyAnimating) {
                     animatedTitle = ""
 
@@ -185,6 +205,24 @@ fun Step(
 
                     animatedTitle = animatedTitle.removeSuffix("|")
                     AnimationElement.Title::class.markAsDone()
+                } else {
+                    when (stepData.stepState) {
+                        is StepState.Active,
+                        is StepState.Done,
+                        StepState.Error,
+                        StepState.Loading,
+                        StepState.Visible -> {
+                            animatedTitle = stepData.title
+                        }
+
+                        StepState.InitiallyAnimating -> {
+                            // ignore
+                        }
+
+                        StepState.InQueue -> {
+                            animatedTitle = ""
+                        }
+                    }
                 }
             }
 
@@ -269,28 +307,12 @@ fun Step(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 if (useAlternateComponent) {
-                    AnimatedVisibility(
-                        visible = isVisible,
-                        enter = expandVertically(
-                            animationSpec = tween()
-                        ) + fadeIn(
-                            animationSpec = tween(delayMillis = AnimationConstants.DefaultDurationMillis)
-                        ),
-                        exit = shrinkVertically(
-                            animationSpec = tween(delayMillis = AnimationConstants.DefaultDurationMillis),
-                            shrinkTowards = Alignment.Top
-                        ) + fadeOut(
-                            animationSpec = tween()
-                        )
-                    ) {
+                    if (isVisible) {
                         alternateComponent()
                     }
-
                 } else {
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .animateContentSize(animationSpec = tween())
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         @Composable
                         fun getTextView(text: String, isVisible: Boolean) = Text(

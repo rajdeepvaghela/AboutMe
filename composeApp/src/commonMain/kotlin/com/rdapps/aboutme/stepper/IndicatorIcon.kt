@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import com.rdapps.aboutme.PortfolioTheme
 
 @Composable
 fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: () -> Unit) {
@@ -50,7 +51,7 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
                         .matchParentSize()
                         .border(
                             width = 1.dp,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = PortfolioTheme.colors.primaryText,
                             shape = CircleShape
                         )
                 )
@@ -62,7 +63,7 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
                         .matchParentSize()
                         .border(
                             width = 1.dp,
-                            color = MaterialTheme.colorScheme.secondary,
+                            color = PortfolioTheme.colors.accentStroke,
                             shape = CircleShape
                         )
                 )
@@ -74,14 +75,14 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
                         .matchParentSize()
                         .border(
                             width = 1.dp,
-                            color = MaterialTheme.colorScheme.secondary,
+                            color = PortfolioTheme.colors.accentStroke,
                             shape = CircleShape
                         )
                 )
 
                 CircularProgressIndicator(
                     modifier = Modifier.matchParentSize(),
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = PortfolioTheme.colors.primaryText,
                     strokeWidth = 3.dp
                 )
             }
@@ -92,7 +93,7 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
                         .matchParentSize()
                         .border(
                             width = 1.dp,
-                            color = MaterialTheme.colorScheme.secondary,
+                            color = PortfolioTheme.colors.accentStroke,
                             shape = CircleShape
                         )
                 )
@@ -135,7 +136,7 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
                         .alpha(animatedAlpha.value)
                         .size(10.dp)
                         .align(Alignment.Center),
-                    colorFilter = ColorFilter.tint(color = Color.White),
+                    colorFilter = ColorFilter.tint(color = Color.Black),
                     contentDescription = "Done"
                 )
             }
@@ -168,7 +169,7 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
                         .alpha(animatedAlpha.value)
                         .size(10.dp)
                         .align(Alignment.Center),
-                    colorFilter = ColorFilter.tint(color = Color.White),
+                    colorFilter = ColorFilter.tint(color = Color.Black),
                     contentDescription = "Error"
                 )
             }

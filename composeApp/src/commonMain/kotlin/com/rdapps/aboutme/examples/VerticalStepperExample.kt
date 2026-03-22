@@ -1,7 +1,7 @@
 package com.rdapps.aboutme.examples
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 fun VerticalStepperExample(modifier: Modifier = Modifier) {
     var isDemoLive by rememberSaveable { mutableStateOf(false) }
 
-    BoxWithConstraints(modifier = modifier) {
+    Box(modifier = modifier) {
         Column(
             modifier = Modifier
                 .border(1.dp, PortfolioTheme.colors.accent, RoundedCornerShape(40.dp))
@@ -47,14 +47,15 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
             val coroutineScope = rememberCoroutineScope()
 
             LaunchedEffect(isDemoLive) {
-                if (isDemoLive) {
-                    if (stageList.all { it.stepState == StepState.InQueue }) {
-                        stageList = stageList.mapIndexed { index, stage ->
-                            if (index == 0) stage.copy(stepState = StepState.InitiallyAnimating) else stage
-                        }
+                stageList = if (isDemoLive) {
+                    stageList.mapIndexed { index, stage ->
+                        if (index == 0)
+                            stage.copy(stepState = StepState.InitiallyAnimating)
+                        else
+                            stage.copy(stepState = StepState.InQueue)
                     }
-                } else if (stageList.any { it.stepState != StepState.InQueue }) {
-                    stageList = initialStageList()
+                } else {
+                    initialStageList()
                 }
             }
 
@@ -65,11 +66,28 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
                         useAlternateComponent = it.id == 2L,
                         alternateComponent = {
                             Button(onClick = {
-                                stageList = stageList.map { stage ->
-                                    when (stage.id) {
-                                        1L, 2L -> stage.copy(stepState = StepState.Visible)
-                                        3L -> stage.copy(stepState = StepState.Active())
-                                        else -> stage
+                                coroutineScope.launch {
+                                    stageList = stageList.map { stage ->
+                                        when (stage.id) {
+                                            1L -> stage.copy(stepState = StepState.Done())
+                                            2L -> stage.copy(stepState = StepState.Loading)
+                                            3L -> stage.copy(stepState = StepState.Visible)
+                                            else -> stage
+                                        }
+                                    }
+                                    delay(2000)
+                                    stageList = stageList.map { stage ->
+                                        when (stage.id) {
+                                            1L, 2L -> stage.copy(stepState = StepState.Done())
+                                            else -> stage
+                                        }
+                                    }
+                                    delay(1000)
+                                    stageList = stageList.map { stage ->
+                                        when (stage.id) {
+                                            3L -> stage.copy(stepState = StepState.Active())
+                                            else -> stage
+                                        }
                                     }
                                 }
                             }) { Text(text = "Approve designs") }
@@ -89,7 +107,7 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
                         if (nextElement == null) {
                             coroutineScope.launch {
                                 // Spotlight each milestone sequentially once the queue is exhausted.
-                                listOf(1L, 2L, 3L).forEachIndexed { index, stageId ->
+                                listOf(1L, 2L).forEachIndexed { index, stageId ->
                                     if (index != 0) delay(6000)
                                     stageList = stageList.map { stage ->
                                         if (stage.id == stageId) stage.copy(stepState = StepState.Active()) else stage
