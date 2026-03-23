@@ -60,6 +60,8 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
             }
 
             key(isDemoLive) {
+                val accentStroke = PortfolioTheme.colors.accentStroke
+
                 stageList.forEach {
                     Step(
                         stepData = it,
@@ -85,7 +87,7 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
                                     delay(1000)
                                     stageList = stageList.map { stage ->
                                         when (stage.id) {
-                                            3L -> stage.copy(stepState = StepState.Active())
+                                            3L -> stage.copy(stepState = StepState.Active(color = accentStroke))
                                             else -> stage
                                         }
                                     }
@@ -110,7 +112,7 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
                                 listOf(1L, 2L).forEachIndexed { index, stageId ->
                                     if (index != 0) delay(6000)
                                     stageList = stageList.map { stage ->
-                                        if (stage.id == stageId) stage.copy(stepState = StepState.Active()) else stage
+                                        if (stage.id == stageId) stage.copy(stepState = StepState.Active(color = accentStroke)) else stage
                                     }
                                 }
                             }
