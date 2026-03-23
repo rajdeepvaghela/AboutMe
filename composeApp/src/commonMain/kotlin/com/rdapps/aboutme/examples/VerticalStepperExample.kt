@@ -41,21 +41,21 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
                 .padding(20.dp)
         ) {
             var stageList by remember {
-                mutableStateOf(initialStageList())
+                mutableStateOf(emptyStageList())
             }
 
             val coroutineScope = rememberCoroutineScope()
 
             LaunchedEffect(isDemoLive) {
                 stageList = if (isDemoLive) {
-                    stageList.mapIndexed { index, stage ->
+                    initialStageList().mapIndexed { index, stage ->
                         if (index == 0)
                             stage.copy(stepState = StepState.InitiallyAnimating)
                         else
                             stage.copy(stepState = StepState.InQueue)
                     }
                 } else {
-                    initialStageList()
+                    emptyStageList()
                 }
             }
 
@@ -151,3 +151,12 @@ private fun initialStageList(): List<StepData> = listOf(
         isLast = true
     )
 )
+
+private fun emptyStageList(): List<StepData> = List(3) {
+    StepData(
+        id = it.toLong(),
+        stepState = StepState.InQueue,
+        title = "      ",
+        bodyText = "Align on problem framing, success metrics, and constraints. Capture personas, north-star metrics, and an initial feature backlog to keep every later step grounded."
+    )
+}

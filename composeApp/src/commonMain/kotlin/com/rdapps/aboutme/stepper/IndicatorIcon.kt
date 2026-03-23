@@ -51,7 +51,7 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
                         .matchParentSize()
                         .border(
                             width = 1.dp,
-                            color = PortfolioTheme.colors.primaryText,
+                            color = PortfolioTheme.colors.accentStroke,
                             shape = CircleShape
                         )
                 )
@@ -82,7 +82,7 @@ fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: 
 
                 CircularProgressIndicator(
                     modifier = Modifier.matchParentSize(),
-                    color = PortfolioTheme.colors.primaryText,
+                    color = PortfolioTheme.colors.accentStroke,
                     strokeWidth = 3.dp
                 )
             }

@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Spacer
@@ -182,7 +183,8 @@ fun App() {
             .build()
     }
 
-    var isDark by remember { mutableStateOf(true) }
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    var isDark by remember { mutableStateOf(isSystemInDarkTheme) }
     val palette = if (isDark) DarkPortfolioColors else LightPortfolioColors
 
     MaterialTheme(typography = montserratTypography()) {
