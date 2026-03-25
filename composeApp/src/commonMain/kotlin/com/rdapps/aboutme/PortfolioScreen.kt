@@ -1,6 +1,11 @@
 package com.rdapps.aboutme
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +34,7 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -45,6 +51,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlinx.coroutines.launch
 
 enum class Tabs(val title: String) {
@@ -62,6 +71,17 @@ fun PortfolioScreen(
     val scope = rememberCoroutineScope()
     val backgroundStripColor = PortfolioTheme.colors.accentStroke
 
+    val infiniteTransition = rememberInfiniteTransition(label = "bgAnimation")
+    val animAngle by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = (2 * PI).toFloat(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 12000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "bgAngle"
+    )
+
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { Tabs.entries.size })
 
     Box(
@@ -70,22 +90,44 @@ fun PortfolioScreen(
             .background(PortfolioTheme.colors.background)
             .drawBehind {
                 val strokeWidth = 1.dp.toPx()
+                // Use minDimension so circles stay proportional in both portrait & landscape
+                val minDim = minOf(size.width, size.height)
+                val driftX = minDim * 0.04f
+                val driftY = minDim * 0.03f
+
+                // Phase offsets so each circle animates independently (120° apart)
+                val phase1 = animAngle
+                val phase2 = animAngle + (2 * PI / 3).toFloat()
+                val phase3 = animAngle + (4 * PI / 3).toFloat()
+
+                // Circle 1 — top-right (center at right edge so visible in both orientations)
                 drawCircle(
                     color = backgroundStripColor.copy(alpha = 0.1f),
-                    radius = size.width * 0.8f,
-                    center = Offset(size.width * 1.1f, size.height * 0.15f),
+                    radius = minDim * 0.8f * (1f + sin(phase1.toDouble()).toFloat() * 0.04f),
+                    center = Offset(
+                        size.width * 0.85f + cos(phase1.toDouble()).toFloat() * driftX,
+                        size.height * 0.1f + sin(phase1.toDouble()).toFloat() * driftY
+                    ),
                     style = Stroke(width = strokeWidth)
                 )
+                // Circle 2 — mid-left (slightly off-screen left)
                 drawCircle(
                     color = backgroundStripColor.copy(alpha = 0.1f),
-                    radius = size.width * 0.9f,
-                    center = Offset(-size.width * 0.1f, size.height * 0.45f),
+                    radius = minDim * 0.9f * (1f + sin(phase2.toDouble()).toFloat() * 0.04f),
+                    center = Offset(
+                        -minDim * 0.1f + cos(phase2.toDouble()).toFloat() * driftX,
+                        size.height * 0.45f + sin(phase2.toDouble()).toFloat() * driftY
+                    ),
                     style = Stroke(width = strokeWidth)
                 )
+                // Circle 3 — bottom-center
                 drawCircle(
                     color = backgroundStripColor.copy(alpha = 0.1f),
-                    radius = size.width * 0.7f,
-                    center = Offset(size.width * 0.6f, size.height * 0.85f),
+                    radius = minDim * 0.7f * (1f + sin(phase3.toDouble()).toFloat() * 0.04f),
+                    center = Offset(
+                        size.width * 0.55f + cos(phase3.toDouble()).toFloat() * driftX,
+                        size.height * 0.9f + sin(phase3.toDouble()).toFloat() * driftY
+                    ),
                     style = Stroke(width = strokeWidth)
                 )
             }
