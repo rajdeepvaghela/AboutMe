@@ -93,6 +93,13 @@ fun AboutMe(modifier: Modifier = Modifier) {
 
         EducationSection()
         Spacer(modifier = Modifier.height(40.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            ContactView()
+        }
     }
 }
 

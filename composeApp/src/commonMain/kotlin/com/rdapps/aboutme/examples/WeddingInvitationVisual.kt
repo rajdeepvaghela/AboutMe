@@ -91,13 +91,19 @@ fun WeddingInvitationVisual(modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
+                    .clip(CircleShape)
                     .alpha(if (name.isNotBlank()) 1f else 0.5f)
                     .clickable(enabled = name.isNotBlank()) {
-                        val json =
-                            """{"name":"$name","showContactNumber":true,"showReceptionDetails":true,"showStayDetails":true}"""
+                        val json = """{
+                            "name":"$name",
+                            "showContactNumber":true,
+                            "showReceptionDetails":true,
+                            "showStayDetails":true
+                        }""".trimMargin()
                         val encoded = encodeToBase64(json)
                         uriHandler.openUri("https://rajdeepvaghela.github.io/WeddingInvitation/#$encoded")
                     }
+                    .padding(end = 10.dp)
             ) {
                 Icon(
                     imageVector = Icons.Rounded.PlayCircle,

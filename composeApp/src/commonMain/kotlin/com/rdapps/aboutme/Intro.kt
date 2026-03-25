@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,7 +39,6 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun IntroSection(modifier: Modifier = Modifier) {
     val isWideScreen = LocalIsWideScreen.current
-    val uriHandler = LocalUriHandler.current
 
     Column(
         modifier = modifier.fillMaxSize()
@@ -113,26 +113,7 @@ fun IntroSection(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_github),
-                    contentDescription = "GitHub",
-                    onClick = { uriHandler.openUri("https://github.com/rajdeepvaghela") }
-                )
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_linkedin),
-                    contentDescription = "LinkedIn",
-                    onClick = { uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela") }
-                )
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_email),
-                    contentDescription = "E-mail",
-                    onClick = { uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com") }
-                )
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_playstore),
-                    contentDescription = "Play Store",
-                    onClick = { uriHandler.openUri("https://play.google.com/store/apps/dev?id=4737354144616321734") }
-                )
+                ContactView()
             }
         }
     }
@@ -149,6 +130,7 @@ private fun SocialCircleIcon(
     Box(
         modifier = Modifier
             .size(size)
+            .clip(CircleShape)
             .border(1.dp, PortfolioTheme.colors.secondaryText.copy(alpha = 0.5f), CircleShape)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
@@ -160,4 +142,29 @@ private fun SocialCircleIcon(
             modifier = Modifier.size(iconSize)
         )
     }
+}
+
+@Composable
+fun ContactView() {
+    val uriHandler = LocalUriHandler.current
+    SocialCircleIcon(
+        painter = painterResource(Res.drawable.ic_linkedin),
+        contentDescription = "LinkedIn",
+        onClick = { uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela") }
+    )
+    SocialCircleIcon(
+        painter = painterResource(Res.drawable.ic_email),
+        contentDescription = "E-mail",
+        onClick = { uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com") }
+    )
+    SocialCircleIcon(
+        painter = painterResource(Res.drawable.ic_playstore),
+        contentDescription = "Play Store",
+        onClick = { uriHandler.openUri("https://play.google.com/store/apps/dev?id=4737354144616321734") }
+    )
+    SocialCircleIcon(
+        painter = painterResource(Res.drawable.ic_github),
+        contentDescription = "GitHub",
+        onClick = { uriHandler.openUri("https://github.com/rajdeepvaghela") }
+    )
 }

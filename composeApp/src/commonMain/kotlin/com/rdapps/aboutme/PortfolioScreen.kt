@@ -147,7 +147,7 @@ fun PortfolioScreen(
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.align(Alignment.BottomEnd)
-                .padding(end = 20.dp)
+                .padding(end = 24.dp)
         )
 
         ThemeToggle(
