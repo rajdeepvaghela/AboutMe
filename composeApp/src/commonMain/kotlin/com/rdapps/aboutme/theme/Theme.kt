@@ -21,6 +21,7 @@ fun PortfolioTheme(content: @Composable (isDark: Boolean, onChange: (Boolean) ->
 
     MaterialTheme(typography = montserratTypography()) {
         ProvidePortfolioColors(palette) {
+            StatusBarController(isDark)
 
             val windowWidth = LocalWindowInfo.current.containerDpSize.width
             val isWideScreen by remember(windowWidth) {

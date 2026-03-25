@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -241,9 +242,9 @@ fun ProjectSection(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-//            .animateContentSize()
             .verticalScroll(rememberScrollState())
-            .padding(vertical = 100.dp, horizontal = if (isWideScreen) 40.dp else 24.dp),
+            .padding(vertical = 100.dp, horizontal = if (isWideScreen) 40.dp else 24.dp)
+            .systemBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(80.dp)
     ) {
         visibleProjects.forEachIndexed { index, project ->

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -85,8 +86,8 @@ fun AboutMe(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = if (isWideScreen) 48.dp else 20.dp)
-            .padding(top = 100.dp, bottom = 100.dp)
+            .padding(vertical = 100.dp, horizontal = if (isWideScreen) 48.dp else 20.dp)
+            .systemBarsPadding()
     ) {
         ExperienceSection()
         Spacer(modifier = Modifier.height(40.dp))
