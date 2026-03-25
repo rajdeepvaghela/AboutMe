@@ -182,7 +182,6 @@ fun Step(
                 .weight(1f)
                 .onGloballyPositioned {
                     if (it.size.height != contentHeightPx) {
-                        print("isContentExpanding: $isContentExpanding, contentHeightPx: $contentHeightPx, it.size.height: ${it.size.height}")
                         isContentExpanding = it.size.height > contentHeightPx
                     }
                     contentHeightPx = it.size.height
@@ -191,10 +190,8 @@ fun Step(
             var animatedTitle by remember {
                 mutableStateOf("")
             }
-            print("animatedTitle: $animatedTitle")
 
             LaunchedEffect(stepData.title, animationSequence) {
-                print("LaunchedEffect animationSequence: $animationSequence currentAnimationElement: $currentAnimationElement stepData.stepState: ${stepData.stepState}")
                 if (currentAnimationElement is AnimationElement.Title && stepData.stepState == StepState.InitiallyAnimating) {
                     animatedTitle = ""
 
