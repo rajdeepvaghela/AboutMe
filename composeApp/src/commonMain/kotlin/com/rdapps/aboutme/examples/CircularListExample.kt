@@ -15,10 +15,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.PortfolioTheme
 import com.rdapps.aboutme.circularlist.CircularList
 import com.rdapps.aboutme.circularlist.InfiniteCircularList
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
+import com.rdapps.aboutme.theme.PortfolioTheme
 
 @Composable
 fun CircularListExample(modifier: Modifier = Modifier) {
@@ -37,7 +37,20 @@ fun CircularListExample(modifier: Modifier = Modifier) {
             var year by remember { mutableIntStateOf(2024) }
 
             val monthList = remember {
-                listOf("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec")
+                listOf(
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sept",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                )
             }
 
             val yearList = remember { (2020..2025).toList() }

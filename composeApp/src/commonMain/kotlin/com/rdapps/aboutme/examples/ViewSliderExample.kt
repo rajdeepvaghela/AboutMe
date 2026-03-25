@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.PortfolioTheme
+import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.viewslider.ViewSlider
 

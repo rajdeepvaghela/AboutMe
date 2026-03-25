@@ -1,10 +1,5 @@
 package com.rdapps.aboutme
 
-import aboutme.composeapp.generated.resources.Res
-import aboutme.composeapp.generated.resources.ic_email
-import aboutme.composeapp.generated.resources.ic_github
-import aboutme.composeapp.generated.resources.ic_linkedin
-import aboutme.composeapp.generated.resources.ic_playstore
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -17,16 +12,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -48,21 +41,49 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.painterResource
+import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.utils.LocalIsWideScreen
 
 private val CardShape = RoundedCornerShape(16.dp)
-private val ButtonShape = RoundedCornerShape(24.dp)
 private val PillShape = RoundedCornerShape(20.dp)
 
+data class WorkProject(
+    val title: String,
+    val subtitle: String,
+    val context: String,
+    val achievements: List<String>,
+)
+
+// Shared data models
+data class WorkExperience(
+    val company: String,
+    val location: String,
+    val roles: List<Role>
+)
+
+data class Role(
+    val position: String,
+    val period: String
+)
+
+data class SkillCategory(
+    val category: String,
+    val skills: List<String>
+)
+
+data class CompanyExperience(
+    val work: WorkExperience,
+    val projects: List<WorkProject>,
+)
+
 @Composable
-fun AboutMe(isWideScreen: Boolean, modifier: Modifier = Modifier) {
+fun AboutMe(modifier: Modifier = Modifier) {
+    val isWideScreen = LocalIsWideScreen.current
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = if (isWideScreen) 48.dp else 20.dp)
             .padding(top = 100.dp, bottom = 100.dp)
@@ -72,133 +93,6 @@ fun AboutMe(isWideScreen: Boolean, modifier: Modifier = Modifier) {
 
         EducationSection()
         Spacer(modifier = Modifier.height(40.dp))
-    }
-}
-
-@Preview
-@Composable
-fun AboutSection(isWideScreen: Boolean = false, modifier: Modifier = Modifier) {
-    val uriHandler = LocalUriHandler.current
-
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        Row(
-            modifier = Modifier.fillMaxSize().weight(1f),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(
-                        start = if (isWideScreen) 72.dp else 24.dp,
-                        end = 24.dp
-                    )
-            ) {
-                // "Hi I am ————————" row
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = "Hi I am",
-                        color = PortfolioTheme.colors.secondaryText,
-                        fontSize = if (isWideScreen) 18.sp else 14.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-                    HorizontalDivider(
-                        modifier = Modifier.width(if (isWideScreen) 420.dp else 180.dp),
-                        color = PortfolioTheme.colors.accent,
-                        thickness = 1.5.dp
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Large name
-                val firstNameSize = if (isWideScreen) 100.sp else 50.sp
-                val lastNameSize = if (isWideScreen) 100.sp else 50.sp
-
-                Text(
-                    text = "Rajdeep".uppercase(),
-                    color = PortfolioTheme.colors.primaryText,
-                    fontSize = firstNameSize,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    text = "Vaghela".uppercase(),
-                    color = PortfolioTheme.colors.primaryText.copy(alpha = 0.35f),
-                    fontSize = lastNameSize,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Subtitle in accent color, spaced letters
-                Text(
-                    text = "SENIOR ANDROID ENGINEER",
-                    color = PortfolioTheme.colors.accent,
-                    fontSize = if (isWideScreen) 16.sp else 11.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = 3.sp,
-                    modifier = Modifier.align(Alignment.End)
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(end = if (isWideScreen) 36.dp else 24.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_github),
-                    contentDescription = "GitHub",
-                    onClick = { uriHandler.openUri("https://github.com/rajdeepvaghela") }
-                )
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_linkedin),
-                    contentDescription = "LinkedIn",
-                    onClick = { uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela") }
-                )
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_email),
-                    contentDescription = "E-mail",
-                    onClick = { uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com") }
-                )
-                SocialCircleIcon(
-                    painter = painterResource(Res.drawable.ic_playstore),
-                    contentDescription = "Play Store",
-                    onClick = { uriHandler.openUri("https://play.google.com/store/apps/dev?id=4737354144616321734") }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SocialCircleIcon(
-    painter: androidx.compose.ui.graphics.painter.Painter,
-    contentDescription: String,
-    size: Dp = 48.dp,
-    iconSize: Dp = 20.dp,
-    onClick: () -> Unit,
-) {
-    Box(
-        modifier = Modifier
-            .size(size)
-            .border(1.dp, PortfolioTheme.colors.secondaryText.copy(alpha = 0.5f), CircleShape)
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painter,
-            contentDescription = contentDescription,
-            tint = PortfolioTheme.colors.primaryText,
-            modifier = Modifier.size(iconSize)
-        )
     }
 }
 
@@ -216,13 +110,18 @@ private fun ExperienceSection() {
 
 @Composable
 private fun ExperienceContent() {
+    val isWideScreen = LocalIsWideScreen.current
     val companyExperiences = listOf(
         CompanyExperience(
             work = WorkExperience(
                 "Red Elk Studios",
                 "Hyderabad, India (Remote)",
-                "Senior Android Engineer",
-                "Aug 2024 - Present"
+                listOf(
+                    Role(
+                        "Senior Android Engineer",
+                        "Aug 2024 - Present"
+                    )
+                )
             ),
             projects = listOf(
                 WorkProject(
@@ -242,8 +141,12 @@ private fun ExperienceContent() {
             work = WorkExperience(
                 "Holofy",
                 "South Bank, England (Remote)",
-                "Senior Android Engineer",
-                "Apr 2020 - Apr 2024"
+                listOf(
+                    Role(
+                        "Senior Android Developer",
+                        "Apr 2021 - Apr 2024"
+                    )
+                )
             ),
             projects = listOf(
                 WorkProject(
@@ -273,8 +176,16 @@ private fun ExperienceContent() {
             work = WorkExperience(
                 "NoBroker.com",
                 "Bangalore, India",
-                "Senior Android Engineer",
-                "May 2018 - Mar 2020"
+                listOf(
+                    Role(
+                        "Lead Android Developer",
+                        "Oct 2020 - Mar 2021"
+                    ),
+                    Role(
+                        "Android Developer",
+                        "May 2018 - Oct 2020"
+                    )
+                )
             ),
             projects = listOf(
                 WorkProject(
@@ -295,8 +206,12 @@ private fun ExperienceContent() {
             work = WorkExperience(
                 "Vyapar Tech Solutions",
                 "Bangalore, India",
-                "Android Engineer",
-                "Dec 2016 - Apr 2018"
+                listOf(
+                    Role(
+                        "Android Developer",
+                        "Dec 2016 - Apr 2018"
+                    )
+                )
             ),
             projects = listOf(
                 WorkProject(
@@ -316,8 +231,12 @@ private fun ExperienceContent() {
             work = WorkExperience(
                 "Axaram Codelabs",
                 "Rajkot, Gujarat",
-                "UI/UX Designer and Android Developer",
-                "Oct 2015 - May 2016"
+                listOf(
+                    Role(
+                        "UI/UX Designer and Android Developer",
+                        "Oct 2015 - May 2016"
+                    )
+                )
             ),
             projects = emptyList()
         )
@@ -325,16 +244,44 @@ private fun ExperienceContent() {
 
     var expandedCompany by remember { mutableStateOf<String?>(null) }
 
-    companyExperiences.forEach { companyExperience ->
-        val isExpanded = expandedCompany == companyExperience.work.company
-        CompanyExperienceItem(
-            companyExperience = companyExperience,
-            isExpanded = isExpanded,
-            onToggle = {
-                expandedCompany = if (isExpanded) null else companyExperience.work.company
+    if (isWideScreen) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            val list = companyExperiences.chunked(3)
+
+            list.forEach {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    it.forEach { companyExperience ->
+                        val isExpanded = expandedCompany == companyExperience.work.company
+                        CompanyExperienceItem(
+                            companyExperience = companyExperience,
+                            isExpanded = isExpanded,
+                            onToggle = {
+                                expandedCompany =
+                                    if (isExpanded) null else companyExperience.work.company
+                            }
+                        )
+                    }
+                }
             }
-        )
-        Spacer(modifier = Modifier.height(12.dp))
+        }
+    } else {
+        companyExperiences.forEach { companyExperience ->
+            val isExpanded = expandedCompany == companyExperience.work.company
+            CompanyExperienceItem(
+                companyExperience = companyExperience,
+                isExpanded = isExpanded,
+                onToggle = {
+                    expandedCompany = if (isExpanded) null else companyExperience.work.company
+                }
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
     }
 }
 
@@ -492,13 +439,14 @@ private fun CompanyExperienceItem(
     companyExperience: CompanyExperience,
     isExpanded: Boolean,
     onToggle: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val rotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f
     )
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(CardShape)
             .clickable(companyExperience.projects.isNotEmpty()) { onToggle() }
@@ -517,27 +465,32 @@ private fun CompanyExperienceItem(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = companyExperience.work.company,
-                    color = PortfolioTheme.colors.primaryText,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = companyExperience.work.role,
-                    color = PortfolioTheme.colors.secondaryText,
-                    fontSize = 14.sp
-                )
-                Text(
-                    text = companyExperience.work.location,
-                    color = PortfolioTheme.colors.secondaryText,
-                    fontSize = 13.sp
-                )
-                Text(
-                    text = companyExperience.work.period,
-                    color = PortfolioTheme.colors.secondaryText,
-                    fontSize = 12.sp
-                )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text(
+                        text = companyExperience.work.company,
+                        color = PortfolioTheme.colors.primaryText,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = companyExperience.work.location,
+                        color = PortfolioTheme.colors.secondaryText,
+                        fontSize = 13.sp
+                    )
+                }
+                companyExperience.work.roles.forEach {
+                    Text(
+                        text = it.position,
+                        color = PortfolioTheme.colors.secondaryText,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        text = it.period,
+                        color = PortfolioTheme.colors.secondaryText,
+                        fontSize = 12.sp
+                    )
+                }
             }
             if (companyExperience.projects.isNotEmpty()) {
                 Icon(

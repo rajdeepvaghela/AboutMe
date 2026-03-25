@@ -28,7 +28,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.PortfolioTheme
+import com.rdapps.aboutme.theme.PortfolioTheme
 
 @Composable
 fun DemoPlayStopOverlay(

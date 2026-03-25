@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.PortfolioTheme
+import com.rdapps.aboutme.theme.PortfolioTheme
 
 @Composable
 fun IndicatorIcon(stepState: StepState, toBeAnimated: Boolean, onAnimationDone: () -> Unit) {

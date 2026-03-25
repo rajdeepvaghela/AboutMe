@@ -11,14 +11,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.github.panpf.sketch.AsyncImage
+import com.rdapps.aboutme.utils.LocalIsWideScreen
 
 @Composable
-fun MotionTextVisual(modifier: Modifier, isWideScreen: Boolean) {
+fun MotionTextVisual(modifier: Modifier) {
     AsyncImage(
         uri = "https://raw.githubusercontent.com/rajdeepvaghela/MotionText/refs/heads/master/motion_demo.gif",
         contentScale = ContentScale.Fit,
         contentDescription = null,
-        modifier = modifier.height(if (isWideScreen) 300.dp else 250.dp)
+        modifier = modifier.height(if (LocalIsWideScreen.current) 300.dp else 250.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(40.dp))
             .background(Color(0xFFFCFCFF))

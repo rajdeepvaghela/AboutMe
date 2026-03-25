@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,7 +36,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.PortfolioTheme
+import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.utils.LocalIsWideScreen
 import org.jetbrains.compose.resources.painterResource
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -44,7 +46,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 private fun encodeToBase64(text: String): String = Base64.encode(text.encodeToByteArray())
 
 @Composable
-fun WeddingInvitationVisual(modifier: Modifier, isWideScreen: Boolean) {
+fun WeddingInvitationVisual(modifier: Modifier) {
     Box(
         modifier = modifier.fillMaxSize().clip(RoundedCornerShape(40.dp))
     ) {
@@ -52,7 +54,8 @@ fun WeddingInvitationVisual(modifier: Modifier, isWideScreen: Boolean) {
             painter = painterResource(Res.drawable.wedding_invitation_preview),
             contentScale = ContentScale.Crop,
             contentDescription = null,
-            modifier = Modifier.height(if (isWideScreen) 300.dp else 250.dp)
+            modifier = Modifier.fillMaxWidth()
+                .height(if (LocalIsWideScreen.current) 300.dp else 250.dp)
         )
 
         var name by remember { mutableStateOf("") }

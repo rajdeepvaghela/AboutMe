@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.PortfolioTheme
+import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.doIf
 import kotlinx.coroutines.delay
 import kotlin.reflect.KClass

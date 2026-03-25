@@ -61,6 +61,8 @@ import com.rdapps.aboutme.examples.ValuePickerSliderExample
 import com.rdapps.aboutme.examples.VerticalStepperExample
 import com.rdapps.aboutme.examples.ViewSliderExample
 import com.rdapps.aboutme.examples.WeddingInvitationVisual
+import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.utils.LocalIsWideScreen
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
 
@@ -69,7 +71,7 @@ data class Project(
     val title: String,
     val description: String,
     val tags: List<String>,
-    val visual: @Composable (modifier: Modifier, isWideScreen: Boolean) -> Unit = { it, _ ->
+    val visual: @Composable (modifier: Modifier) -> Unit = {
         ProjectVisual(
             it,
             title
@@ -84,7 +86,7 @@ private val projectList = listOf(
         title = "Value Picker Slider",
         description = "Customisable horizontal slider value picker built fully in Jetpack Compose.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = { it, _ ->
+        visual = {
             ValuePickerSliderExample(it)
         },
         link = "https://github.com/rajdeepvaghela/ValuePickerSlider"
@@ -93,7 +95,7 @@ private val projectList = listOf(
         title = "ViewSlider",
         description = "Horizontal view slider which snaps the middle item with a scale effect.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = { it, _ ->
+        visual = {
             ViewSliderExample(it)
         },
         link = "https://github.com/rajdeepvaghela/ViewSlider"
@@ -102,7 +104,7 @@ private val projectList = listOf(
         title = "CircularList",
         description = "Vertical scrollable value picker for Jetpack Compose with InfiniteCircularList and CircularList components.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = { it, _ ->
+        visual = {
             CircularListExample(it)
         },
         link = "https://github.com/rajdeepvaghela/CircularList"
@@ -111,7 +113,7 @@ private val projectList = listOf(
         title = "VerticalStepper",
         description = "Customizable vertical stepper with animations and custom content layouts.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = { it, _ ->
+        visual = {
             VerticalStepperExample(it)
         },
         link = "https://github.com/rajdeepvaghela/VerticalStepper"
@@ -120,8 +122,8 @@ private val projectList = listOf(
         title = "Wedding Invitation",
         description = "A personalized wedding invitation website (CMP - Android & Web) with analytics, remote control over features, and an Android app that generates unique invitation links.",
         tags = listOf("Compose Multiplatform", "Kotlin", "Jetpack Compose", "Web", "Android"),
-        visual = { it, isWideScreen ->
-            WeddingInvitationVisual(it, isWideScreen)
+        visual = {
+            WeddingInvitationVisual(it)
         },
         link = "https://github.com/rajdeepvaghela/WeddingInvitation"
     ),
@@ -129,14 +131,14 @@ private val projectList = listOf(
         title = "Birthday Calendar",
         description = "Mobile and WearOS app that syncs Facebook birthdays and enables one-tap wishes via WhatsApp, Messenger, SMS, or call.",
         tags = listOf("Android", "WearOS", "Kotlin"),
-        visual = { it, isWideScreen ->
+        visual = {
             AsyncImage(
                 model = "https://play-lh.googleusercontent.com/ERrhISyBgw-0ex400_ybVDuHLVeZFLazdshPGp-DqGIeEDzvBr9BXJ_Fecl2F0SPF9wo=w1000-h2000",
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = it.clip(RoundedCornerShape(40.dp))
                     .background(PortfolioTheme.colors.secondaryBackground)
-                    .height(if (isWideScreen) 300.dp else 250.dp)
+                    .height(if (LocalIsWideScreen.current) 300.dp else 250.dp)
             )
         },
         link = "https://play.google.com/store/apps/details?id=com.rdapps.fbbirthdayfetcher"
@@ -153,11 +155,14 @@ private val projectList = listOf(
             "iOS"
         ),
         link = "https://github.com/rajdeepvaghela/AboutMe",
-        visual = { it, isWideScreen ->
+        visual = {
             Box(
                 modifier = it.fillMaxWidth()
-                    .background(PortfolioTheme.colors.secondaryBackground, RoundedCornerShape(40.dp))
-                    .height(if (isWideScreen) 300.dp else 250.dp),
+                    .background(
+                        PortfolioTheme.colors.secondaryBackground,
+                        RoundedCornerShape(40.dp)
+                    )
+                    .height(if (LocalIsWideScreen.current) 300.dp else 250.dp),
                 contentAlignment = Alignment.Center
             ) {
                 var isDemoLive by remember { mutableStateOf(false) }
@@ -186,8 +191,8 @@ private val projectList = listOf(
         title = "MotionText",
         description = "TextView optimised for MotionLayout transitions with additional features.",
         tags = listOf("Open Source Library", "XML", "Kotlin", "Material Design", "MotionLayout"),
-        visual = { it, isWideScreen ->
-            MotionTextVisual(it, isWideScreen)
+        visual = {
+            MotionTextVisual(it)
         },
         link = "https://github.com/rajdeepvaghela/MotionText"
     ),
@@ -226,7 +231,8 @@ private val projectList = listOf(
 private const val INITIAL_PROJECT_COUNT = 7
 
 @Composable
-fun ProjectSection(isWideScreen: Boolean, modifier: Modifier = Modifier) {
+fun ProjectSection(modifier: Modifier = Modifier) {
+    val isWideScreen = LocalIsWideScreen.current
     var showMore by remember { mutableStateOf(false) }
 
     val visibleProjects = projectList.take(INITIAL_PROJECT_COUNT)
@@ -241,7 +247,7 @@ fun ProjectSection(isWideScreen: Boolean, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(80.dp)
     ) {
         visibleProjects.forEachIndexed { index, project ->
-            ProjectItem(isWideScreen, project, index)
+            ProjectItem(project, index)
         }
 
         AnimatedVisibility(
@@ -251,7 +257,7 @@ fun ProjectSection(isWideScreen: Boolean, modifier: Modifier = Modifier) {
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(80.dp)) {
                 hiddenProjects.forEachIndexed { index, project ->
-                    ProjectItem(isWideScreen, project, visibleProjects.size + index)
+                    ProjectItem(project, visibleProjects.size + index)
                 }
             }
         }
@@ -290,7 +296,8 @@ fun ProjectSection(isWideScreen: Boolean, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ProjectItem(isWideScreen: Boolean, project: Project, index: Int) {
+private fun ProjectItem(project: Project, index: Int) {
+    val isWideScreen = LocalIsWideScreen.current
     if (isWideScreen) {
         Row(
             modifier = Modifier.fillMaxWidth().animateContentSize(),
@@ -298,11 +305,11 @@ private fun ProjectItem(isWideScreen: Boolean, project: Project, index: Int) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (index % 2 == 0) {
-                project.visual.invoke(Modifier.weight(1f), isWideScreen)
+                project.visual.invoke(Modifier.weight(1f))
                 ProjectDetails(project, Modifier.weight(1f))
             } else {
                 ProjectDetails(project, Modifier.weight(1f))
-                project.visual.invoke(Modifier.weight(1f), isWideScreen)
+                project.visual.invoke(Modifier.weight(1f))
             }
         }
     } else {
@@ -310,7 +317,7 @@ private fun ProjectItem(isWideScreen: Boolean, project: Project, index: Int) {
             modifier = Modifier.fillMaxWidth().animateContentSize(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            project.visual.invoke(Modifier.fillMaxWidth(), isWideScreen)
+            project.visual.invoke(Modifier.fillMaxWidth())
             ProjectDetails(project)
         }
     }

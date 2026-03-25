@@ -20,7 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.PortfolioTheme
+import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.stepper.Step
 import com.rdapps.aboutme.stepper.StepData
@@ -158,7 +158,7 @@ private fun emptyStageList(): List<StepData> = List(3) {
     StepData(
         id = it.toLong(),
         stepState = StepState.InQueue,
-        title = "      ",
-        bodyText = "Align on problem framing, success metrics, and constraints. Capture personas, north-star metrics, and an initial feature backlog to keep every later step grounded."
+        title = "_",
+        bodyText = "_\n_\n"
     )
 }
