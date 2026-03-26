@@ -25,14 +25,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
+import kotlinx.coroutines.launch
 
 private val CardShape = RoundedCornerShape(16.dp)
 private val PillShape = RoundedCornerShape(20.dp)
@@ -82,24 +86,55 @@ data class CompanyExperience(
 @Composable
 fun AboutMe(modifier: Modifier = Modifier) {
     val isWideScreen = LocalIsWideScreen.current
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(vertical = 100.dp, horizontal = if (isWideScreen) 48.dp else 20.dp)
-            .systemBarsPadding()
-    ) {
-        ExperienceSection()
-        Spacer(modifier = Modifier.height(40.dp))
+    val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
 
-        EducationSection()
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+    Box(Modifier.fillMaxSize()) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(vertical = 100.dp, horizontal = if (isWideScreen) 48.dp else 20.dp)
+                .systemBarsPadding()
         ) {
-            ContactView()
+            ExperienceSection()
+            Spacer(modifier = Modifier.height(40.dp))
+
+            EducationSection()
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                ContactView()
+            }
+        }
+
+        // Scroll to top button
+        AnimatedVisibility(
+            visible = scrollState.value > 0,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 24.dp, bottom = 80.dp)
+                .systemBarsPadding()
+        ) {
+            SmallFloatingActionButton(
+                onClick = {
+                    coroutineScope.launch {
+                        scrollState.animateScrollTo(0)
+                    }
+                },
+                containerColor = PortfolioTheme.colors.accent,
+                contentColor = PortfolioTheme.colors.background
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.KeyboardArrowUp,
+                    contentDescription = "Scroll to top"
+                )
+            }
         }
     }
 }

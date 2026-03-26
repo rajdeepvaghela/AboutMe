@@ -35,12 +35,14 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallExtendedFloatingActionButton
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +66,7 @@ import com.rdapps.aboutme.examples.ViewSliderExample
 import com.rdapps.aboutme.examples.WeddingInvitationVisual
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
 
@@ -235,62 +238,92 @@ private const val INITIAL_PROJECT_COUNT = 7
 fun ProjectSection(modifier: Modifier = Modifier) {
     val isWideScreen = LocalIsWideScreen.current
     var showMore by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
 
     val visibleProjects = projectList.take(INITIAL_PROJECT_COUNT)
     val hiddenProjects = projectList.drop(INITIAL_PROJECT_COUNT)
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(vertical = 100.dp, horizontal = if (isWideScreen) 40.dp else 24.dp)
-            .systemBarsPadding(),
-        verticalArrangement = Arrangement.spacedBy(80.dp)
-    ) {
-        visibleProjects.forEachIndexed { index, project ->
-            ProjectItem(project, index)
-        }
-
-        AnimatedVisibility(
-            visible = showMore,
-            enter = fadeIn(),
-            exit = fadeOut() + shrinkVertically()
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(vertical = 100.dp, horizontal = if (isWideScreen) 40.dp else 24.dp)
+                .systemBarsPadding(),
+            verticalArrangement = Arrangement.spacedBy(80.dp)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(80.dp)) {
-                hiddenProjects.forEachIndexed { index, project ->
-                    ProjectItem(project, visibleProjects.size + index)
+            visibleProjects.forEachIndexed { index, project ->
+                ProjectItem(project, index)
+            }
+
+            AnimatedVisibility(
+                visible = showMore,
+                enter = fadeIn(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Column(verticalArrangement = Arrangement.spacedBy(80.dp)) {
+                    hiddenProjects.forEachIndexed { index, project ->
+                        ProjectItem(project, visibleProjects.size + index)
+                    }
+                }
+            }
+
+            // Show More / Show Less button
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Surface(
+                    color = PortfolioTheme.colors.background,
+                    shape = RoundedCornerShape(50),
+                    border = BorderStroke(1.dp, PortfolioTheme.colors.accent),
+                    modifier = Modifier.clip(CircleShape).clickable { showMore = !showMore }
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 28.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = if (showMore) "Show Less" else "Show More",
+                            color = PortfolioTheme.colors.primaryText,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Icon(
+                            imageVector = if (showMore) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                            contentDescription = if (showMore) "Show Less" else "Show More",
+                            tint = PortfolioTheme.colors.primaryText
+                        )
+                    }
                 }
             }
         }
 
-        // Show More / Show Less button
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
+        // Scroll to top button
+        AnimatedVisibility(
+            visible = scrollState.value > 0,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 24.dp, bottom = 80.dp)
+                .systemBarsPadding()
         ) {
-            Surface(
-                color = PortfolioTheme.colors.background,
-                shape = RoundedCornerShape(50),
-                border = BorderStroke(1.dp, PortfolioTheme.colors.accent),
-                modifier = Modifier.clip(CircleShape).clickable { showMore = !showMore }
+            SmallFloatingActionButton(
+                onClick = {
+                    coroutineScope.launch {
+                        scrollState.animateScrollTo(0)
+                    }
+                },
+                containerColor = PortfolioTheme.colors.accent,
+                contentColor = PortfolioTheme.colors.background
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 28.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = if (showMore) "Show Less" else "Show More",
-                        color = PortfolioTheme.colors.primaryText,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Icon(
-                        imageVector = if (showMore) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                        contentDescription = if (showMore) "Show Less" else "Show More",
-                        tint = PortfolioTheme.colors.primaryText
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Rounded.KeyboardArrowUp,
+                    contentDescription = "Scroll to top"
+                )
             }
         }
     }
