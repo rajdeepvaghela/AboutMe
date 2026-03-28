@@ -19,6 +19,6 @@ actual fun createPreferencesStore(): KStore<Preferences> {
         inDomain = NSUserDomainMask,
         error = null
     )!!
-    val path = "${documentsUrl.path}/Documents/preferences.json"
+    val path = "${documentsUrl.path}/preferences.json"
     return storeOf(file = Path(path))
 }
