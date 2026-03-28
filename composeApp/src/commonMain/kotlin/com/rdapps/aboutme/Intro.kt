@@ -33,11 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
+import com.rdapps.aboutme.viewmodel.AppViewModel
 import org.jetbrains.compose.resources.painterResource
 
 @Preview
 @Composable
-fun IntroSection(modifier: Modifier = Modifier) {
+fun IntroSection(onEvent: (PortfolioScreenEvent) -> Unit = {}, modifier: Modifier = Modifier) {
     val isWideScreen = LocalIsWideScreen.current
 
     Column(
@@ -113,7 +114,7 @@ fun IntroSection(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ContactView()
+                ContactView(onEvent)
             }
         }
     }
@@ -145,26 +146,38 @@ private fun SocialCircleIcon(
 }
 
 @Composable
-fun ContactView() {
+fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
     val uriHandler = LocalUriHandler.current
     SocialCircleIcon(
         painter = painterResource(Res.drawable.ic_linkedin),
         contentDescription = "LinkedIn",
-        onClick = { uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela") }
+        onClick = {
+            onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickLinkedIn))
+            uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela")
+        }
     )
     SocialCircleIcon(
         painter = painterResource(Res.drawable.ic_email),
         contentDescription = "E-mail",
-        onClick = { uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com") }
+        onClick = {
+            onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickEmail))
+            uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com")
+        }
     )
     SocialCircleIcon(
         painter = painterResource(Res.drawable.ic_playstore),
         contentDescription = "Play Store",
-        onClick = { uriHandler.openUri("https://play.google.com/store/apps/dev?id=4737354144616321734") }
+        onClick = {
+            onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickPlayStore))
+            uriHandler.openUri("https://play.google.com/store/apps/dev?id=4737354144616321734")
+        }
     )
     SocialCircleIcon(
         painter = painterResource(Res.drawable.ic_github),
         contentDescription = "GitHub",
-        onClick = { uriHandler.openUri("https://github.com/rajdeepvaghela") }
+        onClick = {
+            onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickGithub))
+            uriHandler.openUri("https://github.com/rajdeepvaghela")
+        }
     )
 }

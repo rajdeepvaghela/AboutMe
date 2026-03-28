@@ -15,13 +15,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.circularlist.CircularList
 import com.rdapps.aboutme.circularlist.InfiniteCircularList
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.viewmodel.AppViewModel
 
 @Composable
-fun CircularListExample(modifier: Modifier = Modifier) {
+fun CircularListExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
     var isDemoLive by rememberSaveable { mutableStateOf(false) }
 
     BoxWithConstraints(modifier = modifier) {
@@ -81,8 +83,14 @@ fun CircularListExample(modifier: Modifier = Modifier) {
 
         DemoPlayStopOverlay(
             isDemoLive = isDemoLive,
-            onPlay = { isDemoLive = true },
-            onStop = { isDemoLive = false },
+            onPlay = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickLivePreview("CircularList")))
+                isDemoLive = true
+            },
+            onStop = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickStopPreview("CircularList")))
+                isDemoLive = false
+            },
             modifier = Modifier.matchParentSize(),
             overlayShape = RoundedCornerShape(40.dp)
         )

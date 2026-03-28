@@ -61,10 +61,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
+
+sealed interface PortfolioScreenEvent {
+    data class TrackEvent(val event: AppViewModel.Events) : PortfolioScreenEvent
+}
 
 enum class Tabs(val title: String) {
     Intro("Hi"),
@@ -77,6 +82,7 @@ enum class Tabs(val title: String) {
 fun PortfolioScreen(
     isDark: Boolean,
     onToggleTheme: () -> Unit,
+    onEvent: (PortfolioScreenEvent) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val backgroundStripColor = PortfolioTheme.colors.accentStroke
@@ -170,6 +176,18 @@ fun PortfolioScreen(
                 )
             }
     ) {
+        LaunchedEffect(pagerState.targetPage) {
+            when (pagerState.targetPage) {
+                Tabs.Projects.ordinal -> {
+                    onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.OpenProjects))
+                }
+
+                Tabs.AboutMe.ordinal -> {
+                    onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.OpenAboutMe))
+                }
+            }
+        }
+
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
@@ -177,15 +195,15 @@ fun PortfolioScreen(
         ) { index ->
             when (index) {
                 Tabs.Intro.ordinal -> {
-                    IntroSection()
+                    IntroSection(onEvent)
                 }
 
                 Tabs.Projects.ordinal -> {
-                    ProjectSection()
+                    ProjectSection(onEvent)
                 }
 
                 Tabs.AboutMe.ordinal -> {
-                    AboutMe()
+                    AboutMe(onEvent)
                 }
             }
         }

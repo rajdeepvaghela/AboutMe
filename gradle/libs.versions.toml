@@ -1,7 +1,7 @@
 [versions]
 agp = "9.1.0"
 android-compileSdk = "36"
-android-minSdk = "24"
+android-minSdk = "26"
 android-targetSdk = "36"
 androidx-activity = "1.13.0"
 androidx-appcompat = "1.7.1"
@@ -18,6 +18,9 @@ materialIconsExtended = "1.7.3"
 sketchCompose = "4.3.1"
 valuepickerslider = "1.0.7"
 ktorClient = "3.4.1"
+supabase-bom = "3.4.1"
+kstore = "1.0.0"
+kotlin-serialization = "1.10.0"
 
 [libraries]
 androidx-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
@@ -51,6 +54,12 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorClient" }
 ktor-client-wasm = { module = "io.ktor:ktor-client-js-wasm-js", version.ref = "ktorClient" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorClient" }
+supabaseBom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase-bom" }
+supabase-postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
+kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
+kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -58,3 +67,4 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

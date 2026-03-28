@@ -39,6 +39,7 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,16 +67,18 @@ import com.rdapps.aboutme.examples.ViewSliderExample
 import com.rdapps.aboutme.examples.WeddingInvitationVisual
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
+import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
 
 
+@Stable
 data class Project(
     val title: String,
     val description: String,
     val tags: List<String>,
-    val visual: @Composable (modifier: Modifier) -> Unit = {
+    val visual: @Composable (modifier: Modifier, onEvent: (PortfolioScreenEvent) -> Unit) -> Unit = { it, _ ->
         ProjectVisual(
             it,
             title
@@ -90,8 +93,8 @@ private val projectList = listOf(
         title = "Value Picker Slider",
         description = "Customisable horizontal slider value picker built fully in Jetpack Compose.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = {
-            ValuePickerSliderExample(it)
+        visual = { it, onEvent ->
+            ValuePickerSliderExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/ValuePickerSlider"
     ),
@@ -99,8 +102,8 @@ private val projectList = listOf(
         title = "ViewSlider",
         description = "Horizontal view slider which snaps the middle item with a scale effect.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = {
-            ViewSliderExample(it)
+        visual = { it, onEvent ->
+            ViewSliderExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/ViewSlider"
     ),
@@ -108,8 +111,8 @@ private val projectList = listOf(
         title = "CircularList",
         description = "Vertical scrollable value picker for Jetpack Compose with InfiniteCircularList and CircularList components.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = {
-            CircularListExample(it)
+        visual = { it, onEvent ->
+            CircularListExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/CircularList"
     ),
@@ -117,8 +120,8 @@ private val projectList = listOf(
         title = "VerticalStepper",
         description = "Customizable vertical stepper with animations and custom content layouts.",
         tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
-        visual = {
-            VerticalStepperExample(it)
+        visual = { it, onEvent ->
+            VerticalStepperExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/VerticalStepper"
     ),
@@ -126,8 +129,8 @@ private val projectList = listOf(
         title = "Wedding Invitation",
         description = "A personalized wedding invitation website (CMP - Android & Web) with analytics, remote control over features, and an Android app that generates unique invitation links.",
         tags = listOf("Compose Multiplatform", "Kotlin", "Jetpack Compose", "Web", "Android"),
-        visual = {
-            WeddingInvitationVisual(it)
+        visual = { it, onEvent ->
+            WeddingInvitationVisual(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/WeddingInvitation"
     ),
@@ -135,7 +138,7 @@ private val projectList = listOf(
         title = "Birthday Calendar",
         description = "Mobile and WearOS app that syncs Facebook birthdays and enables one-tap wishes via WhatsApp, Messenger, SMS, or call.",
         tags = listOf("Android", "WearOS", "Kotlin"),
-        visual = {
+        visual = { it, _ ->
             AsyncImage(
                 model = "https://play-lh.googleusercontent.com/ERrhISyBgw-0ex400_ybVDuHLVeZFLazdshPGp-DqGIeEDzvBr9BXJ_Fecl2F0SPF9wo=w1000-h2000",
                 contentScale = ContentScale.Crop,
@@ -159,7 +162,7 @@ private val projectList = listOf(
             "iOS"
         ),
         link = "https://github.com/rajdeepvaghela/AboutMe",
-        visual = {
+        visual = { it, onEvent ->
             Box(
                 modifier = it.fillMaxWidth()
                     .background(
@@ -174,7 +177,16 @@ private val projectList = listOf(
                 if (!isDemoLive) {
                     DemoPlayStopOverlay(
                         isDemoLive = isDemoLive,
-                        onPlay = { isDemoLive = true },
+                        onPlay = {
+                            onEvent(
+                                PortfolioScreenEvent.TrackEvent(
+                                    AppViewModel.Events.ClickLivePreview(
+                                        "AboutMe"
+                                    )
+                                )
+                            )
+                            isDemoLive = true
+                        },
                         onStop = { },
                         modifier = Modifier.fillMaxSize()
                     )
@@ -195,7 +207,7 @@ private val projectList = listOf(
         title = "MotionText",
         description = "TextView optimised for MotionLayout transitions with additional features.",
         tags = listOf("Open Source Library", "XML", "Kotlin", "Material Design", "MotionLayout"),
-        visual = {
+        visual = { it, _ ->
             MotionTextVisual(it)
         },
         link = "https://github.com/rajdeepvaghela/MotionText"
@@ -235,7 +247,7 @@ private val projectList = listOf(
 private const val INITIAL_PROJECT_COUNT = 7
 
 @Composable
-fun ProjectSection(modifier: Modifier = Modifier) {
+fun ProjectSection(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
     val isWideScreen = LocalIsWideScreen.current
     var showMore by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
@@ -254,7 +266,7 @@ fun ProjectSection(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(80.dp)
         ) {
             visibleProjects.forEachIndexed { index, project ->
-                ProjectItem(project, index)
+                ProjectItem(project, index, onEvent)
             }
 
             AnimatedVisibility(
@@ -264,7 +276,7 @@ fun ProjectSection(modifier: Modifier = Modifier) {
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(80.dp)) {
                     hiddenProjects.forEachIndexed { index, project ->
-                        ProjectItem(project, visibleProjects.size + index)
+                        ProjectItem(project, visibleProjects.size + index, onEvent)
                     }
                 }
             }
@@ -278,7 +290,17 @@ fun ProjectSection(modifier: Modifier = Modifier) {
                     color = PortfolioTheme.colors.background,
                     shape = RoundedCornerShape(50),
                     border = BorderStroke(1.dp, PortfolioTheme.colors.accent),
-                    modifier = Modifier.clip(CircleShape).clickable { showMore = !showMore }
+                    modifier = Modifier.clip(CircleShape).clickable {
+
+                        if (showMore) {
+                            onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickShowLess))
+                        } else {
+                            onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickShowMore))
+                        }
+
+                        showMore = !showMore
+
+                    }
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 28.dp, vertical = 14.dp),
@@ -313,6 +335,8 @@ fun ProjectSection(modifier: Modifier = Modifier) {
         ) {
             SmallFloatingActionButton(
                 onClick = {
+                    onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickScrollToTop))
+
                     coroutineScope.launch {
                         scrollState.animateScrollTo(0)
                     }
@@ -330,7 +354,7 @@ fun ProjectSection(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ProjectItem(project: Project, index: Int) {
+private fun ProjectItem(project: Project, index: Int, onEvent: (PortfolioScreenEvent) -> Unit) {
     val isWideScreen = LocalIsWideScreen.current
     if (isWideScreen) {
         Row(
@@ -339,11 +363,11 @@ private fun ProjectItem(project: Project, index: Int) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (index % 2 == 0) {
-                project.visual.invoke(Modifier.weight(1f))
-                ProjectDetails(project, Modifier.weight(1f))
+                project.visual.invoke(Modifier.weight(1f), onEvent)
+                ProjectDetails(project, onEvent, Modifier.weight(1f))
             } else {
-                ProjectDetails(project, Modifier.weight(1f))
-                project.visual.invoke(Modifier.weight(1f))
+                ProjectDetails(project, onEvent, Modifier.weight(1f))
+                project.visual.invoke(Modifier.weight(1f), onEvent)
             }
         }
     } else {
@@ -351,8 +375,8 @@ private fun ProjectItem(project: Project, index: Int) {
             modifier = Modifier.fillMaxWidth().animateContentSize(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            project.visual.invoke(Modifier.fillMaxWidth())
-            ProjectDetails(project)
+            project.visual.invoke(Modifier.fillMaxWidth(), onEvent)
+            ProjectDetails(project, onEvent)
         }
     }
 }
@@ -421,7 +445,11 @@ fun ProjectVisualPreview() {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun ProjectDetails(project: Project, modifier: Modifier = Modifier) {
+private fun ProjectDetails(
+    project: Project,
+    onEvent: (PortfolioScreenEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier) {
         Text(
             text = project.title,
@@ -466,6 +494,7 @@ private fun ProjectDetails(project: Project, modifier: Modifier = Modifier) {
                 )
             },
             onClick = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.OpenLink(project.title)))
                 uriHandler.openUri(project.link)
             },
             shape = CircleShape,

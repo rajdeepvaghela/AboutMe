@@ -36,8 +36,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
+import com.rdapps.aboutme.viewmodel.AppViewModel
 import org.jetbrains.compose.resources.painterResource
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -46,7 +48,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 private fun encodeToBase64(text: String): String = Base64.encode(text.encodeToByteArray())
 
 @Composable
-fun WeddingInvitationVisual(modifier: Modifier) {
+fun WeddingInvitationVisual(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier) {
     Box(
         modifier = modifier.fillMaxSize().clip(RoundedCornerShape(40.dp))
     ) {
@@ -94,6 +96,12 @@ fun WeddingInvitationVisual(modifier: Modifier) {
                     .clip(CircleShape)
                     .alpha(if (name.isNotBlank()) 1f else 0.5f)
                     .clickable(enabled = name.isNotBlank()) {
+                        onEvent(
+                            PortfolioScreenEvent.TrackEvent(
+                                AppViewModel.Events.OpenWeddingInvitation(name)
+                            )
+                        )
+
                         val json = """{
                             "name":"$name",
                             "showContactNumber":true,

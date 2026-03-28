@@ -1,21 +1,74 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
+}
+
+val secretProps = Properties().apply {
+    rootProject.file("secret.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}
+val secretSupabaseUrl: String = secretProps.getProperty("SUPABASE_URL", "")
+val secretSupabaseKey: String = secretProps.getProperty("SUPABASE_KEY", "")
+
+abstract class GenerateConfigTask : DefaultTask() {
+    @get:Input
+    abstract val supabaseUrl: Property<String>
+    @get:Input
+    abstract val supabaseKey: Property<String>
+    @get:OutputDirectory
+    abstract val outputDir: DirectoryProperty
+
+    @TaskAction
+    fun generate() {
+        val dir = outputDir.get().asFile
+        dir.mkdirs()
+        File(dir, "Config.kt").writeText(
+            """
+            package com.rdapps.aboutme
+
+            object Config {
+                const val SUPABASE_URL = "${supabaseUrl.get()}"
+                const val SUPABASE_KEY = "${supabaseKey.get()}"
+            }
+            """.trimIndent()
+        )
+    }
+}
+
+val generateConfig by tasks.registering(GenerateConfigTask::class) {
+    val url = secretSupabaseUrl
+    val key = secretSupabaseKey
+    supabaseUrl.set(url)
+    supabaseKey.set(key)
+    outputDir.set(layout.buildDirectory.dir("generated/kotlin/commonMain"))
+}
+
+val generatedConfigDir =
+    layout.buildDirectory.dir("generated/kotlin/commonMain")
+
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    dependsOn(generateConfig)
 }
 
 kotlin {
+    sourceSets.all {
+        // Required for experimental ExplicitBackingFields support (remove once stable)
+        languageSettings.enableLanguageFeature("ExplicitBackingFields")
+    }
+
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -25,53 +78,70 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     js {
         browser()
         binaries.executable()
     }
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            implementation(libs.kstore.file)
         }
-        commonMain.dependencies {
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(libs.androidx.material.icons.extended)
+        commonMain {
+            kotlin.srcDir(generatedConfigDir)
+            dependencies {
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.components.resources)
+                implementation(libs.compose.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
+                implementation(libs.androidx.material.icons.extended)
 
-            // coil
-            implementation(libs.coil.compose)
-            implementation(libs.coil.network.ktor)
-            implementation(libs.coil.gif)
+                // coil
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor)
+                implementation(libs.coil.gif)
 
-            // sketch
-            implementation(libs.sketch.compose)
-            implementation(libs.sketch.http)
-            implementation(libs.sketch.animated.gif)
+                // sketch
+                implementation(libs.sketch.compose)
+                implementation(libs.sketch.http)
+                implementation(libs.sketch.animated.gif)
+
+                // supabase
+                implementation(project.dependencies.platform(libs.supabaseBom))
+                implementation(libs.supabase.postgrest.kt)
+
+                // serialization
+                implementation(libs.kotlinx.serialization.json)
+
+                // KStore
+                implementation(libs.kstore)
+            }
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.kstore.file)
         }
         jsMain.dependencies {
             implementation(libs.ktor.client.js)
+            implementation(libs.kstore.storage)
         }
         wasmJsMain.dependencies {
             implementation(libs.ktor.client.wasm)
+            implementation(libs.kstore.storage)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -103,6 +173,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

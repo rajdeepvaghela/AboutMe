@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
+import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 
 private val CardShape = RoundedCornerShape(16.dp)
@@ -84,7 +85,7 @@ data class CompanyExperience(
 )
 
 @Composable
-fun AboutMe(modifier: Modifier = Modifier) {
+fun AboutMe(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
     val isWideScreen = LocalIsWideScreen.current
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
@@ -97,7 +98,7 @@ fun AboutMe(modifier: Modifier = Modifier) {
                 .padding(vertical = 100.dp, horizontal = if (isWideScreen) 48.dp else 20.dp)
                 .systemBarsPadding()
         ) {
-            ExperienceSection()
+            ExperienceSection(onEvent)
             Spacer(modifier = Modifier.height(40.dp))
 
             EducationSection()
@@ -107,7 +108,7 @@ fun AboutMe(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                ContactView()
+                ContactView(onEvent)
             }
         }
 
@@ -123,6 +124,7 @@ fun AboutMe(modifier: Modifier = Modifier) {
         ) {
             SmallFloatingActionButton(
                 onClick = {
+                    onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickScrollToTop))
                     coroutineScope.launch {
                         scrollState.animateScrollTo(0)
                     }
@@ -140,7 +142,7 @@ fun AboutMe(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ExperienceSection() {
+private fun ExperienceSection(onEvent: (PortfolioScreenEvent) -> Unit) {
     Text(
         text = "Experience",
         color = PortfolioTheme.colors.secondaryText,
@@ -148,11 +150,11 @@ private fun ExperienceSection() {
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(start = 20.dp, bottom = 10.dp)
     )
-    ExperienceContent()
+    ExperienceContent(onEvent)
 }
 
 @Composable
-private fun ExperienceContent() {
+private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
     val isWideScreen = LocalIsWideScreen.current
     val companyExperiences = listOf(
         CompanyExperience(
@@ -320,6 +322,7 @@ private fun ExperienceContent() {
                 companyExperience = companyExperience,
                 isExpanded = isExpanded,
                 onToggle = {
+                    onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ExpandExperience))
                     expandedCompany = if (isExpanded) null else companyExperience.work.company
                 }
             )

@@ -26,8 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
+import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.viewmodel.AppViewModel
 import com.rdapps.aboutme.viewslider.ViewSlider
 
 data class Item(
@@ -37,7 +39,7 @@ data class Item(
 )
 
 @Composable
-fun ViewSliderExample(modifier: Modifier = Modifier) {
+fun ViewSliderExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
     var isDemoLive by rememberSaveable { mutableStateOf(false) }
 
     val list = listOf(
@@ -82,8 +84,14 @@ fun ViewSliderExample(modifier: Modifier = Modifier) {
 
         DemoPlayStopOverlay(
             isDemoLive = isDemoLive,
-            onPlay = { isDemoLive = true },
-            onStop = { isDemoLive = false },
+            onPlay = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickLivePreview("ViewSlider")))
+                isDemoLive = true
+            },
+            onStop = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickStopPreview("ViewSlider")))
+                isDemoLive = false
+            },
             modifier = Modifier.matchParentSize(),
             overlayShape = RoundedCornerShape(40.dp)
         )

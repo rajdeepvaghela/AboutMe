@@ -19,3 +19,4 @@ captures
 node_modules/
 /kotlin-js-store/wasm/yarn.lock
 /gradle/gradle-daemon-jvm.properties
+secret.properties

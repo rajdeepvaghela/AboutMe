@@ -20,17 +20,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.stepper.Step
 import com.rdapps.aboutme.stepper.StepData
 import com.rdapps.aboutme.stepper.StepState
+import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Preview
 @Composable
-fun VerticalStepperExample(modifier: Modifier = Modifier) {
+fun VerticalStepperExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
     var isDemoLive by rememberSaveable { mutableStateOf(false) }
 
     Box(modifier = modifier) {
@@ -112,7 +114,11 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
                                 listOf(1L, 2L).forEachIndexed { index, stageId ->
                                     if (index != 0) delay(6000)
                                     stageList = stageList.map { stage ->
-                                        if (stage.id == stageId) stage.copy(stepState = StepState.Active(color = accentStroke)) else stage
+                                        if (stage.id == stageId) stage.copy(
+                                            stepState = StepState.Active(
+                                                color = accentStroke
+                                            )
+                                        ) else stage
                                     }
                                 }
                             }
@@ -124,8 +130,14 @@ fun VerticalStepperExample(modifier: Modifier = Modifier) {
 
         DemoPlayStopOverlay(
             isDemoLive = isDemoLive,
-            onPlay = { isDemoLive = true },
-            onStop = { isDemoLive = false },
+            onPlay = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickLivePreview("VerticalStepper")))
+                isDemoLive = true
+            },
+            onStop = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickStopPreview("VerticalStepper")))
+                isDemoLive = false
+            },
             modifier = Modifier.matchParentSize(),
             overlayShape = RoundedCornerShape(40.dp)
         )

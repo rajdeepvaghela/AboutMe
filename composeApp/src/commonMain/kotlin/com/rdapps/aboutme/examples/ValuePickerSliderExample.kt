@@ -16,15 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
+import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.valuepickerslider.BarBreak
 import com.rdapps.aboutme.valuepickerslider.ValuePickerSlider
 import com.rdapps.aboutme.valuepickerslider.rememberSliderState
+import com.rdapps.aboutme.viewmodel.AppViewModel
 
 @Preview
 @Composable
-fun ValuePickerSliderExample(modifier: Modifier = Modifier) {
+fun ValuePickerSliderExample(
+    onEvent: (PortfolioScreenEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     var isDemoLive by rememberSaveable { mutableStateOf(false) }
 
@@ -71,8 +76,14 @@ fun ValuePickerSliderExample(modifier: Modifier = Modifier) {
 
         DemoPlayStopOverlay(
             isDemoLive = isDemoLive,
-            onPlay = { isDemoLive = true },
-            onStop = { isDemoLive = false },
+            onPlay = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickLivePreview("ValuePickerSlider")))
+                isDemoLive = true
+            },
+            onStop = {
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickStopPreview("ValuePickerSlider")))
+                isDemoLive = false
+            },
             modifier = Modifier.matchParentSize(),
             overlayShape = RoundedCornerShape(40.dp)
         )
