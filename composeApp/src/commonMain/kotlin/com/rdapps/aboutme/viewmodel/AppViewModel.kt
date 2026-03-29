@@ -53,22 +53,21 @@ class AppViewModel(
     }
 
     private fun fetchDataAndTrack() = viewModelScope.launch {
-        val userId = getOrCreateUserId(deviceInfo)
+        userId = getOrCreateUserId(deviceInfo)
         printInDebug("UserId: $userId")
 
         val config = fetchRemoteConfig() ?: return@launch
         val ipResponse = fetchIpInfo(config.ipinfoToken) ?: return@launch
-        trackNetworkInfo(userId, ipResponse)
-        trackEvent(Events.Visit, userId)
+        trackNetworkInfo(ipResponse)
+        trackEventNow(Events.Visit)
     }
 
     private suspend fun getOrCreateUserId(
         deviceInfo: DeviceInfo,
         forceCreate: Boolean = false
-    ): String {
+    ): String? {
         if (!forceCreate) {
             preferencesStore.get()?.userId?.let { userId ->
-                this.userId = userId
                 return userId
             }
         }
@@ -80,11 +79,12 @@ class AppViewModel(
             .decodeSingle<User>()
 
         preferencesStore.set(Preferences(userId = user.id ?: ""))
-        userId = user.id
-        return userId ?: ""
+        return user.id
     }
 
-    private suspend fun trackNetworkInfo(userId: String, ipResponse: IpResponse) {
+    private suspend fun trackNetworkInfo(ipResponse: IpResponse) {
+        val userId = userId ?: return
+
         suspend fun track(userId: String) {
             val networkInfo = NetworkInfo.from(userId, ipResponse)
             supabase.postgrest.from("user_network_info").upsert(networkInfo)
@@ -94,7 +94,8 @@ class AppViewModel(
             track(userId)
         } catch (e: PostgrestRestException) {
             if (e.code == "23503") { // when userId doesn't exists
-                val userId = getOrCreateUserId(deviceInfo, forceCreate = true)
+                val userId = getOrCreateUserId(deviceInfo, forceCreate = true) ?: return
+                this.userId = userId
                 track(userId)
             } else {
                 e.printStackTrace()
@@ -106,7 +107,8 @@ class AppViewModel(
         }
     }
 
-    private suspend fun trackEvent(event: Events, userId: String) {
+    private suspend fun trackEventNow(event: Events) {
+        val userId = userId ?: return
         try {
             supabase.postgrest.from("events")
                 .insert(
@@ -144,8 +146,8 @@ class AppViewModel(
     }
 
     fun trackEvent(event: Events) = viewModelScope.launch {
-        printInDebug("Event: $event, userId: $userId")
-        userId?.let { trackEvent(event, it) }
+        printInDebug("Event: $event")
+        trackEventNow(event)
     }
 
     private fun updateName(userId: String, name: String) = viewModelScope.launch {
