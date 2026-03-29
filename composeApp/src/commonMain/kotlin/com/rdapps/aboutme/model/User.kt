@@ -1,5 +1,6 @@
 package com.rdapps.aboutme.model
 
+import com.rdapps.aboutme.BuildKonfig
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,7 +11,8 @@ data class User(
     val vendor: String,
     val platform: String,
     val language: String,
-    val name: String? = null
+    val name: String? = null,
+    val debug: Boolean = false
 ) {
     companion object {
         fun from(deviceInfo: DeviceInfo) = User(
@@ -18,7 +20,8 @@ data class User(
             userAgent = deviceInfo.userAgent,
             vendor = deviceInfo.vendor,
             platform = deviceInfo.platform,
-            language = deviceInfo.language
+            language = deviceInfo.language,
+            debug = BuildKonfig.DEBUG
         )
     }
 }

@@ -2,7 +2,7 @@ package com.rdapps.aboutme.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rdapps.aboutme.Config
+import com.rdapps.aboutme.BuildKonfig
 import com.rdapps.aboutme.model.DeviceInfo
 import com.rdapps.aboutme.model.Event
 import com.rdapps.aboutme.model.IpResponse
@@ -13,55 +13,48 @@ import com.rdapps.aboutme.preferences.Preferences
 import com.rdapps.aboutme.utils.createHttpClient
 import com.rdapps.aboutme.utils.createJson
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.postgrest.exception.PostgrestRestException
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.github.xxfast.kstore.KStore
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AppViewModel(
     private val deviceInfo: DeviceInfo,
     private val preferencesStore: KStore<Preferences>
 ) : ViewModel() {
+
+    private val json by lazy { createJson() }
+
     private val supabase by lazy {
         createSupabaseClient(
-            supabaseUrl = Config.SUPABASE_URL,
-            supabaseKey = Config.SUPABASE_KEY
+            supabaseUrl = BuildKonfig.SUPABASE_URL,
+            supabaseKey = BuildKonfig.SUPABASE_KEY
         ) {
+            defaultSerializer = KotlinXSerializer(json)
             install(Postgrest)
         }
     }
 
     private val client by lazy {
-        createHttpClient(createJson())
+        createHttpClient(json)
     }
 
-    data class UiState(
-        val userId: String? = null
-    )
-
-    val uiState: StateFlow<UiState>
-        field = MutableStateFlow(UiState())
+    private var userId: String? = null
 
     init {
-        print("DeviceInfo: $deviceInfo")
-        fetchData()
-
-        viewModelScope.launch {
-            preferencesStore.updates.collect { pref ->
-                pref ?: return@collect
-            }
-        }
+        printInDebug("DeviceInfo: $deviceInfo")
+        fetchDataAndTrack()
     }
 
-    private fun fetchData() = viewModelScope.launch {
+    private fun fetchDataAndTrack() = viewModelScope.launch {
         val userId = getOrCreateUserId(deviceInfo)
-        print("UserId: $userId")
-        uiState.update { it.copy(userId = userId) }
+        printInDebug("UserId: $userId")
 
         val config = fetchRemoteConfig() ?: return@launch
         val ipResponse = fetchIpInfo(config.ipinfoToken) ?: return@launch
@@ -69,29 +62,52 @@ class AppViewModel(
         trackEvent(Events.Visit, userId)
     }
 
-    private suspend fun getOrCreateUserId(deviceInfo: DeviceInfo): String {
-        preferencesStore.get()?.userId?.let { userId ->
-            return userId
+    private suspend fun getOrCreateUserId(
+        deviceInfo: DeviceInfo,
+        forceCreate: Boolean = false
+    ): String {
+        if (!forceCreate) {
+            preferencesStore.get()?.userId?.let { userId ->
+                this.userId = userId
+                return userId
+            }
         }
 
         val payload = User.from(deviceInfo)
+        printInDebug("User: $payload")
         val user = supabase.postgrest.from("users")
             .insert(payload) { select() }
             .decodeSingle<User>()
 
         preferencesStore.set(Preferences(userId = user.id ?: ""))
-
-        return user.id ?: ""
+        userId = user.id
+        return userId ?: ""
     }
 
-    private fun trackNetworkInfo(userId: String, ipResponse: IpResponse) = viewModelScope.launch {
-        val networkInfo = NetworkInfo.from(userId, ipResponse)
-        supabase.postgrest.from("user_network_info").upsert(networkInfo)
+    private suspend fun trackNetworkInfo(userId: String, ipResponse: IpResponse) {
+        suspend fun track(userId: String) {
+            val networkInfo = NetworkInfo.from(userId, ipResponse)
+            supabase.postgrest.from("user_network_info").upsert(networkInfo)
+        }
+
+        try {
+            track(userId)
+        } catch (e: PostgrestRestException) {
+            if (e.code == "23503") { // when userId doesn't exists
+                val userId = getOrCreateUserId(deviceInfo, forceCreate = true)
+                track(userId)
+            } else {
+                e.printStackTrace()
+            }
+        } catch (e: HttpRequestTimeoutException) {
+            e.printStackTrace()
+        } catch (e: HttpRequestException) {
+            e.printStackTrace()
+        }
     }
 
-    fun trackEvent(event: Events, userId: String? = uiState.value.userId) =
-        viewModelScope.launch {
-            userId ?: return@launch
+    private suspend fun trackEvent(event: Events, userId: String) {
+        try {
             supabase.postgrest.from("events")
                 .insert(
                     Event(
@@ -119,29 +135,34 @@ class AppViewModel(
                         }
                     )
                 )
-
-            if (event is Events.OpenWeddingInvitation) {
-                updateName(userId, event.enteredName)
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        if (event is Events.OpenWeddingInvitation) {
+            updateName(userId, event.enteredName)
+        }
+    }
+
+    fun trackEvent(event: Events) = viewModelScope.launch {
+        printInDebug("Event: $event, userId: $userId")
+        userId?.let { trackEvent(event, it) }
+    }
 
     private fun updateName(userId: String, name: String) = viewModelScope.launch {
-        supabase.postgrest.from("users")
-            .update(
-                {
-                    User::name setTo name
+        try {
+            supabase.postgrest.from("users")
+                .update({ User::name setTo name }) {
+                    filter { User::id eq userId }
                 }
-            ) {
-                filter {
-                    User::id eq userId
-                }
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private suspend fun fetchRemoteConfig(): RemoteConfig? {
         try {
             return supabase.postgrest.rpc("get_remote_config").decodeAsOrNull<RemoteConfig>().also {
-                print("RemoteConfig: $it")
+                printInDebug("RemoteConfig: $it")
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -152,12 +173,17 @@ class AppViewModel(
     private suspend fun fetchIpInfo(ipInfoToken: String): IpResponse? {
         try {
             return client.get("https://ipinfo.io/?token=$ipInfoToken").body<IpResponse>().also {
-                print("IpResponse: $it")
+                printInDebug("IpResponse: $it")
             }
         } catch (e: Exception) {
             e.printStackTrace()
             return null
         }
+    }
+
+    private fun printInDebug(msg: String) {
+        if (!BuildKonfig.DEBUG) return
+        println(msg)
     }
 
     sealed class Events(val name: String) {

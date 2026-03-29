@@ -2,6 +2,8 @@ package com.rdapps.aboutme.deviceInfo
 
 import com.rdapps.aboutme.model.DeviceInfo
 import platform.Foundation.NSBundle
+import platform.Foundation.NSLocale
+import platform.Foundation.preferredLanguages
 import platform.UIKit.UIDevice
 
 actual fun getDeviceInfo(): DeviceInfo {
@@ -15,10 +17,12 @@ actual fun getDeviceInfo(): DeviceInfo {
     val systemName = device.systemName
     val systemVersion = device.systemVersion
     val model = device.model
+    val language = NSLocale.preferredLanguages.firstOrNull() as? String ?: "unknown"
 
     return DeviceInfo(
         userAgent = "$appName/$versionName ($versionCode; $systemName $systemVersion; $model)",
         vendor = "Apple",
-        platform = "iOS"
+        platform = "iOS",
+        language = language
     )
 }

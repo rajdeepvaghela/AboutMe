@@ -1,8 +1,7 @@
 package com.rdapps.aboutme
 
-import platform.UIKit.UIApplication
 import platform.UIKit.UIDevice
-import platform.Foundation.NSURL
+import kotlin.experimental.ExperimentalNativeApi
 
 class IOSPlatform : Platform {
     override val name: String =
@@ -10,14 +9,3 @@ class IOSPlatform : Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
-
-actual fun openUrl(url: String) {
-    val nsUrl = NSURL.URLWithString(url)
-    nsUrl?.let {
-        UIApplication.sharedApplication.openURL(
-            it,
-            options = emptyMap<Any?, Any>(),
-            completionHandler = null
-        )
-    }
-}

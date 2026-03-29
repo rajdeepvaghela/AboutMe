@@ -1,6 +1,7 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import java.util.Properties
 
 plugins {
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.buildkonfig)
 }
 
 val secretProps = Properties().apply {
@@ -17,45 +19,6 @@ val secretProps = Properties().apply {
 val secretSupabaseUrl: String = secretProps.getProperty("SUPABASE_URL", "")
 val secretSupabaseKey: String = secretProps.getProperty("SUPABASE_KEY", "")
 
-abstract class GenerateConfigTask : DefaultTask() {
-    @get:Input
-    abstract val supabaseUrl: Property<String>
-    @get:Input
-    abstract val supabaseKey: Property<String>
-    @get:OutputDirectory
-    abstract val outputDir: DirectoryProperty
-
-    @TaskAction
-    fun generate() {
-        val dir = outputDir.get().asFile
-        dir.mkdirs()
-        File(dir, "Config.kt").writeText(
-            """
-            package com.rdapps.aboutme
-
-            object Config {
-                const val SUPABASE_URL = "${supabaseUrl.get()}"
-                const val SUPABASE_KEY = "${supabaseKey.get()}"
-            }
-            """.trimIndent()
-        )
-    }
-}
-
-val generateConfig by tasks.registering(GenerateConfigTask::class) {
-    val url = secretSupabaseUrl
-    val key = secretSupabaseKey
-    supabaseUrl.set(url)
-    supabaseKey.set(key)
-    outputDir.set(layout.buildDirectory.dir("generated/kotlin/commonMain"))
-}
-
-val generatedConfigDir =
-    layout.buildDirectory.dir("generated/kotlin/commonMain")
-
-tasks.withType<KotlinCompilationTask<*>>().configureEach {
-    dependsOn(generateConfig)
-}
 
 kotlin {
     sourceSets.all {
@@ -98,7 +61,6 @@ kotlin {
             implementation(libs.kstore.file)
         }
         commonMain {
-            kotlin.srcDir(generatedConfigDir)
             dependencies {
                 implementation(libs.compose.runtime)
                 implementation(libs.compose.foundation)
@@ -182,4 +144,18 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+}
+
+buildkonfig {
+    packageName = "com.rdapps.aboutme"
+
+    defaultConfigs {
+        buildConfigField(STRING, "SUPABASE_URL", secretSupabaseUrl)
+        buildConfigField(STRING, "SUPABASE_KEY", secretSupabaseKey)
+        buildConfigField(BOOLEAN, "DEBUG", "true")
+    }
+
+    defaultConfigs("release") {
+        buildConfigField(BOOLEAN, "DEBUG", "false")
+    }
 }
