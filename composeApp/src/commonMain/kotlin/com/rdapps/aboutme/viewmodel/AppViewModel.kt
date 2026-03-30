@@ -56,17 +56,17 @@ class AppViewModel(
         }
 
         val payload = User.from(deviceInfo)
-        printInDebug("User: $payload")
         val user = supabase.postgrest.from("users")
             .insert(payload) { select() }
             .decodeSingle<User>()
 
+        printInDebug("User: $user")
         preferencesStore.set(Preferences(userId = user.id ?: ""))
         return user.id
     }
 
     private suspend fun trackNetworkInfo(ipResponse: IpResponse) {
-        val userId = userId ?: return
+        val userId = userId ?: return printInDebug("trackNetworkInfo: UserId is null")
 
         suspend fun track(userId: String) {
             val networkInfo = NetworkInfo.from(userId, ipResponse)
@@ -77,7 +77,8 @@ class AppViewModel(
             track(userId)
         } catch (e: PostgrestRestException) {
             if (e.code == "23503") { // when userId doesn't exists
-                val userId = getOrCreateUserId(deviceInfo, forceCreate = true) ?: return
+                val userId = getOrCreateUserId(deviceInfo, forceCreate = true)
+                    ?: return printInDebug("trackNetworkInfo: userId creation failed")
                 this.userId = userId
                 track(userId)
             } else {
@@ -91,7 +92,8 @@ class AppViewModel(
     }
 
     private suspend fun trackEventNow(event: Events) {
-        val userId = userId ?: return
+        val userId = userId ?: return printInDebug("trackEventNow: UserId is null")
+        printInDebug("Event: $event")
         try {
             supabase.postgrest.from("events")
                 .insert(
@@ -129,7 +131,6 @@ class AppViewModel(
     }
 
     fun trackEvent(event: Events) = viewModelScope.launch {
-        printInDebug("Event: $event")
         trackEventNow(event)
     }
 
