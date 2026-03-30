@@ -322,7 +322,9 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                 companyExperience = companyExperience,
                 isExpanded = isExpanded,
                 onToggle = {
-                    onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ExpandExperience))
+                    if (!isExpanded) {
+                        onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ExpandExperience))
+                    }
                     expandedCompany = if (isExpanded) null else companyExperience.work.company
                 }
             )

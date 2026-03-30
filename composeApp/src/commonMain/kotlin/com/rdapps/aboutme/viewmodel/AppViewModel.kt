@@ -10,15 +10,12 @@ import com.rdapps.aboutme.model.NetworkInfo
 import com.rdapps.aboutme.model.RemoteConfig
 import com.rdapps.aboutme.model.User
 import com.rdapps.aboutme.preferences.Preferences
-import com.rdapps.aboutme.utils.createHttpClient
-import com.rdapps.aboutme.utils.createJson
-import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.exceptions.HttpRequestException
-import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.exception.PostgrestRestException
 import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.github.xxfast.kstore.KStore
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
@@ -26,24 +23,10 @@ import kotlinx.coroutines.launch
 
 class AppViewModel(
     private val deviceInfo: DeviceInfo,
-    private val preferencesStore: KStore<Preferences>
+    private val preferencesStore: KStore<Preferences>,
+    private val client: HttpClient,
+    private val supabase: SupabaseClient
 ) : ViewModel() {
-
-    private val json by lazy { createJson() }
-
-    private val supabase by lazy {
-        createSupabaseClient(
-            supabaseUrl = BuildKonfig.SUPABASE_URL,
-            supabaseKey = BuildKonfig.SUPABASE_KEY
-        ) {
-            defaultSerializer = KotlinXSerializer(json)
-            install(Postgrest)
-        }
-    }
-
-    private val client by lazy {
-        createHttpClient(json)
-    }
 
     private var userId: String? = null
 
