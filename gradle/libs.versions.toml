@@ -56,6 +56,7 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorClient" }
 ktor-client-wasm = { module = "io.ktor:ktor-client-js-wasm-js", version.ref = "ktorClient" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorClient" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClient" }
 supabaseBom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase-bom" }
 supabase-postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }

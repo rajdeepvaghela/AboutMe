@@ -53,6 +53,8 @@ kotlin {
         binaries.executable()
     }
 
+    jvm()
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
@@ -76,7 +78,6 @@ kotlin {
                 // coil
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor)
-                implementation(libs.coil.gif)
 
                 // sketch
                 implementation(libs.sketch.compose)
@@ -111,6 +112,11 @@ kotlin {
         wasmJsMain.dependencies {
             implementation(libs.ktor.client.wasm)
             implementation(libs.kstore.storage)
+        }
+        jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kstore.file)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -151,6 +157,12 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+}
+
+compose.desktop {
+    application {
+        mainClass = "com.rdapps.aboutme.MainKt"
+    }
 }
 
 buildkonfig {
