@@ -59,6 +59,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
             implementation(libs.kstore.file)
+            implementation(libs.koin.android)
         }
         commonMain {
             dependencies {
@@ -91,6 +92,12 @@ kotlin {
 
                 // KStore
                 implementation(libs.kstore)
+
+                // Koin
+                implementation(project.dependencies.platform(libs.koin.bom))
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewmodel)
             }
         }
         iosMain.dependencies {

@@ -22,6 +22,7 @@ supabase-bom = "3.4.1"
 kstore = "1.0.0"
 kotlin-serialization = "1.10.0"
 buildkonfig = "0.17.1"
+koin = "4.2.0"
 
 [libraries]
 androidx-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
@@ -61,6 +62,11 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
 kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
 kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+koin-android = { module = "io.insert-koin:koin-android" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
