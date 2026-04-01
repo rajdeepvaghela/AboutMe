@@ -51,7 +51,7 @@ fun ValuePickerSliderExample(
             numSegments = maxWidth.value.toInt() * 32 / 500,
             currentValueLabel = {
                 Text(
-                    text = "${it / 10f}",
+                    text = getStationName(it),
                     color = PortfolioTheme.colors.primaryText,
                     modifier = Modifier.background(PortfolioTheme.colors.background)
                 )
@@ -87,5 +87,15 @@ fun ValuePickerSliderExample(
             modifier = Modifier.matchParentSize(),
             overlayShape = RoundedCornerShape(40.dp)
         )
+    }
+}
+
+private fun getStationName(value: Int): String {
+    return when (value) {
+        911 -> "Radio City"
+        927 -> "Big FM"
+        935 -> "Red FM"
+        983 -> "Radio Mirchi"
+        else -> "${value / 10f}"
     }
 }

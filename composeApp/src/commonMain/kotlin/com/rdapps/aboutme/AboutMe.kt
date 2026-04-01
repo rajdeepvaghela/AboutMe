@@ -26,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallFloatingActionButton
@@ -130,7 +131,8 @@ fun AboutMe(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifi
                     }
                 },
                 containerColor = PortfolioTheme.colors.accent,
-                contentColor = PortfolioTheme.colors.background
+                contentColor = PortfolioTheme.colors.background,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,

@@ -213,10 +213,30 @@ private val projectList = listOf(
         link = "https://github.com/rajdeepvaghela/MotionText"
     ),
     Project(
+        title = "SharedPref",
+        description = "A different approach to store data in SharedPreference and DataStorePreference using Enums",
+        tags = listOf(
+            "Android",
+            "Kotlin",
+            "Data Store",
+            "Shared Preference",
+            "Enum",
+            "Flows",
+            "Encryption"
+        ),
+        link = "https://github.com/rajdeepvaghela/SharedPref"
+    ),
+    Project(
         title = "TypeWriter",
         description = "TextView and EditText with a customizable typewriter animation.",
         tags = listOf("Open Source Library", "Android", "XML"),
         link = "https://github.com/rajdeepvaghela/TypeWriter"
+    ),
+    Project(
+        title = "Flow Layouts",
+        description = "This layouts will replicate the FlowLayout behaviour from CSS and Java Spring.",
+        tags = listOf("Open Source Library", "Android", "XML", "FlexLayout"),
+        link = "https://github.com/rajdeepvaghela/FlowLayouts"
     ),
     Project(
         title = "Generic Adapter",
@@ -342,7 +362,8 @@ fun ProjectSection(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier =
                     }
                 },
                 containerColor = PortfolioTheme.colors.accent,
-                contentColor = PortfolioTheme.colors.background
+                contentColor = PortfolioTheme.colors.background,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
