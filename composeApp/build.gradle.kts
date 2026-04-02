@@ -22,10 +22,6 @@ val secretSupabaseKey: String = secretProps.getProperty("SUPABASE_KEY", "")
 
 
 kotlin {
-    sourceSets.all {
-        // Required for experimental ExplicitBackingFields support (remove once stable)
-        languageSettings.enableLanguageFeature("ExplicitBackingFields")
-    }
 
     androidTarget {
         compilerOptions {
