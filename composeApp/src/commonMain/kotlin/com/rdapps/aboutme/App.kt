@@ -1,6 +1,11 @@
 package com.rdapps.aboutme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
@@ -26,12 +31,14 @@ fun App() {
         }
 
         val viewModel: AppViewModel = koinViewModel()
+        val isSystemInDarkTheme = isSystemInDarkTheme()
+        var isDarkTheme by remember { mutableStateOf(isSystemInDarkTheme) }
 
-        PortfolioTheme { isDark, onChange ->
+        PortfolioTheme(isDarkTheme) {
             PortfolioScreen(
-                isDark = isDark,
+                isDark = isDarkTheme,
                 onToggleTheme = {
-                    onChange(!isDark)
+                    isDarkTheme = !isDarkTheme
                     viewModel.trackEvent(AppViewModel.Events.ToggleTheme)
                 },
                 onEvent = {
