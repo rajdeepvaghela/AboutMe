@@ -9,6 +9,8 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +21,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -43,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -59,8 +65,8 @@ private val PillShape = RoundedCornerShape(20.dp)
 data class WorkProject(
     val title: String,
     val subtitle: String,
-    val context: String,
-    val achievements: List<String>,
+    val link: String? = null,
+    val achievements: List<AnnotatedString>,
 )
 
 // Shared data models
@@ -165,22 +171,22 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                 "Hyderabad, India (Remote)",
                 listOf(
                     Role(
-                        "Senior Android Engineer",
-                        "Aug 2024 - Present"
+                        "Senior Mobile Engineer - || (Android)",
+                        "Aug 2024 - Apr 2024"
                     )
                 )
             ),
             projects = listOf(
                 WorkProject(
-                    "IMVU",
-                    "Social Chat & Avatar application",
-                    "Client at Red Elk Studios",
-                    listOf(
-                        "Led modernization using Kotlin Flows and Jetpack Compose UI components.",
-                        "Refactored legacy Socket connection architecture to OkHttp.",
-                        "Migrated core features into MVI / MVVM architecture with Compose.",
+                    title = "IMVU - Social Chat & Avatar application",
+                    subtitle = "Client at Red Elk Studios",
+                    link = "https://play.google.com/store/apps/details?id=com.imvu.mobilecordova",
+                    achievements = listOf(
+                        "Led modernization using <sb>Kotlin Flows</sb> and <sb>Jetpack Compose</sb> UI components.".toAnnotated(),
+                        "Refactored legacy <sb>Socket connection</sb> architecture to OkHttp.".toAnnotated(),
+                        "Migrated core features into <sb>MVI / MVVM architecture</sb> with Compose.".toAnnotated(),
                         "Delivered new features and maintained existing experiences."
-                    )
+                    ).toAnnotatedString()
                 )
             )
         ),
@@ -197,25 +203,23 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
             ),
             projects = listOf(
                 WorkProject(
-                    "Holofy Spaces",
-                    "Interactive video SaaS for web",
-                    "Mobile and Android TV",
-                    listOf(
-                        "Implemented video compression pipelines using FFmpeg and MediaCodec.",
+                    title = "Holofy Spaces - Mobile and Android TV",
+                    subtitle = "Saas platform to add interactive videos to websites.",
+                    achievements = listOf(
+                        "Implemented video compression pipelines using <sb>FFmpeg</sb> and <sb>MediaCodec.</sb>".toAnnotated(),
                         "Designed and built a reusable Compose UI Kit.",
-                        "Integrated 100ms live streaming SDK with low-latency playback.",
-                        "Shipped an Android TV module optimized for large screens."
-                    )
+                        "Integrated 100ms <sb>live streaming</sb> SDK with low-latency playback.".toAnnotated(),
+                        "Shipped an <sb>Android TV</sb> module optimized for large screens.".toAnnotated()
+                    ).toAnnotatedString()
                 ),
                 WorkProject(
-                    "Pro Caller, Pro Emailer & Pro Scheduler",
-                    "AI-powered utility applications",
-                    "",
-                    listOf(
-                        "Architected Single-Activity apps fully in Jetpack Compose.",
+                    title = "Pro Caller, Pro Emailer & Pro Scheduler",
+                    subtitle = "AI-powered utility applications",
+                    achievements = listOf(
+                        "Architected <sb>Single-Activity</sb> apps fully in <sb>Jetpack Compose.</sb>".toAnnotated(),
                         "Integrated Twilio SDK for communication features.",
-                        "Designed a cohesive design system with theme support."
-                    )
+                        "Designed a cohesive <sb>design system</sb> with theme support.".toAnnotated()
+                    ).toAnnotatedString()
                 )
             )
         ),
@@ -236,16 +240,50 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
             ),
             projects = listOf(
                 WorkProject(
-                    "NoBroker Property Rent & Sale",
-                    "Real estate and home services-based application.",
-                    "NoBroker.com",
-                    listOf(
+                    title = "NoBroker Property Rent & Sale",
+                    subtitle = "Real estate and home services-based application.",
+                    link = "https://play.google.com/store/apps/details?id=com.nobroker.app",
+                    achievements = listOf(
                         "Owned the Android app and led the team for a brief period.",
-                        "Developed a Hybrid WebView with custom caching for Dynamic Delivery, forming the foundation for many future features.",
+                        "Developed a <sb>Hybrid WebView</sb> with custom caching for <sb>Dynamic Delivery</sb>, forming the foundation for many future features.".toAnnotated(),
                         "Introduced and migrated core features from Java to Kotlin.",
-                        "Improved crash-free user rate to 99.4%.",
-                        "Integrated JusPay, RazorPay, and Paytm SDKs for payments, Truecaller SDK for sign up / sign in, and Adobe, Firebase, and Facebook SDKs for analytics."
-                    )
+                        "Improved <sb>crash-free</sb> user rate to <sb>99.4%.</sb>".toAnnotated(),
+                        "Integrated <sb>JusPay, RazorPay</sb>, and <sb>Paytm SDKs</sb> for payments, <sb>Truecaller SDK</sb> for sign up / sign in, and <sb>Adobe, Firebase</sb>, and <sb>Facebook SDKs</sb> for analytics.".toAnnotated()
+                    ).toAnnotatedString()
+                ),
+                WorkProject(
+                    title = "Part Time Jobs, Work From Home",
+                    subtitle = "Earn money by submitting pictures of To-Let board or providing details of the Owner who wants to Rent their property.",
+                    link = "https://play.google.com/store/apps/details?id=com.nobroker.clickearn",
+                    achievements = emptyList()
+                ),
+                WorkProject(
+                    title = "Packers & Movers by NoBroker",
+                    subtitle = "Comprehensive logistics app for local and interstate relocation, including vehicle transport.",
+                    link = "https://play.google.com/store/apps/details?id=com.nobroker.packersmovers",
+                    achievements = emptyList()
+                ),
+                WorkProject(
+                    title = "Pay rent with Credit Cards",
+                    subtitle = "A secure digital platform that allows users to pay rent, security deposits, society maintenance, and tuition fees using credit cards, debit cards, or UPI while earning rewards and cashback.",
+                    link = "https://play.google.com/store/apps/details?id=com.nobroker.pay",
+                    achievements = emptyList()
+                ),
+                WorkProject(
+                    title = "NoBroker Painting & Cleaning",
+                    subtitle = "Convenient, one-stop platform for booking reliable professional services like cleaning, painting, pest control, and interior design.",
+                    link = "https://play.google.com/store/apps/details?id=com.nobroker.homeservices",
+                    achievements = emptyList()
+                ),
+                WorkProject(
+                    title = "NoBrokerHood:Smart Society App",
+                    subtitle = "Comprehensive visitor and society management app designed to streamline security, accounting, and community living for residential and commercial complexes.",
+                    link = "https://play.google.com/store/apps/details?id=com.app.nobrokerhood",
+                    achievements = listOf(
+                        "Maintained and developed the application for short period of time.",
+                        "Developed a <sb>Hybrid WebView</sb> with custom caching for <sb>Dynamic Delivery</sb>, forming the foundation for many future features.".toAnnotated(),
+                        "Integrated <sb>Truecaller SDK</sb> for sign up / sign in".toAnnotated()
+                    ).toAnnotatedString()
                 )
             )
         ),
@@ -262,15 +300,15 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
             ),
             projects = listOf(
                 WorkProject(
-                    "Vyapar - Billing App GST Invoice Maker",
-                    "Billing and GST invoicing application.",
-                    "Vyapar Tech Solutions",
-                    listOf(
-                        "Integrated hardware components like Thermal Printers and USB Barcode Scanners.",
-                        "Developed plugin applications to reduce the size of the main app.",
-                        "Revamped the overall app design using Material Components.",
+                    title = "Vyapar - Billing App GST Invoice Maker",
+                    subtitle = "Billing and GST invoicing application.",
+                    link = "https://play.google.com/store/apps/details?id=in.android.vyapar",
+                    achievements = listOf(
+                        "Integrated hardware components like <sb>POS machines</sb>, <sb>Thermal Printers</sb> and <sb>USB Barcode Scanners.</sb>".toAnnotated(),
+                        "Developed <sb>plugin applications</sb> to reduce the size of the main app.".toAnnotated(),
+                        "Revamped the overall app design using <sb>Material Components.</sb>".toAnnotated(),
                         "Integrated SDKs such as CleverTap, iTextPdf, and Branch.io."
-                    )
+                    ).toAnnotatedString()
                 )
             )
         ),
@@ -332,6 +370,14 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
+    }
+}
+
+private fun List<CharSequence>.toAnnotatedString() = map {
+    when (it) {
+        is AnnotatedString -> it
+        is String -> AnnotatedString(it)
+        else -> AnnotatedString(it.toString())
     }
 }
 
@@ -552,6 +598,8 @@ private fun CompanyExperienceItem(
             }
         }
 
+        val uriHandler = LocalUriHandler.current
+
         AnimatedVisibility(
             visible = isExpanded && companyExperience.projects.isNotEmpty(),
             enter = fadeIn() + expandVertically(),
@@ -562,18 +610,37 @@ private fun CompanyExperienceItem(
                 HorizontalDivider(color = PortfolioTheme.colors.secondaryBackground)
                 Spacer(modifier = Modifier.height(6.dp))
                 companyExperience.projects.forEach { project ->
-                    Text(
-                        text = project.title,
-                        color = PortfolioTheme.colors.primaryText,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    if (project.context.isNotEmpty()) {
+                    val interactionSource = remember(project) { MutableInteractionSource() }
+                    val isHovered by interactionSource.collectIsHoveredAsState()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .clickable(
+                                enabled = project.link != null,
+                                interactionSource = interactionSource
+                            ) {
+                                project.link?.let { uriHandler.openUri(it) }
+                            }
+                    ) {
                         Text(
-                            text = project.context,
-                            color = PortfolioTheme.colors.secondaryText,
-                            fontSize = 12.sp
+                            text = project.title,
+                            color = PortfolioTheme.colors.primaryText,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            textDecoration = if (isHovered && project.link != null) TextDecoration.Underline else null
                         )
+                        if (project.link != null) {
+                            Icon(
+                                imageVector = Icons.Rounded.Link,
+                                tint = PortfolioTheme.colors.linkText,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(start = 4.dp)
+                                    .size(16.dp)
+                            )
+                        }
                     }
                     Text(
                         text = project.subtitle,
@@ -583,10 +650,11 @@ private fun CompanyExperienceItem(
                     Spacer(modifier = Modifier.height(6.dp))
                     project.achievements.forEach { achievement ->
                         Row {
-                            Text(
-                                text = "• ",
-                                color = PortfolioTheme.colors.primaryText,
-                                fontSize = 12.sp
+                            Spacer(
+                                Modifier
+                                    .padding(top = 10.dp, end = 4.dp)
+                                    .size(4.dp)
+                                    .background(PortfolioTheme.colors.primaryText, CircleShape)
                             )
                             Text(
                                 text = achievement,

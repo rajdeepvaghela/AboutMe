@@ -92,7 +92,7 @@ private val projectList = listOf(
     Project(
         title = "Value Picker Slider",
         description = "Customisable horizontal slider value picker built fully in Jetpack Compose.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
+        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
         visual = { it, onEvent ->
             ValuePickerSliderExample(onEvent, it)
         },
@@ -101,7 +101,7 @@ private val projectList = listOf(
     Project(
         title = "ViewSlider",
         description = "Horizontal view slider which snaps the middle item with a scale effect.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
+        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
         visual = { it, onEvent ->
             ViewSliderExample(onEvent, it)
         },
@@ -110,7 +110,7 @@ private val projectList = listOf(
     Project(
         title = "CircularList",
         description = "Vertical scrollable value picker for Jetpack Compose with InfiniteCircularList and CircularList components.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
+        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
         visual = { it, onEvent ->
             CircularListExample(onEvent, it)
         },
@@ -119,7 +119,7 @@ private val projectList = listOf(
     Project(
         title = "VerticalStepper",
         description = "Customizable vertical stepper with animations and custom content layouts.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin", "Material Design"),
+        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
         visual = { it, onEvent ->
             VerticalStepperExample(onEvent, it)
         },
@@ -137,7 +137,7 @@ private val projectList = listOf(
     Project(
         title = "Birthday Calendar",
         description = "Mobile and WearOS app that syncs Facebook birthdays and enables one-tap wishes via WhatsApp, Messenger, SMS, or call.",
-        tags = listOf("Android", "WearOS", "Kotlin"),
+        tags = listOf("Android", "WearOS", "Kotlin", "Material Design", "MotionLayout"),
         visual = { it, _ ->
             AsyncImage(
                 model = "https://play-lh.googleusercontent.com/ERrhISyBgw-0ex400_ybVDuHLVeZFLazdshPGp-DqGIeEDzvBr9BXJ_Fecl2F0SPF9wo=w1000-h2000",
@@ -159,7 +159,8 @@ private val projectList = listOf(
             "Jetpack Compose",
             "Web",
             "Android",
-            "iOS"
+            "iOS",
+            "Desktop"
         ),
         link = "https://github.com/rajdeepvaghela/AboutMe",
         visual = { it, onEvent ->
@@ -259,7 +260,7 @@ private val projectList = listOf(
     Project(
         title = "Tic Tac Toe",
         description = "Classic tic-tac-toe game refreshed with a new modern UI.",
-        tags = listOf("Android", "Kotlin", "Compose"),
+        tags = listOf("Android", "Kotlin"),
         link = "https://play.google.com/store/apps/details?id=com.rdapps.dotcross"
     )
 )

@@ -61,6 +61,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
+import com.rdapps.aboutme.utils.LocalIsWideScreen
 import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.PI
@@ -259,10 +260,15 @@ fun PortfolioScreen(
             text = "Made using Compose Multiplatform",
             color = PortfolioTheme.colors.secondaryText,
             fontSize = 12.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 24.dp)
+                .align(
+                    if (LocalIsWideScreen.current)
+                        Alignment.BottomEnd
+                    else
+                        Alignment.BottomCenter
+                )
+                .padding(horizontal = 24.dp)
                 .systemBarsPadding()
         )
 

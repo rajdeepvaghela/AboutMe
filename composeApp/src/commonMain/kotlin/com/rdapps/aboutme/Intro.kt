@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
 import com.rdapps.aboutme.viewmodel.AppViewModel
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Preview
@@ -65,7 +66,7 @@ fun IntroSection(onEvent: (PortfolioScreenEvent) -> Unit = {}, modifier: Modifie
                         text = "Hi I am",
                         color = PortfolioTheme.colors.secondaryText,
                         fontSize = if (isWideScreen) 18.sp else 14.sp,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Medium
                     )
                     HorizontalDivider(
                         modifier = Modifier.width(if (isWideScreen) 420.dp else 180.dp),
@@ -122,7 +123,7 @@ fun IntroSection(onEvent: (PortfolioScreenEvent) -> Unit = {}, modifier: Modifie
 
 @Composable
 private fun SocialCircleIcon(
-    painter: androidx.compose.ui.graphics.painter.Painter,
+    resource: DrawableResource,
     contentDescription: String,
     size: Dp = 48.dp,
     iconSize: Dp = 20.dp,
@@ -137,7 +138,7 @@ private fun SocialCircleIcon(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painter,
+            painter = painterResource(resource),
             contentDescription = contentDescription,
             tint = PortfolioTheme.colors.primaryText,
             modifier = Modifier.size(iconSize)
@@ -149,7 +150,7 @@ private fun SocialCircleIcon(
 fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
     val uriHandler = LocalUriHandler.current
     SocialCircleIcon(
-        painter = painterResource(Res.drawable.ic_linkedin),
+        resource = Res.drawable.ic_linkedin,
         contentDescription = "LinkedIn",
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickLinkedIn))
@@ -157,7 +158,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
         }
     )
     SocialCircleIcon(
-        painter = painterResource(Res.drawable.ic_email),
+        resource = Res.drawable.ic_email,
         contentDescription = "E-mail",
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickEmail))
@@ -165,7 +166,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
         }
     )
     SocialCircleIcon(
-        painter = painterResource(Res.drawable.ic_playstore),
+        resource = Res.drawable.ic_playstore,
         contentDescription = "Play Store",
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickPlayStore))
@@ -173,7 +174,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
         }
     )
     SocialCircleIcon(
-        painter = painterResource(Res.drawable.ic_github),
+        resource = Res.drawable.ic_github,
         contentDescription = "GitHub",
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickGithub))
