@@ -172,7 +172,7 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                 listOf(
                     Role(
                         "Senior Mobile Engineer - || (Android)",
-                        "Aug 2024 - Apr 2024"
+                        "Aug 2024 - Apr 2026"
                     )
                 )
             ),

@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.theme.PortfolioTheme
-import com.rdapps.aboutme.valuepickerslider.BarBreak
-import com.rdapps.aboutme.valuepickerslider.ValuePickerSlider
-import com.rdapps.aboutme.valuepickerslider.rememberSliderState
 import com.rdapps.aboutme.viewmodel.AppViewModel
+import com.rdapps.valuepickerslider.BarBreak
+import com.rdapps.valuepickerslider.ValuePickerSlider
+import com.rdapps.valuepickerslider.rememberSliderState
 
 @Preview
 @Composable

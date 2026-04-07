@@ -96,6 +96,8 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
+
+                implementation(libs.valuepickerslider)
             }
         }
         iosMain.dependencies {
