@@ -30,7 +30,7 @@ import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.viewmodel.AppViewModel
-import com.rdapps.aboutme.viewslider.ViewSlider
+import com.rdapps.viewslider.ViewSlider
 
 data class Item(
     val icon: ImageVector,
