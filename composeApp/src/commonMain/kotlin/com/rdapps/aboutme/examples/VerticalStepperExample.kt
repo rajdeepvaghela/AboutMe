@@ -22,11 +22,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rdapps.aboutme.PortfolioScreenEvent
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
-import com.rdapps.aboutme.stepper.Step
-import com.rdapps.aboutme.stepper.StepData
-import com.rdapps.aboutme.stepper.StepState
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.viewmodel.AppViewModel
+import com.rdapps.stepper.Step
+import com.rdapps.stepper.StepData
+import com.rdapps.stepper.StepState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -68,6 +68,8 @@ fun VerticalStepperExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Mo
                     Step(
                         stepData = it,
                         useAlternateComponent = it.id == 2L,
+                        accentColor = PortfolioTheme.colors.accentStroke,
+                        textColor = PortfolioTheme.colors.primaryText,
                         alternateComponent = {
                             Button(onClick = {
                                 coroutineScope.launch {
