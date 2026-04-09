@@ -99,6 +99,7 @@ kotlin {
 
                 implementation(libs.valuepickerslider)
                 implementation(libs.viewslider)
+                implementation(libs.circularlist)
             }
         }
         iosMain.dependencies {

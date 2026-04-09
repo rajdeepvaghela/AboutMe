@@ -19,6 +19,7 @@ kotlin-serialization = "1.10.0"
 buildkonfig = "0.17.1"
 koin = "4.2.0"
 viewslider = "2.0.0"
+circularlist = "2.0.0"
 
 [libraries]
 androidx-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
@@ -56,6 +57,7 @@ koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-android = { module = "io.insert-koin:koin-android" }
 viewslider = { module = "io.github.rajdeepvaghela:viewslider", version.ref = "viewslider" }
+circularlist = { module = "io.github.rajdeepvaghela:circularlist", version.ref = "circularlist" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

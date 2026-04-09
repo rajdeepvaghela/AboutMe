@@ -16,11 +16,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.rdapps.aboutme.PortfolioScreenEvent
-import com.rdapps.aboutme.circularlist.CircularList
-import com.rdapps.aboutme.circularlist.InfiniteCircularList
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.viewmodel.AppViewModel
+import com.rdapps.circularlist.CircularList
+import com.rdapps.circularlist.InfiniteCircularList
 
 @Composable
 fun CircularListExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
