@@ -59,6 +59,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
+import com.rdapps.aboutme.examples.BatteryToolsVisual
+import com.rdapps.aboutme.examples.BirthdayCalendarVisual
 import com.rdapps.aboutme.examples.CircularListExample
 import com.rdapps.aboutme.examples.MotionTextVisual
 import com.rdapps.aboutme.examples.ValuePickerSliderExample
@@ -139,16 +141,18 @@ private val projectList = listOf(
         description = "Mobile and WearOS app that syncs Facebook birthdays and enables one-tap wishes via WhatsApp, Messenger, SMS, or call.",
         tags = listOf("Android", "WearOS", "Kotlin", "Material Design", "MotionLayout"),
         visual = { it, _ ->
-            AsyncImage(
-                model = "https://play-lh.googleusercontent.com/ERrhISyBgw-0ex400_ybVDuHLVeZFLazdshPGp-DqGIeEDzvBr9BXJ_Fecl2F0SPF9wo=w1000-h2000",
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
-                modifier = it.clip(RoundedCornerShape(40.dp))
-                    .background(PortfolioTheme.colors.secondaryBackground)
-                    .height(if (LocalIsWideScreen.current) 300.dp else 250.dp)
-            )
+            BirthdayCalendarVisual(it)
         },
         link = "https://play.google.com/store/apps/details?id=com.rdapps.fbbirthdayfetcher"
+    ),
+    Project(
+        title = "Battery Tools",
+        description = "BatteryTools is a security-focused Android app that protects your device from theft by triggering high-volume alarms and emergency notifications the moment it is unplugged, while providing real-time battery statistics across your smartphone and Wear OS wearable.",
+        tags = listOf("Open Sourced", "Kotlin", "Jetpack Compose", "Glance Widget", "WearOS"),
+        visual = { it, _ ->
+            BatteryToolsVisual(it)
+        },
+        link = "https://github.com/rajdeepvaghela/BatteryTools"
     ),
     Project(
         title = "About Me",
@@ -265,7 +269,7 @@ private val projectList = listOf(
     )
 )
 
-private const val INITIAL_PROJECT_COUNT = 7
+private const val INITIAL_PROJECT_COUNT = 8
 
 @Composable
 fun ProjectSection(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
