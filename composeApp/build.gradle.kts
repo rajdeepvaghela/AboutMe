@@ -17,8 +17,10 @@ plugins {
 val secretProps = Properties().apply {
     rootProject.file("secret.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
 }
-val secretSupabaseUrl: String = secretProps.getProperty("SUPABASE_URL", "")
-val secretSupabaseKey: String = secretProps.getProperty("SUPABASE_KEY", "")
+val secretSupabaseUrl: String =
+    System.getenv("SUPABASE_URL") ?: secretProps.getProperty("SUPABASE_URL", "")
+val secretSupabaseKey: String =
+    System.getenv("SUPABASE_KEY") ?: secretProps.getProperty("SUPABASE_KEY", "")
 
 
 kotlin {
