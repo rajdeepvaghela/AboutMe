@@ -31,7 +31,7 @@ jobs:
       - name: Copy files to target repo
         run: |
           rm -rf target-repo/*
-          cp -r build/dist/wasmJs/productionExecutable/* target-repo/
+          cp -r composeApp/build/dist/wasmJs/productionExecutable/* target-repo/
 
       - name: Pushing Changes
         env:
