@@ -3,13 +3,16 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'Who to greet'
+        type: choice
+        description: 'Which build to generate'
+        options:
+          - Android
+          - MacOS
         required: true
-        default: 'World'
 
 jobs:
   greet:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Greeting
-        run: echo "Hello ${{ github.event.inputs.name }}"
+      - name: Build
+        run: echo "Generating build for ${{ github.event.inputs.name }}"
