@@ -3,6 +3,7 @@ package com.rdapps.aboutme.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rdapps.aboutme.BuildKonfig
+import com.rdapps.aboutme.KmpIO
 import com.rdapps.aboutme.model.DeviceInfo
 import com.rdapps.aboutme.model.Event
 import com.rdapps.aboutme.model.IpResponse
@@ -19,7 +20,9 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AppViewModel(
     private val deviceInfo: DeviceInfo,
@@ -48,10 +51,10 @@ class AppViewModel(
     private suspend fun getOrCreateUserId(
         deviceInfo: DeviceInfo,
         forceCreate: Boolean = false
-    ): String? {
+    ): String? = withContext(Dispatchers.KmpIO) {
         if (!forceCreate) {
             preferencesStore.get()?.userId?.let { userId ->
-                return userId
+                return@withContext userId
             }
         }
 
@@ -62,11 +65,11 @@ class AppViewModel(
 
         printInDebug("User: $user")
         preferencesStore.set(Preferences(userId = user.id ?: ""))
-        return user.id
+        return@withContext  user.id
     }
 
-    private suspend fun trackNetworkInfo(ipResponse: IpResponse) {
-        val userId = userId ?: return printInDebug("trackNetworkInfo: UserId is null")
+    private suspend fun trackNetworkInfo(ipResponse: IpResponse) = withContext(Dispatchers.KmpIO) {
+        val userId = userId ?: return@withContext printInDebug("trackNetworkInfo: UserId is null")
 
         suspend fun track(userId: String) {
             val networkInfo = NetworkInfo.from(userId, ipResponse)
@@ -78,8 +81,8 @@ class AppViewModel(
         } catch (e: PostgrestRestException) {
             if (e.code == "23503") { // when userId doesn't exists
                 val userId = getOrCreateUserId(deviceInfo, forceCreate = true)
-                    ?: return printInDebug("trackNetworkInfo: userId creation failed")
-                this.userId = userId
+                    ?: return@withContext printInDebug("trackNetworkInfo: userId creation failed")
+                this@AppViewModel.userId = userId
                 track(userId)
             } else {
                 e.printStackTrace()
@@ -91,8 +94,8 @@ class AppViewModel(
         }
     }
 
-    private suspend fun trackEventNow(event: Events) {
-        val userId = userId ?: return printInDebug("trackEventNow: UserId is null")
+    private suspend fun trackEventNow(event: Events) = withContext(Dispatchers.KmpIO) {
+        val userId = userId ?: return@withContext printInDebug("trackEventNow: UserId is null")
         printInDebug("Event: $event")
         try {
             supabase.postgrest.from("events")
@@ -145,25 +148,25 @@ class AppViewModel(
         }
     }
 
-    private suspend fun fetchRemoteConfig(): RemoteConfig? {
+    private suspend fun fetchRemoteConfig(): RemoteConfig? = withContext(Dispatchers.KmpIO) {
         try {
-            return supabase.postgrest.rpc("get_remote_config").decodeAsOrNull<RemoteConfig>().also {
+            return@withContext supabase.postgrest.rpc("get_remote_config").decodeAsOrNull<RemoteConfig>().also {
                 printInDebug("RemoteConfig: $it")
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return null
+            return@withContext null
         }
     }
 
-    private suspend fun fetchIpInfo(ipInfoToken: String): IpResponse? {
+    private suspend fun fetchIpInfo(ipInfoToken: String): IpResponse? = withContext(Dispatchers.KmpIO) {
         try {
-            return client.get("https://ipinfo.io/?token=$ipInfoToken").body<IpResponse>().also {
+            return@withContext client.get("https://ipinfo.io/?token=$ipInfoToken").body<IpResponse>().also {
                 printInDebug("IpResponse: $it")
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return null
+            return@withContext null
         }
     }
 
