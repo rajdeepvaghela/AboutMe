@@ -2,7 +2,7 @@
 
 AboutMe is my personal portfolio project built with **Compose Multiplatform (CMP)**. It serves as a living showcase of my technical skills, integrating custom open-source KMP libraries and demonstrating a seamless user experience across Android, iOS, Desktop (JVM), and Web (WasmJS as default, JS as fallback).
 
-[Download Android Apk](https://github.com/rajdeepvaghela/BatteryTools/releases/latest/download/composeApp-release.apk)
+[Download Android Apk](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/composeApp-release.apk)
 
 ## 🚀 Tech Stack
 
