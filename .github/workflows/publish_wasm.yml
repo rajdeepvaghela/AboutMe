@@ -33,7 +33,7 @@ jobs:
           rm -rf target-repo/*
           cp -r composeApp/build/dist/wasmJs/productionExecutable/* target-repo/
 
-      - name: Pushing Changes
+      - name: Push files
         env:
           TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
           TARGET_REPO: "rajdeepvaghela/rajdeepvaghela.github.io"
