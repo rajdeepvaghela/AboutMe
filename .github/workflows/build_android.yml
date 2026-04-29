@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Release APKs
         # This builds release APKs for both modules specifically
-        run: ./gradlew :app:assembleRelease :wearable:assembleRelease
+        run: ./gradlew :composeApp:assembleRelease
         env:
           KEYSTORE_FILE: keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
