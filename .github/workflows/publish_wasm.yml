@@ -1,0 +1,49 @@
+name: Build and Publish WASM Website
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Build Wasm Distribution
+        run: ./gradlew :composeApp:wasmJsBrowserDistribution -Pbuildkonfig.flavor=release
+
+      - name: Clone target repo
+        env:
+          TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+          TARGET_REPO: "rajdeepvaghela/rajdeepvaghela.github.io"
+        run: |
+          git clone https://x-access-token:${TOKEN}@github.com/${TARGET_REPO}.git target-repo
+
+      - name: Copy files to target repo
+        run: |
+          rm -rf target-repo/*
+          cp -r build/dist/wasmJs/productionExecutable/* target-repo/
+
+      - name: Pushing Changes
+        env:
+          TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+          TARGET_REPO: "rajdeepvaghela/rajdeepvaghela.github.io"
+          TARGET_BRANCH: "main"
+        run: |  
+          cd target-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage and commit the build files
+          git add .
+          git commit -m "Deploy Wasm build: ${GITHUB_SHA::8}"
+          git push
