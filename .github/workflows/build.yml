@@ -1,4 +1,4 @@
-name: Manual Trigger Workflow
+name: Generate Build
 on:
   workflow_dispatch:
     inputs:
@@ -8,11 +8,12 @@ on:
         options:
           - Android
           - MacOS
+          - Web
         required: true
 
 jobs:
-  greet:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ inputs.name == 'MacOS' && 'macos-latest' || 'ubuntu-latest' }}
     steps:
       - name: Build
-        run: echo "Generating build for ${{ github.event.inputs.name }}"
+        run: echo "Generating build for ${{ github.event.inputs.name }} on $RUNNER_OS"
