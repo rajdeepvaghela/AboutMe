@@ -46,4 +46,4 @@ jobs:
           # Stage and commit the build files
           git add .
           git commit -m "Deploy Wasm build: ${GITHUB_SHA::8}"
-          git push https://x-access-token:${TOKEN}@github.com/${TARGET_REPO}.git master
+          git push origin master
