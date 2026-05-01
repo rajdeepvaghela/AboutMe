@@ -1,0 +1,48 @@
+name: Generate Build
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: choice
+        description: 'Which build to generate'
+        options:
+          - Linux
+          - MacOS
+          - Windows
+        required: true
+
+jobs:
+  build:
+    runs-on: ${{ (github.event.inputs.name == 'Linux' && 'ubuntu-latest') || (github.event.inputs.name == 'MacOS' && 'macos-latest') || 'windows-latest' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17' # Adjust to your project's version
+          distribution: 'zulu'
+        
+      - name: Build
+        shell: bash
+        run: |
+          echo "Generating build for ${{ github.event.inputs.name }} on $RUNNER_OS"
+
+          case "${{ github.event.inputs.name }}" in
+            Linux)
+              ./gradlew :composeApp:packageDeb
+              ;;
+            MacOS)
+              ./gradlew :composeApp:packageDmg
+              ;;
+            Windows)
+              ./gradlew :composeApp:packageExe
+              ;;
+          esac./gradlew :composeApp:package
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.name }}-build
+          path: composeApp/build/compose/binaries/main/
