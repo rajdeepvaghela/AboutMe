@@ -3,9 +3,9 @@
 AboutMe is my personal portfolio project built with **Compose Multiplatform (CMP)**. It serves as a living showcase of my technical skills, integrating custom open-source KMP libraries and demonstrating a seamless user experience across Android, iOS, Desktop (JVM), and Web (WasmJS as default, JS as fallback).
 
 - [Website (Wasm)](https://rajdeepvaghela.github.io)
-- [Download Android Apk](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-Android.apk)
-- [Download MacOS Dmg](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-MacOS.apk)
-- [Download iOS Ipa](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-iOS.ipa)
+- [Download Android .apk](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-Android.apk)
+- [Download MacOS .dmg](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-MacOS.apk)
+- [Download iOS .ipa](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-iOS.ipa)
 
 ## 🚀 Tech Stack
 
