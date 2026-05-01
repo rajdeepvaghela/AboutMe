@@ -4,8 +4,10 @@ AboutMe is my personal portfolio project built with **Compose Multiplatform (CMP
 
 - [Website (Wasm)](https://rajdeepvaghela.github.io)
 - [Download Android .apk](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-Android.apk)
-- [Download MacOS .dmg](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-MacOS.apk)
 - [Download iOS .ipa](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-iOS.ipa)
+- [Download MacOS .dmg](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-MacOS.dmg)
+- [Download Linux .deb](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-Linux.deb)
+- [Download Windows .exe](https://github.com/rajdeepvaghela/AboutMe/releases/latest/download/AboutMe-Windows.exe)
 
 ## 🚀 Tech Stack
 
