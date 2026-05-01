@@ -28,7 +28,7 @@ AboutMe is my personal portfolio project built with **Compose Multiplatform (CMP
 The project leverages **Supabase** primarily for **analytics tracking**, allowing for the monitoring of user interactions and portfolio performance.
 - **Postgrest-kt**: Used for type-safe database queries and logging events.
 
-### Open Source Libraries
+## 📦 Open Source Libraries
 This project serves as a demonstration ground for several specialized KMP UI components developed by me to enhance interactivity:
 - **ValuePickerSlider**: Advanced slider for precise value selection.
 - **ViewSlider**: Custom slider implementation for refined UI control.
