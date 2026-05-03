@@ -1,10 +1,19 @@
 package com.rdapps.aboutme
 
 import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.hi_i_am
 import aboutme.composeapp.generated.resources.ic_email
 import aboutme.composeapp.generated.resources.ic_github
 import aboutme.composeapp.generated.resources.ic_linkedin
 import aboutme.composeapp.generated.resources.ic_playstore
+import aboutme.composeapp.generated.resources.label_email
+import aboutme.composeapp.generated.resources.label_github
+import aboutme.composeapp.generated.resources.label_linkedin
+import aboutme.composeapp.generated.resources.label_play_store
+import aboutme.composeapp.generated.resources.name_first
+import aboutme.composeapp.generated.resources.name_last
+import aboutme.composeapp.generated.resources.title_senior_android_engineer
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -63,7 +72,7 @@ fun IntroSection(onEvent: (PortfolioScreenEvent) -> Unit = {}, modifier: Modifie
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
-                        text = "Hi I am",
+                        text = stringResource(Res.string.hi_i_am),
                         color = PortfolioTheme.colors.secondaryText,
                         fontSize = if (isWideScreen) 18.sp else 14.sp,
                         fontWeight = FontWeight.Medium
@@ -82,14 +91,14 @@ fun IntroSection(onEvent: (PortfolioScreenEvent) -> Unit = {}, modifier: Modifie
                 val lastNameSize = if (isWideScreen) 100.sp else 50.sp
 
                 Text(
-                    text = "Rajdeep".uppercase(),
+                    text = stringResource(Res.string.name_first).uppercase(),
                     color = PortfolioTheme.colors.primaryText,
                     fontSize = firstNameSize,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    text = "Vaghela".uppercase(),
+                    text = stringResource(Res.string.name_last).uppercase(),
                     color = PortfolioTheme.colors.primaryText.copy(alpha = 0.35f),
                     fontSize = lastNameSize,
                     fontWeight = FontWeight.Bold
@@ -99,7 +108,7 @@ fun IntroSection(onEvent: (PortfolioScreenEvent) -> Unit = {}, modifier: Modifie
 
                 // Subtitle in accent color, spaced letters
                 Text(
-                    text = "Senior Android Engineer".uppercase(),
+                    text = stringResource(Res.string.title_senior_android_engineer).uppercase(),
                     color = PortfolioTheme.colors.accent,
                     fontSize = if (isWideScreen) 16.sp else 11.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -151,7 +160,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
     val uriHandler = LocalUriHandler.current
     SocialCircleIcon(
         resource = Res.drawable.ic_linkedin,
-        contentDescription = "LinkedIn",
+        contentDescription = stringResource(Res.string.label_linkedin),
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickLinkedIn))
             uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela")
@@ -159,7 +168,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
     )
     SocialCircleIcon(
         resource = Res.drawable.ic_email,
-        contentDescription = "E-mail",
+        contentDescription = stringResource(Res.string.label_email),
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickEmail))
             uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com")
@@ -167,7 +176,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
     )
     SocialCircleIcon(
         resource = Res.drawable.ic_playstore,
-        contentDescription = "Play Store",
+        contentDescription = stringResource(Res.string.label_play_store),
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickPlayStore))
             uriHandler.openUri("https://play.google.com/store/apps/dev?id=4737354144616321734")
@@ -175,7 +184,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
     )
     SocialCircleIcon(
         resource = Res.drawable.ic_github,
-        contentDescription = "GitHub",
+        contentDescription = stringResource(Res.string.label_github),
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickGithub))
             uriHandler.openUri("https://github.com/rajdeepvaghela")

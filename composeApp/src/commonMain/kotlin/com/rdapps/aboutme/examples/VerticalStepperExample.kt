@@ -1,5 +1,7 @@
 package com.rdapps.aboutme.examples
 
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.ex_stepper_btn_approve
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,7 @@ import com.rdapps.stepper.StepData
 import com.rdapps.stepper.StepState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 
 @Preview
 @Composable
@@ -96,7 +99,7 @@ fun VerticalStepperExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Mo
                                         }
                                     }
                                 }
-                            }) { Text(text = "Approve designs") }
+                            }) { Text(text = stringResource(Res.string.ex_stepper_btn_approve)) }
                         }
                     ) {
                         val currentElement =

@@ -73,17 +73,77 @@ import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
+import org.jetbrains.compose.resources.stringResource
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.label_show_less
+import aboutme.composeapp.generated.resources.label_show_more
+import aboutme.composeapp.generated.resources.label_scroll_top
+import aboutme.composeapp.generated.resources.label_link
+import aboutme.composeapp.generated.resources.msg_already_looking
+import aboutme.composeapp.generated.resources.proj_value_picker_title
+import aboutme.composeapp.generated.resources.proj_value_picker_desc
+import aboutme.composeapp.generated.resources.proj_view_slider_title
+import aboutme.composeapp.generated.resources.proj_view_slider_desc
+import aboutme.composeapp.generated.resources.proj_circular_list_title
+import aboutme.composeapp.generated.resources.proj_circular_list_desc
+import aboutme.composeapp.generated.resources.proj_vertical_stepper_title
+import aboutme.composeapp.generated.resources.proj_vertical_stepper_desc
+import aboutme.composeapp.generated.resources.proj_wedding_inv_title
+import aboutme.composeapp.generated.resources.proj_wedding_inv_desc
+import aboutme.composeapp.generated.resources.proj_birthday_cal_title
+import aboutme.composeapp.generated.resources.proj_birthday_cal_desc
+import aboutme.composeapp.generated.resources.proj_battery_tools_title
+import aboutme.composeapp.generated.resources.proj_battery_tools_desc
+import aboutme.composeapp.generated.resources.proj_about_me_title
+import aboutme.composeapp.generated.resources.proj_about_me_desc
+import aboutme.composeapp.generated.resources.proj_motion_text_title
+import aboutme.composeapp.generated.resources.proj_motion_text_desc
+import aboutme.composeapp.generated.resources.proj_shared_pref_title
+import aboutme.composeapp.generated.resources.proj_shared_pref_desc
+import aboutme.composeapp.generated.resources.proj_typewriter_title
+import aboutme.composeapp.generated.resources.proj_typewriter_desc
+import aboutme.composeapp.generated.resources.proj_flow_layouts_title
+import aboutme.composeapp.generated.resources.proj_flow_layouts_desc
+import aboutme.composeapp.generated.resources.proj_generic_adapter_title
+import aboutme.composeapp.generated.resources.proj_generic_adapter_desc
+import aboutme.composeapp.generated.resources.proj_uncheckable_radio_title
+import aboutme.composeapp.generated.resources.proj_uncheckable_radio_desc
+import aboutme.composeapp.generated.resources.proj_social_hub_title
+import aboutme.composeapp.generated.resources.proj_social_hub_desc
+import aboutme.composeapp.generated.resources.proj_tic_tac_toe_title
+import aboutme.composeapp.generated.resources.proj_tic_tac_toe_desc
+import aboutme.composeapp.generated.resources.tag_os_library
+import aboutme.composeapp.generated.resources.tag_compose
+import aboutme.composeapp.generated.resources.tag_kotlin
+import aboutme.composeapp.generated.resources.tag_cmp
+import aboutme.composeapp.generated.resources.tag_web
+import aboutme.composeapp.generated.resources.tag_android
+import aboutme.composeapp.generated.resources.tag_wearos
+import aboutme.composeapp.generated.resources.tag_material
+import aboutme.composeapp.generated.resources.tag_motion
+import aboutme.composeapp.generated.resources.tag_osourced
+import aboutme.composeapp.generated.resources.tag_glance
+import aboutme.composeapp.generated.resources.tag_ios
+import aboutme.composeapp.generated.resources.tag_desktop
+import aboutme.composeapp.generated.resources.tag_xml
+import aboutme.composeapp.generated.resources.tag_datastore
+import aboutme.composeapp.generated.resources.tag_sharedpref
+import aboutme.composeapp.generated.resources.tag_enum
+import aboutme.composeapp.generated.resources.tag_flows
+import aboutme.composeapp.generated.resources.tag_enc
+import aboutme.composeapp.generated.resources.tag_flex
+import org.jetbrains.compose.resources.StringResource
 
 
 @Stable
 data class Project(
-    val title: String,
-    val description: String,
-    val tags: List<String>,
+    val titleRes: StringResource,
+    val descriptionRes: StringResource,
+    val tagsRes: List<StringResource>,
     val visual: @Composable (modifier: Modifier, onEvent: (PortfolioScreenEvent) -> Unit) -> Unit = { it, _ ->
         ProjectVisual(
             it,
-            title
+            stringResource(titleRes)
         )
     },
     val link: String,
@@ -92,79 +152,79 @@ data class Project(
 
 private val projectList = listOf(
     Project(
-        title = "Value Picker Slider",
-        description = "Customisable horizontal slider value picker built fully in Jetpack Compose.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
+        titleRes = Res.string.proj_value_picker_title,
+        descriptionRes = Res.string.proj_value_picker_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
         visual = { it, onEvent ->
             ValuePickerSliderExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/ValuePickerSlider"
     ),
     Project(
-        title = "ViewSlider",
-        description = "Horizontal view slider which snaps the middle item with a scale effect.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
+        titleRes = Res.string.proj_view_slider_title,
+        descriptionRes = Res.string.proj_view_slider_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
         visual = { it, onEvent ->
             ViewSliderExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/ViewSlider"
     ),
     Project(
-        title = "CircularList",
-        description = "Vertical scrollable value picker for Jetpack Compose with InfiniteCircularList and CircularList components.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
+        titleRes = Res.string.proj_circular_list_title,
+        descriptionRes = Res.string.proj_circular_list_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
         visual = { it, onEvent ->
             CircularListExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/CircularList"
     ),
     Project(
-        title = "VerticalStepper",
-        description = "Customizable vertical stepper with animations and custom content layouts.",
-        tags = listOf("Open Source Library", "Jetpack Compose", "Kotlin"),
+        titleRes = Res.string.proj_vertical_stepper_title,
+        descriptionRes = Res.string.proj_vertical_stepper_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
         visual = { it, onEvent ->
             VerticalStepperExample(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/VerticalStepper"
     ),
     Project(
-        title = "Wedding Invitation",
-        description = "A personalized wedding invitation website (CMP - Android & Web) with analytics, remote control over features, and an Android app that generates unique invitation links.",
-        tags = listOf("Compose Multiplatform", "Kotlin", "Jetpack Compose", "Web", "Android"),
+        titleRes = Res.string.proj_wedding_inv_title,
+        descriptionRes = Res.string.proj_wedding_inv_desc,
+        tagsRes = listOf(Res.string.tag_cmp, Res.string.tag_kotlin, Res.string.tag_compose, Res.string.tag_web, Res.string.tag_android),
         visual = { it, onEvent ->
             WeddingInvitationVisual(onEvent, it)
         },
         link = "https://github.com/rajdeepvaghela/WeddingInvitation"
     ),
     Project(
-        title = "Birthday Calendar",
-        description = "Mobile and WearOS app that syncs Facebook birthdays and enables one-tap wishes via WhatsApp, Messenger, SMS, or call.",
-        tags = listOf("Android", "WearOS", "Kotlin", "Material Design", "MotionLayout"),
+        titleRes = Res.string.proj_birthday_cal_title,
+        descriptionRes = Res.string.proj_birthday_cal_desc,
+        tagsRes = listOf(Res.string.tag_android, Res.string.tag_wearos, Res.string.tag_kotlin, Res.string.tag_material, Res.string.tag_motion),
         visual = { it, _ ->
             BirthdayCalendarVisual(it)
         },
         link = "https://play.google.com/store/apps/details?id=com.rdapps.fbbirthdayfetcher"
     ),
     Project(
-        title = "Battery Tools",
-        description = "BatteryTools is a security-focused Android app that protects your device from theft by triggering high-volume alarms and emergency notifications the moment it is unplugged, while providing real-time battery statistics across your smartphone and Wear OS wearable.",
-        tags = listOf("Open Sourced", "Kotlin", "Jetpack Compose", "Glance Widget", "WearOS"),
+        titleRes = Res.string.proj_battery_tools_title,
+        descriptionRes = Res.string.proj_battery_tools_desc,
+        tagsRes = listOf(Res.string.tag_osourced, Res.string.tag_kotlin, Res.string.tag_compose, Res.string.tag_glance, Res.string.tag_wearos),
         visual = { it, _ ->
             BatteryToolsVisual(it)
         },
         link = "https://github.com/rajdeepvaghela/BatteryTools"
     ),
     Project(
-        title = "About Me",
-        description = "Portfolio website built with Jetpack Compose Multiplatform. ",
-        tags = listOf(
-            "Compose Multiplatform",
-            "Kotlin",
-            "Jetpack Compose",
-            "Web",
-            "Android",
-            "iOS",
-            "Desktop"
+        titleRes = Res.string.proj_about_me_title,
+        descriptionRes = Res.string.proj_about_me_desc,
+        tagsRes = listOf(
+            Res.string.tag_cmp,
+            Res.string.tag_kotlin,
+            Res.string.tag_compose,
+            Res.string.tag_web,
+            Res.string.tag_android,
+            Res.string.tag_ios,
+            Res.string.tag_desktop
         ),
         link = "https://github.com/rajdeepvaghela/AboutMe",
         visual = { it, onEvent ->
@@ -197,7 +257,7 @@ private val projectList = listOf(
                     )
                 } else {
                     Text(
-                        text = "You are already looking at it !",
+                        text = stringResource(Res.string.msg_already_looking),
                         color = PortfolioTheme.colors.primaryText,
                         fontWeight = FontWeight.Bold,
                         fontSize = 32.sp,
@@ -209,62 +269,62 @@ private val projectList = listOf(
         }
     ),
     Project(
-        title = "MotionText",
-        description = "TextView optimised for MotionLayout transitions with additional features.",
-        tags = listOf("Open Source Library", "XML", "Kotlin", "Material Design", "MotionLayout"),
+        titleRes = Res.string.proj_motion_text_title,
+        descriptionRes = Res.string.proj_motion_text_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_xml, Res.string.tag_kotlin, Res.string.tag_material, Res.string.tag_motion),
         visual = { it, _ ->
             MotionTextVisual(it)
         },
         link = "https://github.com/rajdeepvaghela/MotionText"
     ),
     Project(
-        title = "SharedPref",
-        description = "A different approach to store data in SharedPreference and DataStorePreference using Enums",
-        tags = listOf(
-            "Android",
-            "Kotlin",
-            "Data Store",
-            "Shared Preference",
-            "Enum",
-            "Flows",
-            "Encryption"
+        titleRes = Res.string.proj_shared_pref_title,
+        descriptionRes = Res.string.proj_shared_pref_desc,
+        tagsRes = listOf(
+            Res.string.tag_android,
+            Res.string.tag_kotlin,
+            Res.string.tag_datastore,
+            Res.string.tag_sharedpref,
+            Res.string.tag_enum,
+            Res.string.tag_flows,
+            Res.string.tag_enc
         ),
         link = "https://github.com/rajdeepvaghela/SharedPref"
     ),
     Project(
-        title = "TypeWriter",
-        description = "TextView and EditText with a customizable typewriter animation.",
-        tags = listOf("Open Source Library", "Android", "XML"),
+        titleRes = Res.string.proj_typewriter_title,
+        descriptionRes = Res.string.proj_typewriter_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_android, Res.string.tag_xml),
         link = "https://github.com/rajdeepvaghela/TypeWriter"
     ),
     Project(
-        title = "Flow Layouts",
-        description = "This layouts will replicate the FlowLayout behaviour from CSS and Java Spring.",
-        tags = listOf("Open Source Library", "Android", "XML", "FlexLayout"),
+        titleRes = Res.string.proj_flow_layouts_title,
+        descriptionRes = Res.string.proj_flow_layouts_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_android, Res.string.tag_xml, Res.string.tag_flex),
         link = "https://github.com/rajdeepvaghela/FlowLayouts"
     ),
     Project(
-        title = "Generic Adapter",
-        description = "Wrapper for Spinner and AutoCompleteTextView adapters to reduce boilerplate.",
-        tags = listOf("Open Source Library", "Android", "XML"),
+        titleRes = Res.string.proj_generic_adapter_title,
+        descriptionRes = Res.string.proj_generic_adapter_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_android, Res.string.tag_xml),
         link = "https://github.com/rajdeepvaghela/GenericAdapter"
     ),
     Project(
-        title = "Uncheckable RadioButton",
-        description = "RadioButton implementation that can be unchecked on click, fixing a long-standing Android limitation.",
-        tags = listOf("Open Source Library", "Android", "XML"),
+        titleRes = Res.string.proj_uncheckable_radio_title,
+        descriptionRes = Res.string.proj_uncheckable_radio_desc,
+        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_android, Res.string.tag_xml),
         link = "https://github.com/rajdeepvaghela/UncheckableRadioButton"
     ),
     Project(
-        title = "Social Hub",
-        description = "Android app that wraps Facebook, Twitter, Messenger, TweetDeck, and more into a single experience.",
-        tags = listOf("Android", "Kotlin"),
+        titleRes = Res.string.proj_social_hub_title,
+        descriptionRes = Res.string.proj_social_hub_desc,
+        tagsRes = listOf(Res.string.tag_android, Res.string.tag_kotlin),
         link = "https://play.google.com/store/apps/details?id=com.rdapps.socialhub"
     ),
     Project(
-        title = "Tic Tac Toe",
-        description = "Classic tic-tac-toe game refreshed with a new modern UI.",
-        tags = listOf("Android", "Kotlin"),
+        titleRes = Res.string.proj_tic_tac_toe_title,
+        descriptionRes = Res.string.proj_tic_tac_toe_desc,
+        tagsRes = listOf(Res.string.tag_android, Res.string.tag_kotlin),
         link = "https://play.google.com/store/apps/details?id=com.rdapps.dotcross"
     )
 )
@@ -333,14 +393,14 @@ fun ProjectSection(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier =
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = if (showMore) "Show Less" else "Show More",
+                            text = if (showMore) stringResource(Res.string.label_show_less) else stringResource(Res.string.label_show_more),
                             color = PortfolioTheme.colors.primaryText,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium
                         )
                         Icon(
                             imageVector = if (showMore) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                            contentDescription = if (showMore) "Show Less" else "Show More",
+                            contentDescription = if (showMore) stringResource(Res.string.label_show_less) else stringResource(Res.string.label_show_more),
                             tint = PortfolioTheme.colors.primaryText
                         )
                     }
@@ -372,7 +432,7 @@ fun ProjectSection(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier =
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
-                    contentDescription = "Scroll to top"
+                    contentDescription = stringResource(Res.string.label_scroll_top)
                 )
             }
         }
@@ -477,8 +537,9 @@ private fun ProjectDetails(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
+        val title = stringResource(project.titleRes)
         Text(
-            text = project.title,
+            text = title,
             color = PortfolioTheme.colors.primaryText,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
@@ -491,15 +552,15 @@ private fun ProjectDetails(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            project.tags.forEach {
-                ProjectTag(it)
+            project.tagsRes.forEach {
+                ProjectTag(stringResource(it))
             }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
-            text = project.description,
+            text = stringResource(project.descriptionRes),
             color = PortfolioTheme.colors.secondaryText,
             fontSize = 16.sp,
             lineHeight = 26.sp
@@ -511,7 +572,7 @@ private fun ProjectDetails(
 
         SmallExtendedFloatingActionButton(
             text = {
-                Text("Link")
+                Text(stringResource(Res.string.label_link))
             },
             icon = {
                 Icon(
@@ -520,7 +581,7 @@ private fun ProjectDetails(
                 )
             },
             onClick = {
-                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.OpenLink(project.title)))
+                onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.OpenLink(title)))
                 uriHandler.openUri(project.link)
             },
             shape = CircleShape,
@@ -546,4 +607,3 @@ private fun ProjectTag(text: String) {
         )
     }
 }
-

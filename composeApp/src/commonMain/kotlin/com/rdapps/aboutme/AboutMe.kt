@@ -1,5 +1,13 @@
 package com.rdapps.aboutme
 
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.label_email
+import aboutme.composeapp.generated.resources.label_github
+import aboutme.composeapp.generated.resources.label_linkedin
+import aboutme.composeapp.generated.resources.label_play_store
+import aboutme.composeapp.generated.resources.label_scroll_top
+import aboutme.composeapp.generated.resources.section_education
+import aboutme.composeapp.generated.resources.section_experience
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -58,6 +66,7 @@ import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
 import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 
 private val CardShape = RoundedCornerShape(16.dp)
 private val PillShape = RoundedCornerShape(20.dp)
@@ -142,7 +151,7 @@ fun AboutMe(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifi
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
-                    contentDescription = "Scroll to top"
+                    contentDescription = stringResource(Res.string.label_scroll_top)
                 )
             }
         }
@@ -152,7 +161,7 @@ fun AboutMe(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifi
 @Composable
 private fun ExperienceSection(onEvent: (PortfolioScreenEvent) -> Unit) {
     Text(
-        text = "Experience",
+        text = stringResource(Res.string.section_experience),
         color = PortfolioTheme.colors.secondaryText,
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
@@ -448,7 +457,7 @@ private fun SkillsContent() {
 @Composable
 private fun EducationSection() {
     Text(
-        text = "Education",
+        text = stringResource(Res.string.section_education),
         color = PortfolioTheme.colors.secondaryText,
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
@@ -506,10 +515,10 @@ private fun ContactSection() {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            SocialPill("Github") { uriHandler.openUri("https://github.com/rajdeepvaghela") }
-            SocialPill("LinkedIn") { uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela") }
-            SocialPill("E-mail") { uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com") }
-            SocialPill("Play Store") { uriHandler.openUri("https://play.google.com/store/apps/developer?id=Rajdeep+Vaghela") }
+            SocialPill(stringResource(Res.string.label_github)) { uriHandler.openUri("https://github.com/rajdeepvaghela") }
+            SocialPill(stringResource(Res.string.label_linkedin)) { uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela") }
+            SocialPill(stringResource(Res.string.label_email)) { uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com") }
+            SocialPill(stringResource(Res.string.label_play_store)) { uriHandler.openUri("https://play.google.com/store/apps/developer?id=Rajdeep+Vaghela") }
         }
         Spacer(modifier = Modifier.height(12.dp))
         ContactItem(text = "+91 9033159066", url = null)

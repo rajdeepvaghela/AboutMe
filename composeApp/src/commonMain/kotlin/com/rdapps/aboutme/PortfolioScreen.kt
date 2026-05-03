@@ -63,6 +63,16 @@ import androidx.compose.ui.unit.sp
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.utils.LocalIsWideScreen
 import com.rdapps.aboutme.viewmodel.AppViewModel
+import org.jetbrains.compose.resources.stringResource
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.cursor_hide
+import aboutme.composeapp.generated.resources.cursor_show
+import aboutme.composeapp.generated.resources.footer_made_with_cmp
+import aboutme.composeapp.generated.resources.nav_about_me
+import aboutme.composeapp.generated.resources.nav_hi
+import aboutme.composeapp.generated.resources.nav_projects
+import aboutme.composeapp.generated.resources.theme_dark
+import aboutme.composeapp.generated.resources.theme_light
 import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.cos
@@ -72,10 +82,10 @@ sealed interface PortfolioScreenEvent {
     data class TrackEvent(val event: AppViewModel.Events) : PortfolioScreenEvent
 }
 
-enum class Tabs(val title: String) {
-    Intro("Hi"),
-    Projects("Projects"),
-    AboutMe("About Me")
+enum class Tabs {
+    Intro,
+    Projects,
+    AboutMe
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -257,7 +267,7 @@ fun PortfolioScreen(
         )
 
         Text(
-            text = "Made using Compose Multiplatform",
+            text = stringResource(Res.string.footer_made_with_cmp),
             color = PortfolioTheme.colors.secondaryText,
             fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold,
@@ -334,7 +344,11 @@ fun PortfolioScreen(
                     },
                     label = {
                         Text(
-                            text = tab.title,
+                            text = when (tab) {
+                                Tabs.Intro -> stringResource(Res.string.nav_hi)
+                                Tabs.Projects -> stringResource(Res.string.nav_projects)
+                                Tabs.AboutMe -> stringResource(Res.string.nav_about_me)
+                            },
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -363,7 +377,7 @@ private fun CursorDotToggle(
         Icon(
             imageVector = if (enabled) Icons.Rounded.RadioButtonChecked
             else Icons.Rounded.RadioButtonUnchecked,
-            contentDescription = if (enabled) "Hide cursor dot" else "Show cursor dot",
+            contentDescription = if (enabled) stringResource(Res.string.cursor_hide) else stringResource(Res.string.cursor_show),
             tint = PortfolioTheme.colors.primaryText
         )
     }
@@ -395,7 +409,7 @@ private fun ThemeToggle(
     ) {
         Icon(
             imageVector = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
-            contentDescription = if (isDark) "Switch to Light Mode" else "Switch to Dark Mode",
+            contentDescription = if (isDark) stringResource(Res.string.theme_light) else stringResource(Res.string.theme_dark),
             tint = PortfolioTheme.colors.primaryText,
             modifier = Modifier
                 .rotate(rotation.value)

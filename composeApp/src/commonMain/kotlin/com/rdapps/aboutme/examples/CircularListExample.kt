@@ -21,6 +21,8 @@ import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.viewmodel.AppViewModel
 import com.rdapps.circularlist.CircularList
 import com.rdapps.circularlist.InfiniteCircularList
+import aboutme.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CircularListExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifier) {
@@ -40,18 +42,18 @@ fun CircularListExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modif
 
             val monthList = remember {
                 listOf(
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sept",
-                    "Oct",
-                    "Nov",
-                    "Dec"
+                    Res.string.ex_circular_month_jan,
+                    Res.string.ex_circular_month_feb,
+                    Res.string.ex_circular_month_mar,
+                    Res.string.ex_circular_month_apr,
+                    Res.string.ex_circular_month_may,
+                    Res.string.ex_circular_month_jun,
+                    Res.string.ex_circular_month_jul,
+                    Res.string.ex_circular_month_aug,
+                    Res.string.ex_circular_month_sept,
+                    Res.string.ex_circular_month_oct,
+                    Res.string.ex_circular_month_nov,
+                    Res.string.ex_circular_month_dec
                 )
             }
 
@@ -60,12 +62,12 @@ fun CircularListExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modif
             InfiniteCircularList(
                 width = 100.dp,
                 itemHeight = 40.dp,
-                items = monthList,
-                initialItem = monthList[month - 1],
+                items = monthList.map { stringResource(it) },
+                initialItem = stringResource(monthList[month - 1]),
                 textColor = PortfolioTheme.colors.secondaryText,
                 selectedTextColor = PortfolioTheme.colors.primaryText,
-                onItemSelected = { _, item ->
-                    month = monthList.indexOf(item) + 1
+                onItemSelected = { index, _ ->
+                    month = index + 1
                 }
             )
 

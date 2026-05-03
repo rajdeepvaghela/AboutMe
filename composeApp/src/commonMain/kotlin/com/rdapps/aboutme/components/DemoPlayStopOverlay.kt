@@ -1,5 +1,8 @@
 package com.rdapps.aboutme.components
 
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.live_preview
+import aboutme.composeapp.generated.resources.stop
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.rdapps.aboutme.theme.PortfolioTheme
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DemoPlayStopOverlay(
@@ -39,8 +43,8 @@ fun DemoPlayStopOverlay(
     overlayShape: Shape = RoundedCornerShape(40.dp),
     overlayTint: Color = PortfolioTheme.colors.background.copy(alpha = 0.8f),
     accentColor: Color = PortfolioTheme.colors.accent,
-    playLabel: String = "Live Preview",
-    stopLabel: String = "Stop",
+    playLabel: String = stringResource(Res.string.live_preview),
+    stopLabel: String = stringResource(Res.string.stop),
     stopButtonPadding: Dp = 10.dp
 ) {
     AnimatedVisibility(visible = !isDemoLive, modifier = modifier) {

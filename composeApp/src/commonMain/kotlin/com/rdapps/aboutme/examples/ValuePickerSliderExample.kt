@@ -23,6 +23,12 @@ import com.rdapps.aboutme.viewmodel.AppViewModel
 import com.rdapps.valuepickerslider.BarBreak
 import com.rdapps.valuepickerslider.ValuePickerSlider
 import com.rdapps.valuepickerslider.rememberSliderState
+import org.jetbrains.compose.resources.stringResource
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.ex_slider_radio_city
+import aboutme.composeapp.generated.resources.ex_slider_big_fm
+import aboutme.composeapp.generated.resources.ex_slider_red_fm
+import aboutme.composeapp.generated.resources.ex_slider_radio_mirchi
 
 @Preview
 @Composable
@@ -49,9 +55,15 @@ fun ValuePickerSliderExample(
         ValuePickerSlider(
             state = sliderState,
             numSegments = maxWidth.value.toInt() * 32 / 500,
-            currentValueLabel = {
+            currentValueLabel = { value ->
                 Text(
-                    text = getStationName(it),
+                    text = when (value) {
+                        911 -> stringResource(Res.string.ex_slider_radio_city)
+                        927 -> stringResource(Res.string.ex_slider_big_fm)
+                        935 -> stringResource(Res.string.ex_slider_red_fm)
+                        983 -> stringResource(Res.string.ex_slider_radio_mirchi)
+                        else -> "${value / 10f}"
+                    },
                     color = PortfolioTheme.colors.primaryText,
                     modifier = Modifier.background(PortfolioTheme.colors.background)
                 )
@@ -87,15 +99,5 @@ fun ValuePickerSliderExample(
             modifier = Modifier.matchParentSize(),
             overlayShape = RoundedCornerShape(40.dp)
         )
-    }
-}
-
-private fun getStationName(value: Int): String {
-    return when (value) {
-        911 -> "Radio City"
-        927 -> "Big FM"
-        935 -> "Red FM"
-        983 -> "Radio Mirchi"
-        else -> "${value / 10f}"
     }
 }

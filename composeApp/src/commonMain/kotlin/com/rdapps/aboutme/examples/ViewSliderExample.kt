@@ -1,5 +1,10 @@
 package com.rdapps.aboutme.examples
 
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.ex_slider_cart
+import aboutme.composeapp.generated.resources.ex_slider_favorites
+import aboutme.composeapp.generated.resources.ex_slider_profile
+import aboutme.composeapp.generated.resources.ex_slider_settings
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -31,6 +36,7 @@ import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.theme.PortfolioTheme
 import com.rdapps.aboutme.viewmodel.AppViewModel
 import com.rdapps.viewslider.ViewSlider
+import org.jetbrains.compose.resources.stringResource
 
 data class Item(
     val icon: ImageVector,
@@ -43,10 +49,26 @@ fun ViewSliderExample(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifie
     var isDemoLive by rememberSaveable { mutableStateOf(false) }
 
     val list = listOf(
-        Item(Icons.Filled.AccountCircle, "Profile Info", Color(0xFFE57373)),
-        Item(Icons.Filled.ShoppingCart, "Cart", Color(0xFF81C784)),
-        Item(Icons.Filled.Favorite, "Favorites", Color(0xFF64B5F6)),
-        Item(Icons.Filled.Settings, "Settings", Color(0xFFFFD54F))
+        Item(
+            Icons.Filled.AccountCircle,
+            stringResource(Res.string.ex_slider_profile),
+            Color(0xFFE57373)
+        ),
+        Item(
+            Icons.Filled.ShoppingCart,
+            stringResource(Res.string.ex_slider_cart),
+            Color(0xFF81C784)
+        ),
+        Item(
+            Icons.Filled.Favorite,
+            stringResource(Res.string.ex_slider_favorites),
+            Color(0xFF64B5F6)
+        ),
+        Item(
+            Icons.Filled.Settings,
+            stringResource(Res.string.ex_slider_settings),
+            Color(0xFFFFD54F)
+        )
     )
 
     var selectedItem by remember { mutableStateOf(list.first()) }

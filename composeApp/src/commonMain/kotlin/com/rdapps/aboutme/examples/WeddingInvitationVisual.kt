@@ -1,7 +1,11 @@
 package com.rdapps.aboutme.examples
 
 import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.label_your_name
+import aboutme.composeapp.generated.resources.live_preview
+import aboutme.composeapp.generated.resources.placeholder_name
 import aboutme.composeapp.generated.resources.wedding_invitation_preview
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -73,8 +77,8 @@ fun WeddingInvitationVisual(onEvent: (PortfolioScreenEvent) -> Unit, modifier: M
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Your Name") },
-                placeholder = { Text("e.g. John Doe") },
+                label = { Text(stringResource(Res.string.label_your_name)) },
+                placeholder = { Text(stringResource(Res.string.placeholder_name)) },
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = PortfolioTheme.colors.primaryText,
@@ -125,7 +129,7 @@ fun WeddingInvitationVisual(onEvent: (PortfolioScreenEvent) -> Unit, modifier: M
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "Live Preview",
+                    text = stringResource(Res.string.live_preview),
                     fontWeight = FontWeight.Medium,
                     color = PortfolioTheme.colors.primaryText
                 )
