@@ -20,6 +20,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,13 +33,17 @@ class AppViewModel(
 ) : ViewModel() {
 
     private var userId: String? = null
+    private val exceptionHandler = CoroutineExceptionHandler { context, throwable ->
+        throwable.printStackTrace()
+        printInDebug("Exception: $throwable")
+    }
 
     init {
         printInDebug("DeviceInfo: $deviceInfo")
         fetchDataAndTrack()
     }
 
-    private fun fetchDataAndTrack() = viewModelScope.launch {
+    private fun fetchDataAndTrack() = viewModelScope.launch(exceptionHandler) {
         userId = getOrCreateUserId(deviceInfo)
         printInDebug("UserId: $userId")
 
@@ -65,7 +70,7 @@ class AppViewModel(
 
         printInDebug("User: $user")
         preferencesStore.set(Preferences(userId = user.id ?: ""))
-        return@withContext  user.id
+        return@withContext user.id
     }
 
     private suspend fun trackNetworkInfo(ipResponse: IpResponse) = withContext(Dispatchers.KmpIO) {
@@ -150,7 +155,8 @@ class AppViewModel(
 
     private suspend fun fetchRemoteConfig(): RemoteConfig? = withContext(Dispatchers.KmpIO) {
         try {
-            return@withContext supabase.postgrest.rpc("get_remote_config").decodeAsOrNull<RemoteConfig>().also {
+            return@withContext supabase.postgrest.rpc("get_remote_config")
+                .decodeAsOrNull<RemoteConfig>().also {
                 printInDebug("RemoteConfig: $it")
             }
         } catch (e: Exception) {
@@ -159,16 +165,18 @@ class AppViewModel(
         }
     }
 
-    private suspend fun fetchIpInfo(ipInfoToken: String): IpResponse? = withContext(Dispatchers.KmpIO) {
-        try {
-            return@withContext client.get("https://ipinfo.io/?token=$ipInfoToken").body<IpResponse>().also {
-                printInDebug("IpResponse: $it")
+    private suspend fun fetchIpInfo(ipInfoToken: String): IpResponse? =
+        withContext(Dispatchers.KmpIO) {
+            try {
+                return@withContext client.get("https://ipinfo.io/?token=$ipInfoToken")
+                    .body<IpResponse>().also {
+                    printInDebug("IpResponse: $it")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext null
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return@withContext null
         }
-    }
 
     private fun printInDebug(msg: String) {
         if (!BuildKonfig.DEBUG) return
