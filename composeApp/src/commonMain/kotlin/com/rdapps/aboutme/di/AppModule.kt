@@ -1,32 +1,23 @@
 package com.rdapps.aboutme.di
 
-import com.rdapps.aboutme.BuildKonfig
 import com.rdapps.aboutme.deviceInfo.getDeviceInfo
 import com.rdapps.aboutme.model.DeviceInfo
 import com.rdapps.aboutme.utils.createHttpClient
 import com.rdapps.aboutme.utils.createJson
+import com.rdapps.aboutme.utils.createSupabase
 import com.rdapps.aboutme.viewmodel.AppViewModel
 import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.create
+import org.koin.plugin.module.dsl.viewModel
 
 val appModule = module {
-    single<Json> { createJson() }
-    single<HttpClient> { createHttpClient(get()) }
-    single<SupabaseClient> {
-        createSupabaseClient(
-            supabaseUrl = BuildKonfig.SUPABASE_URL,
-            supabaseKey = BuildKonfig.SUPABASE_KEY
-        ) {
-            defaultSerializer = KotlinXSerializer(get())
-            install(Postgrest)
-        }
-    }
-    single<DeviceInfo> { getDeviceInfo() }
-    viewModelOf(::AppViewModel)
+    includes(preferencesModule)
+    single<Json> { create(::createJson) }
+    single<HttpClient> { create(::createHttpClient) }
+    single<SupabaseClient> { create(::createSupabase) }
+    single<DeviceInfo> { create(::getDeviceInfo) }
+    viewModel<AppViewModel>()
 }

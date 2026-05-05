@@ -1,6 +1,10 @@
 package com.rdapps.aboutme.utils
 
 import androidx.compose.ui.Modifier
+import com.rdapps.aboutme.BuildKonfig
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
@@ -24,8 +28,16 @@ fun createJson() = Json {
     coerceInputValues = true
 }
 
-fun createHttpClient(json: Json = Json) = HttpClient {
+fun createHttpClient(json: Json) = HttpClient {
     install(ContentNegotiation) {
         json(json)
     }
+}
+
+fun createSupabase(json: Json) = createSupabaseClient(
+    supabaseUrl = BuildKonfig.SUPABASE_URL,
+    supabaseKey = BuildKonfig.SUPABASE_KEY
+) {
+    defaultSerializer = KotlinXSerializer(json)
+    install(Postgrest)
 }
