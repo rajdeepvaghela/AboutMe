@@ -1,20 +1,26 @@
 package com.rdapps.aboutme.di
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.rdapps.aboutme.preferences.Preferences
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.createGraph
 import io.github.xxfast.kstore.KStore
 import io.github.xxfast.kstore.file.storeOf
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.io.files.Path
-import org.koin.core.module.Module
-import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
-@OptIn(ExperimentalForeignApi::class)
-actual val preferencesModule: Module = module {
-    single<KStore<Preferences>> {
+@DependencyGraph(AppScope::class)
+interface IosAppGraph : AppGraph {
+    @OptIn(ExperimentalForeignApi::class)
+    @Provides
+    fun providePreferencesStore(): KStore<Preferences> {
         val fileManager: NSFileManager = NSFileManager.defaultManager
         val documentsUrl: NSURL = fileManager.URLForDirectory(
             directory = NSDocumentDirectory,
@@ -24,6 +30,9 @@ actual val preferencesModule: Module = module {
             error = null
         )!!
         val path = "${documentsUrl.path}/preferences.json"
-        storeOf(file = Path(path))
+        return storeOf(file = Path(path))
     }
 }
+
+@Composable
+actual fun rememberAppGraph(): AppGraph = remember { createGraph<IosAppGraph>() }

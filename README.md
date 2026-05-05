@@ -16,7 +16,7 @@ AboutMe is my personal portfolio project built with **Compose Multiplatform (CMP
 - **Kotlin Multiplatform (KMP)**: Shared business logic across platforms.
 
 ### Architecture & Infrastructure
-- **Dependency Injection**: [Koin](https://insert-koin.io/) for scalable and decoupled component management.
+- **Dependency Injection**: [Metro](https://zacsweers.github.io/metro/) for compile-time dependency injection.
 - **Local Storage**: [KStore](https://github.com/xxfast/KStore) for lightweight, type-safe persistent storage.
 - **Networking**: [Ktor](https://ktor.io/) for asynchronous HTTP requests.
 - **Image Loading**: Integrated with [Coil](https://coil-kt.github.io/coil/) and [Sketch](https://github.com/panpf/sketch) for high-performance image rendering.

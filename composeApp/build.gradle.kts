@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.metro)
 }
 
 val secretProps = Properties().apply {
@@ -21,6 +22,16 @@ val secretSupabaseUrl: String =
     System.getenv("SUPABASE_URL") ?: secretProps.getProperty("SUPABASE_URL", "")
 val secretSupabaseKey: String =
     System.getenv("SUPABASE_KEY") ?: secretProps.getProperty("SUPABASE_KEY", "")
+val releaseKeystoreFile = System.getenv("KEYSTORE_FILE")
+val releaseKeystorePassword = System.getenv("KEYSTORE_PASSWORD")
+val releaseKeyAlias = System.getenv("KEY_ALIAS")
+val releaseKeyPassword = System.getenv("KEY_PASSWORD")
+val hasReleaseSigningConfig = listOf(
+    releaseKeystoreFile,
+    releaseKeystorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword
+).all { !it.isNullOrBlank() }
 
 
 kotlin {
@@ -60,7 +71,6 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
             implementation(libs.kstore.file)
-            implementation(libs.koin.android)
         }
         commonMain {
             dependencies {
@@ -92,12 +102,6 @@ kotlin {
 
                 // KStore
                 implementation(libs.kstore)
-
-                // Koin
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.koin.core)
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewmodel)
 
                 implementation(libs.valuepickerslider)
                 implementation(libs.viewslider)
@@ -142,12 +146,12 @@ android {
 
     signingConfigs {
         create("release") {
-            System.getenv("KEYSTORE_FILE")?.let {
+            releaseKeystoreFile?.let {
                 storeFile = file(it)
             }
-            storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("KEY_ALIAS")
-            keyPassword = System.getenv("KEY_PASSWORD")
+            storePassword = releaseKeystorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
         }
     }
 
@@ -160,7 +164,9 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName(
+                if (hasReleaseSigningConfig) "release" else "debug"
+            )
         }
     }
     compileOptions {
