@@ -1,0 +1,135 @@
+<resources>
+    <string name="live_preview">Live Preview</string>
+    <string name="stop">Stop</string>
+    <string name="hi_i_am">Hi I am</string>
+    <string name="name_first">Rajdeep</string>
+    <string name="name_last">Vaghela</string>
+    <string name="title_senior_android_engineer">Senior Android Engineer</string>
+    <string name="label_linkedin">LinkedIn</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_play_store">Play Store</string>
+    <string name="label_github">GitHub</string>
+    <string name="nav_hi">Hi</string>
+    <string name="nav_projects">Projects</string>
+    <string name="nav_about_me">About Me</string>
+    <string name="footer_made_with_cmp">Made using Compose Multiplatform</string>
+    <string name="cursor_hide">Hide cursor dot</string>
+    <string name="cursor_show">Show cursor dot</string>
+    <string name="theme_light">Switch to Light Mode</string>
+    <string name="theme_dark">Switch to Dark Mode</string>
+    <string name="label_show_less">Show Less</string>
+    <string name="label_show_more">Show More</string>
+    <string name="label_scroll_top">Scroll to top</string>
+    <string name="section_experience">Experience</string>
+    <string name="section_education">Education</string>
+    <string name="label_your_name">Your Name</string>
+    <string name="placeholder_name">e.g. John Doe</string>
+    <string name="label_link">Link</string>
+    <string name="msg_already_looking">You are already looking at it !</string>
+    <string name="ex_circular_month_jan">Jan</string>
+    <string name="ex_circular_month_feb">Feb</string>
+    <string name="ex_circular_month_mar">Mar</string>
+    <string name="ex_circular_month_apr">Apr</string>
+    <string name="ex_circular_month_may">May</string>
+    <string name="ex_circular_month_jun">Jun</string>
+    <string name="ex_circular_month_jul">Jul</string>
+    <string name="ex_circular_month_aug">Aug</string>
+    <string name="ex_circular_month_sept">Sept</string>
+    <string name="ex_circular_month_oct">Oct</string>
+    <string name="ex_circular_month_nov">Nov</string>
+    <string name="ex_circular_month_dec">Dec</string>
+    <string name="ex_circular_year_prefix">2K </string>
+    <string name="ex_slider_radio_city">Radio City</string>
+    <string name="ex_slider_big_fm">Big FM</string>
+    <string name="ex_slider_red_fm">Red FM</string>
+    <string name="ex_slider_radio_mirchi">Radio Mirchi</string>
+    <string name="ex_stepper_btn_approve">Approve designs</string>
+    <string name="ex_slider_profile">Profile Info</string>
+    <string name="ex_slider_cart">Cart</string>
+    <string name="ex_slider_favorites">Favorites</string>
+    <string name="ex_slider_settings">Settings</string>
+
+    <!-- Project: Value Picker Slider -->
+    <string name="proj_value_picker_title">Value Picker Slider</string>
+    <string name="proj_value_picker_desc">Customisable horizontal slider value picker built fully in Jetpack Compose.</string>
+    <string name="tag_os_library">Open Source Library</string>
+    <string name="tag_compose">Jetpack Compose</string>
+    <string name="tag_kotlin">Kotlin</string>
+
+    <!-- Project: ViewSlider -->
+    <string name="proj_view_slider_title">ViewSlider</string>
+    <string name="proj_view_slider_desc">Horizontal view slider which snaps the middle item with a scale effect.</string>
+
+    <!-- Project: CircularList -->
+    <string name="proj_circular_list_title">CircularList</string>
+    <string name="proj_circular_list_desc">Vertical scrollable value picker for Jetpack Compose with InfiniteCircularList and CircularList components.</string>
+
+    <!-- Project: VerticalStepper -->
+    <string name="proj_vertical_stepper_title">VerticalStepper</string>
+    <string name="proj_vertical_stepper_desc">Customizable vertical stepper with animations and custom content layouts.</string>
+
+    <!-- Project: Wedding Invitation -->
+    <string name="proj_wedding_inv_title">Wedding Invitation</string>
+    <string name="proj_wedding_inv_desc">A personalized wedding invitation website (CMP - Android &amp; Web) with analytics, remote control over features, and an Android app that generates unique invitation links.</string>
+    <string name="tag_cmp">Compose Multiplatform</string>
+    <string name="tag_web">Web</string>
+    <string name="tag_android">Android</string>
+
+    <!-- Project: Birthday Calendar -->
+    <string name="proj_birthday_cal_title">Birthday Calendar</string>
+    <string name="proj_birthday_cal_desc">Mobile and WearOS app that syncs Facebook birthdays and enables one-tap wishes via WhatsApp, Messenger, SMS, or call.</string>
+    <string name="tag_wearos">WearOS</string>
+    <string name="tag_material">Material Design</string>
+    <string name="tag_motion">MotionLayout</string>
+
+    <!-- Project: Battery Tools -->
+    <string name="proj_battery_tools_title">Battery Tools</string>
+    <string name="proj_battery_tools_desc">BatteryTools is a security-focused Android app that protects your device from theft by triggering high-volume alarms and emergency notifications the moment it is unplugged, while providing real-time battery statistics across your smartphone and Wear OS wearable.</string>
+    <string name="tag_osourced">Open Sourced</string>
+    <string name="tag_glance">Glance Widget</string>
+
+    <!-- Project: About Me -->
+    <string name="proj_about_me_title">About Me</string>
+    <string name="proj_about_me_desc">Portfolio website built with Jetpack Compose Multiplatform.</string>
+    <string name="tag_ios">iOS</string>
+    <string name="tag_desktop">Desktop</string>
+
+    <!-- Project: MotionText -->
+    <string name="proj_motion_text_title">MotionText</string>
+    <string name="proj_motion_text_desc">TextView optimised for MotionLayout transitions with additional features.</string>
+    <string name="tag_xml">XML</string>
+
+    <!-- Project: SharedPref -->
+    <string name="proj_shared_pref_title">SharedPref</string>
+    <string name="proj_shared_pref_desc">A different approach to store data in SharedPreference and DataStorePreference using Enums</string>
+    <string name="tag_datastore">Data Store</string>
+    <string name="tag_sharedpref">Shared Preference</string>
+    <string name="tag_enum">Enum</string>
+    <string name="tag_flows">Flows</string>
+    <string name="tag_enc">Encryption</string>
+
+    <!-- Project: TypeWriter -->
+    <string name="proj_typewriter_title">TypeWriter</string>
+    <string name="proj_typewriter_desc">TextView and EditText with a customizable typewriter animation.</string>
+
+    <!-- Project: Flow Layouts -->
+    <string name="proj_flow_layouts_title">Flow Layouts</string>
+    <string name="proj_flow_layouts_desc">This layouts will replicate the FlowLayout behaviour from CSS and Java Spring.</string>
+    <string name="tag_flex">FlexLayout</string>
+
+    <!-- Project: Generic Adapter -->
+    <string name="proj_generic_adapter_title">Generic Adapter</string>
+    <string name="proj_generic_adapter_desc">Wrapper for Spinner and AutoCompleteTextView adapters to reduce boilerplate.</string>
+
+    <!-- Project: Uncheckable RadioButton -->
+    <string name="proj_uncheckable_radio_title">Uncheckable RadioButton</string>
+    <string name="proj_uncheckable_radio_desc">RadioButton implementation that can be unchecked on click, fixing a long-standing Android limitation.</string>
+
+    <!-- Project: Social Hub -->
+    <string name="proj_social_hub_title">Social Hub</string>
+    <string name="proj_social_hub_desc">Android app that wraps Facebook, Twitter, Messenger, TweetDeck, and more into a single experience.</string>
+
+    <!-- Project: Tic Tac Toe -->
+    <string name="proj_tic_tac_toe_title">Tic Tac Toe</string>
+    <string name="proj_tic_tac_toe_desc">Classic tic-tac-toe game refreshed with a new modern UI.</string>
+</resources>
