@@ -5,16 +5,18 @@ import io.github.xxfast.kstore.KStore
 import io.github.xxfast.kstore.file.storeOf
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.io.files.Path
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Singleton
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
-@OptIn(ExperimentalForeignApi::class)
-actual val preferencesModule: Module = module {
-    single<KStore<Preferences>> {
+@Module
+actual class PreferencesModule {
+    @OptIn(ExperimentalForeignApi::class)
+    @Singleton
+    fun getPreferences(): KStore<Preferences> {
         val fileManager: NSFileManager = NSFileManager.defaultManager
         val documentsUrl: NSURL = fileManager.URLForDirectory(
             directory = NSDocumentDirectory,
@@ -24,6 +26,6 @@ actual val preferencesModule: Module = module {
             error = null
         )!!
         val path = "${documentsUrl.path}/preferences.json"
-        storeOf(file = Path(path))
+        return storeOf(file = Path(path))
     }
 }

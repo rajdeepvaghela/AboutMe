@@ -1,32 +1,30 @@
 package com.rdapps.aboutme.di
 
-import com.rdapps.aboutme.BuildKonfig
 import com.rdapps.aboutme.deviceInfo.getDeviceInfo
 import com.rdapps.aboutme.model.DeviceInfo
 import com.rdapps.aboutme.utils.createHttpClient
 import com.rdapps.aboutme.utils.createJson
-import com.rdapps.aboutme.viewmodel.AppViewModel
+import com.rdapps.aboutme.utils.createSupabaseClient
 import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
-import org.koin.core.module.dsl.viewModelOf
-import org.koin.dsl.module
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Singleton
 
-val appModule = module {
-    single<Json> { createJson() }
-    single<HttpClient> { createHttpClient(get()) }
-    single<SupabaseClient> {
-        createSupabaseClient(
-            supabaseUrl = BuildKonfig.SUPABASE_URL,
-            supabaseKey = BuildKonfig.SUPABASE_KEY
-        ) {
-            defaultSerializer = KotlinXSerializer(get())
-            install(Postgrest)
-        }
-    }
-    single<DeviceInfo> { getDeviceInfo() }
-    viewModelOf(::AppViewModel)
+@Module(includes = [PreferencesModule::class])
+@ComponentScan("com.rdapps.aboutme.viewmodel")
+class AppModule {
+
+    @Singleton
+    fun json(): Json = createJson()
+
+    @Singleton
+    fun httpClient(json: Json): HttpClient = createHttpClient(json)
+
+    @Singleton
+    fun supabaseClient(json: Json): SupabaseClient = createSupabaseClient(json)
+
+    @Singleton
+    fun deviceInfo(): DeviceInfo = getDeviceInfo()
 }

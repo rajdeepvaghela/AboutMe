@@ -17,7 +17,8 @@ supabase-bom = "3.4.1"
 kstore = "1.0.0"
 kotlin-serialization = "1.10.0"
 buildkonfig = "0.17.1"
-koin = "4.2.0"
+koin = "4.2.1"
+koin-plugin = "1.0.0-RC1"
 viewslider = "2.0.0"
 circularlist = "2.0.0"
 stepper = "2.0.0"
@@ -57,6 +58,7 @@ koin-core = { module = "io.insert-koin:koin-core" }
 koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-android = { module = "io.insert-koin:koin-android" }
+koin-annotations = { module = "io.insert-koin:koin-annotations" }
 viewslider = { module = "io.github.rajdeepvaghela:viewslider", version.ref = "viewslider" }
 circularlist = { module = "io.github.rajdeepvaghela:circularlist", version.ref = "circularlist" }
 stepper = { module = "io.github.rajdeepvaghela:stepper", version.ref = "stepper" }
@@ -69,3 +71,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+koinCompiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }

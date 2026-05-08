@@ -24,7 +24,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.KoinViewModel
 
+@KoinViewModel
 class AppViewModel(
     private val deviceInfo: DeviceInfo,
     private val preferencesStore: KStore<Preferences>,
@@ -157,8 +159,8 @@ class AppViewModel(
         try {
             return@withContext supabase.postgrest.rpc("get_remote_config")
                 .decodeAsOrNull<RemoteConfig>().also {
-                printInDebug("RemoteConfig: $it")
-            }
+                    printInDebug("RemoteConfig: $it")
+                }
         } catch (e: Exception) {
             e.printStackTrace()
             return@withContext null
@@ -170,8 +172,8 @@ class AppViewModel(
             try {
                 return@withContext client.get("https://ipinfo.io/?token=$ipInfoToken")
                     .body<IpResponse>().also {
-                    printInDebug("IpResponse: $it")
-                }
+                        printInDebug("IpResponse: $it")
+                    }
             } catch (e: Exception) {
                 e.printStackTrace()
                 return@withContext null

@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.koinCompiler)
 }
 
 val secretProps = Properties().apply {
@@ -98,6 +99,7 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
+                implementation(libs.koin.annotations)
 
                 implementation(libs.valuepickerslider)
                 implementation(libs.viewslider)

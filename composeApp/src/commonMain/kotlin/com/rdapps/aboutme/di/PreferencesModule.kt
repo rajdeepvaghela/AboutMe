@@ -1,6 +1,6 @@
 package com.rdapps.aboutme.di
 
-import org.koin.core.module.Module
+import org.koin.core.annotation.Module
 
-// Platform-specific module that provides KStore<Preferences>
-expect val preferencesModule: Module
+@Module
+expect class PreferencesModule

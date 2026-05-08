@@ -1,17 +1,15 @@
 package com.rdapps.aboutme.di
 
+import android.content.Context
 import com.rdapps.aboutme.preferences.Preferences
-import io.github.xxfast.kstore.KStore
 import io.github.xxfast.kstore.file.storeOf
 import kotlinx.io.files.Path
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Singleton
 
-actual val preferencesModule: Module = module {
-    single<KStore<Preferences>> {
-        val context = androidContext()
-        val path = context.filesDir.absolutePath + "/preferences.json"
-        storeOf(file = Path(path))
-    }
+@Module
+actual class PreferencesModule {
+    @Singleton
+    fun getPreferences(context: Context) =
+        storeOf<Preferences>(file = Path(context.filesDir.absolutePath + "/preferences.json"))
 }
