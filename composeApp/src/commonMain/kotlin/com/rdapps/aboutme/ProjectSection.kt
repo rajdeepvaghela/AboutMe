@@ -1,5 +1,63 @@
 package com.rdapps.aboutme
 
+import aboutme.composeapp.generated.resources.Res
+import aboutme.composeapp.generated.resources.label_link
+import aboutme.composeapp.generated.resources.label_scroll_top
+import aboutme.composeapp.generated.resources.label_show_less
+import aboutme.composeapp.generated.resources.label_show_more
+import aboutme.composeapp.generated.resources.msg_already_looking
+import aboutme.composeapp.generated.resources.proj_about_me_desc
+import aboutme.composeapp.generated.resources.proj_about_me_title
+import aboutme.composeapp.generated.resources.proj_battery_tools_desc
+import aboutme.composeapp.generated.resources.proj_battery_tools_title
+import aboutme.composeapp.generated.resources.proj_birthday_cal_desc
+import aboutme.composeapp.generated.resources.proj_birthday_cal_title
+import aboutme.composeapp.generated.resources.proj_circular_list_desc
+import aboutme.composeapp.generated.resources.proj_circular_list_title
+import aboutme.composeapp.generated.resources.proj_flow_layouts_desc
+import aboutme.composeapp.generated.resources.proj_flow_layouts_title
+import aboutme.composeapp.generated.resources.proj_generic_adapter_desc
+import aboutme.composeapp.generated.resources.proj_generic_adapter_title
+import aboutme.composeapp.generated.resources.proj_motion_text_desc
+import aboutme.composeapp.generated.resources.proj_motion_text_title
+import aboutme.composeapp.generated.resources.proj_shared_pref_desc
+import aboutme.composeapp.generated.resources.proj_shared_pref_title
+import aboutme.composeapp.generated.resources.proj_social_hub_desc
+import aboutme.composeapp.generated.resources.proj_social_hub_title
+import aboutme.composeapp.generated.resources.proj_tic_tac_toe_desc
+import aboutme.composeapp.generated.resources.proj_tic_tac_toe_title
+import aboutme.composeapp.generated.resources.proj_typewriter_desc
+import aboutme.composeapp.generated.resources.proj_typewriter_title
+import aboutme.composeapp.generated.resources.proj_uncheckable_radio_desc
+import aboutme.composeapp.generated.resources.proj_uncheckable_radio_title
+import aboutme.composeapp.generated.resources.proj_value_picker_desc
+import aboutme.composeapp.generated.resources.proj_value_picker_title
+import aboutme.composeapp.generated.resources.proj_vertical_stepper_desc
+import aboutme.composeapp.generated.resources.proj_vertical_stepper_title
+import aboutme.composeapp.generated.resources.proj_view_slider_desc
+import aboutme.composeapp.generated.resources.proj_view_slider_title
+import aboutme.composeapp.generated.resources.proj_wedding_inv_desc
+import aboutme.composeapp.generated.resources.proj_wedding_inv_title
+import aboutme.composeapp.generated.resources.tag_android
+import aboutme.composeapp.generated.resources.tag_cmp
+import aboutme.composeapp.generated.resources.tag_compose
+import aboutme.composeapp.generated.resources.tag_datastore
+import aboutme.composeapp.generated.resources.tag_desktop
+import aboutme.composeapp.generated.resources.tag_enc
+import aboutme.composeapp.generated.resources.tag_enum
+import aboutme.composeapp.generated.resources.tag_flex
+import aboutme.composeapp.generated.resources.tag_flows
+import aboutme.composeapp.generated.resources.tag_glance
+import aboutme.composeapp.generated.resources.tag_ios
+import aboutme.composeapp.generated.resources.tag_kotlin
+import aboutme.composeapp.generated.resources.tag_material
+import aboutme.composeapp.generated.resources.tag_motion
+import aboutme.composeapp.generated.resources.tag_os_library
+import aboutme.composeapp.generated.resources.tag_osourced
+import aboutme.composeapp.generated.resources.tag_sharedpref
+import aboutme.composeapp.generated.resources.tag_wearos
+import aboutme.composeapp.generated.resources.tag_web
+import aboutme.composeapp.generated.resources.tag_xml
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -49,7 +107,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -57,7 +114,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import com.rdapps.aboutme.components.DemoPlayStopOverlay
 import com.rdapps.aboutme.examples.BatteryToolsVisual
 import com.rdapps.aboutme.examples.BirthdayCalendarVisual
@@ -73,66 +129,8 @@ import com.rdapps.aboutme.viewmodel.AppViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
-import org.jetbrains.compose.resources.stringResource
-import aboutme.composeapp.generated.resources.Res
-import aboutme.composeapp.generated.resources.label_show_less
-import aboutme.composeapp.generated.resources.label_show_more
-import aboutme.composeapp.generated.resources.label_scroll_top
-import aboutme.composeapp.generated.resources.label_link
-import aboutme.composeapp.generated.resources.msg_already_looking
-import aboutme.composeapp.generated.resources.proj_value_picker_title
-import aboutme.composeapp.generated.resources.proj_value_picker_desc
-import aboutme.composeapp.generated.resources.proj_view_slider_title
-import aboutme.composeapp.generated.resources.proj_view_slider_desc
-import aboutme.composeapp.generated.resources.proj_circular_list_title
-import aboutme.composeapp.generated.resources.proj_circular_list_desc
-import aboutme.composeapp.generated.resources.proj_vertical_stepper_title
-import aboutme.composeapp.generated.resources.proj_vertical_stepper_desc
-import aboutme.composeapp.generated.resources.proj_wedding_inv_title
-import aboutme.composeapp.generated.resources.proj_wedding_inv_desc
-import aboutme.composeapp.generated.resources.proj_birthday_cal_title
-import aboutme.composeapp.generated.resources.proj_birthday_cal_desc
-import aboutme.composeapp.generated.resources.proj_battery_tools_title
-import aboutme.composeapp.generated.resources.proj_battery_tools_desc
-import aboutme.composeapp.generated.resources.proj_about_me_title
-import aboutme.composeapp.generated.resources.proj_about_me_desc
-import aboutme.composeapp.generated.resources.proj_motion_text_title
-import aboutme.composeapp.generated.resources.proj_motion_text_desc
-import aboutme.composeapp.generated.resources.proj_shared_pref_title
-import aboutme.composeapp.generated.resources.proj_shared_pref_desc
-import aboutme.composeapp.generated.resources.proj_typewriter_title
-import aboutme.composeapp.generated.resources.proj_typewriter_desc
-import aboutme.composeapp.generated.resources.proj_flow_layouts_title
-import aboutme.composeapp.generated.resources.proj_flow_layouts_desc
-import aboutme.composeapp.generated.resources.proj_generic_adapter_title
-import aboutme.composeapp.generated.resources.proj_generic_adapter_desc
-import aboutme.composeapp.generated.resources.proj_uncheckable_radio_title
-import aboutme.composeapp.generated.resources.proj_uncheckable_radio_desc
-import aboutme.composeapp.generated.resources.proj_social_hub_title
-import aboutme.composeapp.generated.resources.proj_social_hub_desc
-import aboutme.composeapp.generated.resources.proj_tic_tac_toe_title
-import aboutme.composeapp.generated.resources.proj_tic_tac_toe_desc
-import aboutme.composeapp.generated.resources.tag_os_library
-import aboutme.composeapp.generated.resources.tag_compose
-import aboutme.composeapp.generated.resources.tag_kotlin
-import aboutme.composeapp.generated.resources.tag_cmp
-import aboutme.composeapp.generated.resources.tag_web
-import aboutme.composeapp.generated.resources.tag_android
-import aboutme.composeapp.generated.resources.tag_wearos
-import aboutme.composeapp.generated.resources.tag_material
-import aboutme.composeapp.generated.resources.tag_motion
-import aboutme.composeapp.generated.resources.tag_osourced
-import aboutme.composeapp.generated.resources.tag_glance
-import aboutme.composeapp.generated.resources.tag_ios
-import aboutme.composeapp.generated.resources.tag_desktop
-import aboutme.composeapp.generated.resources.tag_xml
-import aboutme.composeapp.generated.resources.tag_datastore
-import aboutme.composeapp.generated.resources.tag_sharedpref
-import aboutme.composeapp.generated.resources.tag_enum
-import aboutme.composeapp.generated.resources.tag_flows
-import aboutme.composeapp.generated.resources.tag_enc
-import aboutme.composeapp.generated.resources.tag_flex
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 
 @Stable
@@ -190,7 +188,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_wedding_inv_title,
         descriptionRes = Res.string.proj_wedding_inv_desc,
-        tagsRes = listOf(Res.string.tag_cmp, Res.string.tag_kotlin, Res.string.tag_compose, Res.string.tag_web, Res.string.tag_android),
+        tagsRes = listOf(
+            Res.string.tag_cmp,
+            Res.string.tag_kotlin,
+            Res.string.tag_compose,
+            Res.string.tag_web,
+            Res.string.tag_android
+        ),
         visual = { it, onEvent ->
             WeddingInvitationVisual(onEvent, it)
         },
@@ -199,7 +203,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_birthday_cal_title,
         descriptionRes = Res.string.proj_birthday_cal_desc,
-        tagsRes = listOf(Res.string.tag_android, Res.string.tag_wearos, Res.string.tag_kotlin, Res.string.tag_material, Res.string.tag_motion),
+        tagsRes = listOf(
+            Res.string.tag_android,
+            Res.string.tag_wearos,
+            Res.string.tag_kotlin,
+            Res.string.tag_material,
+            Res.string.tag_motion
+        ),
         visual = { it, _ ->
             BirthdayCalendarVisual(it)
         },
@@ -208,7 +218,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_battery_tools_title,
         descriptionRes = Res.string.proj_battery_tools_desc,
-        tagsRes = listOf(Res.string.tag_osourced, Res.string.tag_kotlin, Res.string.tag_compose, Res.string.tag_glance, Res.string.tag_wearos),
+        tagsRes = listOf(
+            Res.string.tag_osourced,
+            Res.string.tag_kotlin,
+            Res.string.tag_compose,
+            Res.string.tag_glance,
+            Res.string.tag_wearos
+        ),
         visual = { it, _ ->
             BatteryToolsVisual(it)
         },
@@ -271,7 +287,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_motion_text_title,
         descriptionRes = Res.string.proj_motion_text_desc,
-        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_xml, Res.string.tag_kotlin, Res.string.tag_material, Res.string.tag_motion),
+        tagsRes = listOf(
+            Res.string.tag_os_library,
+            Res.string.tag_xml,
+            Res.string.tag_kotlin,
+            Res.string.tag_material,
+            Res.string.tag_motion
+        ),
         visual = { it, _ ->
             MotionTextVisual(it)
         },
@@ -300,7 +322,12 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_flow_layouts_title,
         descriptionRes = Res.string.proj_flow_layouts_desc,
-        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_android, Res.string.tag_xml, Res.string.tag_flex),
+        tagsRes = listOf(
+            Res.string.tag_os_library,
+            Res.string.tag_android,
+            Res.string.tag_xml,
+            Res.string.tag_flex
+        ),
         link = "https://github.com/rajdeepvaghela/FlowLayouts"
     ),
     Project(
@@ -393,14 +420,20 @@ fun ProjectSection(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier =
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = if (showMore) stringResource(Res.string.label_show_less) else stringResource(Res.string.label_show_more),
+                            text = if (showMore)
+                                stringResource(Res.string.label_show_less)
+                            else
+                                stringResource(Res.string.label_show_more),
                             color = PortfolioTheme.colors.primaryText,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium
                         )
                         Icon(
                             imageVector = if (showMore) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                            contentDescription = if (showMore) stringResource(Res.string.label_show_less) else stringResource(Res.string.label_show_more),
+                            contentDescription = if (showMore)
+                                stringResource(Res.string.label_show_less)
+                            else
+                                stringResource(Res.string.label_show_more),
                             tint = PortfolioTheme.colors.primaryText
                         )
                     }
