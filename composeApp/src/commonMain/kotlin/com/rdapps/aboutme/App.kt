@@ -21,7 +21,7 @@ import org.koin.dsl.koinConfiguration
 @Composable
 @Preview
 fun App() {
-    KoinApplication(configuration = koinConfiguration { modules(appModule, preferencesModule) }) {
+    KoinApplication(configuration = koinConfiguration { modules(appModule) }) {
         setSingletonImageLoaderFactory { context ->
             ImageLoader.Builder(context)
                 .components {

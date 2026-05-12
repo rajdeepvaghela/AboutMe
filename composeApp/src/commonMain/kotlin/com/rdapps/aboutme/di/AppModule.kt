@@ -16,6 +16,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
+    includes(preferencesModule)
     single<Json> { createJson() }
     single<HttpClient> { createHttpClient(get()) }
     single<SupabaseClient> {
