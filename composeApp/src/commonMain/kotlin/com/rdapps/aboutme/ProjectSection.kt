@@ -49,6 +49,7 @@ import aboutme.composeapp.generated.resources.tag_flex
 import aboutme.composeapp.generated.resources.tag_flows
 import aboutme.composeapp.generated.resources.tag_glance
 import aboutme.composeapp.generated.resources.tag_ios
+import aboutme.composeapp.generated.resources.tag_kmp
 import aboutme.composeapp.generated.resources.tag_kotlin
 import aboutme.composeapp.generated.resources.tag_material
 import aboutme.composeapp.generated.resources.tag_motion
@@ -152,7 +153,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_value_picker_title,
         descriptionRes = Res.string.proj_value_picker_desc,
-        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
+        tagsRes = listOf(
+            Res.string.tag_os_library,
+            Res.string.tag_cmp,
+            Res.string.tag_kmp,
+            Res.string.tag_compose,
+            Res.string.tag_kotlin
+        ),
         visual = { it, onEvent ->
             ValuePickerSliderExample(onEvent, it)
         },
@@ -161,7 +168,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_view_slider_title,
         descriptionRes = Res.string.proj_view_slider_desc,
-        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
+        tagsRes = listOf(
+            Res.string.tag_os_library,
+            Res.string.tag_cmp,
+            Res.string.tag_kmp,
+            Res.string.tag_compose,
+            Res.string.tag_kotlin
+        ),
         visual = { it, onEvent ->
             ViewSliderExample(onEvent, it)
         },
@@ -170,7 +183,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_circular_list_title,
         descriptionRes = Res.string.proj_circular_list_desc,
-        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
+        tagsRes = listOf(
+            Res.string.tag_os_library,
+            Res.string.tag_cmp,
+            Res.string.tag_kmp,
+            Res.string.tag_compose,
+            Res.string.tag_kotlin
+        ),
         visual = { it, onEvent ->
             CircularListExample(onEvent, it)
         },
@@ -179,7 +198,13 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_vertical_stepper_title,
         descriptionRes = Res.string.proj_vertical_stepper_desc,
-        tagsRes = listOf(Res.string.tag_os_library, Res.string.tag_compose, Res.string.tag_kotlin),
+        tagsRes = listOf(
+            Res.string.tag_os_library,
+            Res.string.tag_cmp,
+            Res.string.tag_kmp,
+            Res.string.tag_compose,
+            Res.string.tag_kotlin
+        ),
         visual = { it, onEvent ->
             VerticalStepperExample(onEvent, it)
         },

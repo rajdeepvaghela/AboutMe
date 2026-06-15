@@ -72,6 +72,7 @@
     <string name="proj_wedding_inv_title">Wedding Invitation</string>
     <string name="proj_wedding_inv_desc">A personalized wedding invitation website (CMP - Android &amp; Web) with analytics, remote control over features, and an Android app that generates unique invitation links.</string>
     <string name="tag_cmp">Compose Multiplatform</string>
+    <string name="tag_kmp">KMP</string>
     <string name="tag_web">Web</string>
     <string name="tag_android">Android</string>
 
