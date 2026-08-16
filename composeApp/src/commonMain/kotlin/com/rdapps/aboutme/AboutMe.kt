@@ -517,7 +517,7 @@ private fun ContactSection() {
         ) {
             SocialPill(stringResource(Res.string.label_github)) { uriHandler.openUri("https://github.com/rajdeepvaghela") }
             SocialPill(stringResource(Res.string.label_linkedin)) { uriHandler.openUri("https://linkedin.com/in/rajdeepvaghela") }
-            SocialPill(stringResource(Res.string.label_email)) { uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com") }
+            SocialPill(stringResource(Res.string.label_email)) { uriHandler.openUri("mailto:me.rajdeepvaghela@gmail.com") }
             SocialPill(stringResource(Res.string.label_play_store)) { uriHandler.openUri("https://play.google.com/store/apps/developer?id=Rajdeep+Vaghela") }
         }
         Spacer(modifier = Modifier.height(12.dp))
