@@ -171,7 +171,7 @@ fun ContactView(onEvent: (PortfolioScreenEvent) -> Unit) {
         contentDescription = stringResource(Res.string.label_email),
         onClick = {
             onEvent(PortfolioScreenEvent.TrackEvent(AppViewModel.Events.ClickEmail))
-            uriHandler.openUri("mailto:rajdeep.vaghela610@gmail.com")
+            uriHandler.openUri("mailto:me.rajdeepvaghela@gmail.com")
         }
     )
     SocialCircleIcon(
