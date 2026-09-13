@@ -53,8 +53,9 @@ import aboutme.composeapp.generated.resources.tag_kmp
 import aboutme.composeapp.generated.resources.tag_kotlin
 import aboutme.composeapp.generated.resources.tag_material
 import aboutme.composeapp.generated.resources.tag_motion
+import aboutme.composeapp.generated.resources.tag_on_play_store
+import aboutme.composeapp.generated.resources.tag_open_source
 import aboutme.composeapp.generated.resources.tag_os_library
-import aboutme.composeapp.generated.resources.tag_osourced
 import aboutme.composeapp.generated.resources.tag_sharedpref
 import aboutme.composeapp.generated.resources.tag_wearos
 import aboutme.composeapp.generated.resources.tag_web
@@ -229,6 +230,7 @@ private val projectList = listOf(
         titleRes = Res.string.proj_birthday_cal_title,
         descriptionRes = Res.string.proj_birthday_cal_desc,
         tagsRes = listOf(
+            Res.string.tag_on_play_store,
             Res.string.tag_android,
             Res.string.tag_wearos,
             Res.string.tag_kotlin,
@@ -244,7 +246,7 @@ private val projectList = listOf(
         titleRes = Res.string.proj_battery_tools_title,
         descriptionRes = Res.string.proj_battery_tools_desc,
         tagsRes = listOf(
-            Res.string.tag_osourced,
+            Res.string.tag_open_source,
             Res.string.tag_kotlin,
             Res.string.tag_compose,
             Res.string.tag_glance,
@@ -259,6 +261,7 @@ private val projectList = listOf(
         titleRes = Res.string.proj_about_me_title,
         descriptionRes = Res.string.proj_about_me_desc,
         tagsRes = listOf(
+            Res.string.tag_open_source,
             Res.string.tag_cmp,
             Res.string.tag_kotlin,
             Res.string.tag_compose,
@@ -328,6 +331,7 @@ private val projectList = listOf(
         titleRes = Res.string.proj_shared_pref_title,
         descriptionRes = Res.string.proj_shared_pref_desc,
         tagsRes = listOf(
+            Res.string.tag_os_library,
             Res.string.tag_android,
             Res.string.tag_kotlin,
             Res.string.tag_datastore,
@@ -370,13 +374,21 @@ private val projectList = listOf(
     Project(
         titleRes = Res.string.proj_social_hub_title,
         descriptionRes = Res.string.proj_social_hub_desc,
-        tagsRes = listOf(Res.string.tag_android, Res.string.tag_kotlin),
+        tagsRes = listOf(
+            Res.string.tag_on_play_store,
+            Res.string.tag_android,
+            Res.string.tag_kotlin
+        ),
         link = "https://play.google.com/store/apps/details?id=com.rdapps.socialhub"
     ),
     Project(
         titleRes = Res.string.proj_tic_tac_toe_title,
         descriptionRes = Res.string.proj_tic_tac_toe_desc,
-        tagsRes = listOf(Res.string.tag_android, Res.string.tag_kotlin),
+        tagsRes = listOf(
+            Res.string.tag_on_play_store,
+            Res.string.tag_android,
+            Res.string.tag_kotlin
+        ),
         link = "https://play.google.com/store/apps/details?id=com.rdapps.dotcross"
     )
 )

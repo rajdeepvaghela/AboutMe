@@ -82,11 +82,12 @@
     <string name="tag_wearos">WearOS</string>
     <string name="tag_material">Material Design</string>
     <string name="tag_motion">MotionLayout</string>
+    <string name="tag_on_play_store">On PlayStore</string>
 
     <!-- Project: Battery Tools -->
     <string name="proj_battery_tools_title">Battery Tools</string>
     <string name="proj_battery_tools_desc">BatteryTools is a security-focused Android app that protects your device from theft by triggering high-volume alarms and emergency notifications the moment it is unplugged, while providing real-time battery statistics across your smartphone and Wear OS wearable.</string>
-    <string name="tag_osourced">Open Sourced</string>
+    <string name="tag_open_source">Open Source</string>
     <string name="tag_glance">Glance Widget</string>
 
     <!-- Project: About Me -->
