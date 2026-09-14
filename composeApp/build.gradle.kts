@@ -1,4 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.INT
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -7,7 +8,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
@@ -25,9 +26,15 @@ val secretSupabaseKey: String =
 
 kotlin {
 
-    androidTarget {
+    android {
+        namespace = "com.rdapps.aboutme.shared"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
+        }
+        androidResources {
+            enable = true
         }
     }
 
@@ -38,6 +45,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            freeCompilerArgs += "-Xbinary=bundleId=com.rdapps.aboutme"
         }
     }
 
@@ -78,7 +86,7 @@ kotlin {
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor)
 
-                // sketch
+                // sketch (animated GIF on all platforms; see skiko note in README)
                 implementation(libs.sketch.compose)
                 implementation(libs.sketch.http)
                 implementation(libs.sketch.animated.gif)
@@ -128,53 +136,8 @@ kotlin {
     }
 }
 
-android {
-    namespace = "com.rdapps.aboutme"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        applicationId = "com.rdapps.aboutme"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 2
-        versionName = "1.0.1"
-    }
-
-    signingConfigs {
-        create("release") {
-            System.getenv("KEYSTORE_FILE")?.let {
-                storeFile = file(it)
-            }
-            storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("KEY_ALIAS")
-            keyPassword = System.getenv("KEY_PASSWORD")
-        }
-    }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
-}
-
 dependencies {
-    debugImplementation(libs.compose.uiTooling)
+    androidRuntimeClasspath(libs.compose.uiTooling)
 }
 
 compose.desktop {
@@ -196,6 +159,9 @@ buildkonfig {
         buildConfigField(STRING, "SUPABASE_URL", secretSupabaseUrl)
         buildConfigField(STRING, "SUPABASE_KEY", secretSupabaseKey)
         buildConfigField(BOOLEAN, "DEBUG", "true")
+        // Mirrors androidApp versionCode/versionName (AGP BuildConfig is app-module only now)
+        buildConfigField(STRING, "VERSION_NAME", "\"1.0.1\"")
+        buildConfigField(INT, "VERSION_CODE", "2")
     }
 
     defaultConfigs("release") {
