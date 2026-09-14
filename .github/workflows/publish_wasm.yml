@@ -20,6 +20,9 @@ jobs:
 
       - name: Build Wasm Distribution
         run: ./gradlew :composeApp:wasmJsBrowserDistribution -Pbuildkonfig.flavor=release
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
       - name: Clone target repo
         env:
