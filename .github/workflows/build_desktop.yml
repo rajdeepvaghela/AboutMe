@@ -40,6 +40,9 @@ jobs:
               ./gradlew :composeApp:packageExe
               ;;
           esac
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
