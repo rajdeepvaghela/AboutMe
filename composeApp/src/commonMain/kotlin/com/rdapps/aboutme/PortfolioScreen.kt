@@ -55,6 +55,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
@@ -88,7 +89,6 @@ enum class Tabs {
     AboutMe
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PortfolioScreen(
     isDark: Boolean,
@@ -117,6 +117,8 @@ fun PortfolioScreen(
     var cursorY by remember { mutableStateOf(-200f) }
     var dotX by remember { mutableStateOf(-200f) }
     var dotY by remember { mutableStateOf(-200f) }
+    val trail = remember { mutableListOf<Offset>() }
+    val maxTrailPoints = 30
 
     // Each display frame, ease the dot 8% of the way toward the cursor
     LaunchedEffect(Unit) {
@@ -124,6 +126,8 @@ fun PortfolioScreen(
             withFrameMillis {
                 dotX += (cursorX - dotX) * 0.08f
                 dotY += (cursorY - dotY) * 0.08f
+                trail.add(Offset(dotX, dotY))
+                while (trail.size > maxTrailPoints) trail.removeAt(0)
             }
         }
     }
@@ -219,10 +223,23 @@ fun PortfolioScreen(
             }
         }
 
-        // Lazy cursor-following dot
+        // Lazy cursor-following dot with fading tail
         if (dotEnabled) {
             val dotColor = PortfolioTheme.colors.accentStroke
             Canvas(modifier = Modifier.fillMaxSize()) {
+                val points = trail.toList()
+                if (points.size > 1) {
+                    for (i in 1 until points.size) {
+                        val frac = i.toFloat() / (points.size - 1)
+                        drawLine(
+                            color = dotColor.copy(alpha = (0.45f * frac).coerceIn(0f, 0.45f)),
+                            start = points[i - 1],
+                            end = points[i],
+                            strokeWidth = (2.dp + 4.dp * frac).toPx(),
+                            cap = StrokeCap.Round
+                        )
+                    }
+                }
                 drawCircle(
                     color = dotColor.copy(alpha = 0.22f),
                     radius = 12.dp.toPx(),
