@@ -46,6 +46,7 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,21 +73,21 @@ private val CardShape = RoundedCornerShape(16.dp)
 private val PillShape = RoundedCornerShape(20.dp)
 
 data class WorkProject(
-    val title: String,
-    val subtitle: String,
+    val title: String? = null,
+    val subtitle: String? = null,
     val link: String? = null,
     val achievements: List<AnnotatedString>,
 )
 
 // Shared data models
 data class WorkExperience(
-    val company: String,
+    val company: String? = null,
     val location: String,
     val roles: List<Role>
 )
 
 data class Role(
-    val position: String,
+    val position: String? = null,
     val period: String
 )
 
@@ -130,7 +131,7 @@ fun AboutMe(onEvent: (PortfolioScreenEvent) -> Unit, modifier: Modifier = Modifi
 
         // Scroll to top button
         AnimatedVisibility(
-            visible = scrollState.value > 0,
+            visible = scrollState.canScrollBackward,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier
@@ -176,12 +177,32 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
     val companyExperiences = listOf(
         CompanyExperience(
             work = WorkExperience(
+                "Independent Mobile Consultant / Freelance Android Engineer",
+                "(Remote)",
+                listOf(
+                    Role(
+                        period = "May 2024 - Present"
+                    )
+                )
+            ),
+            projects = listOf(
+                WorkProject(
+                    achievements = listOf(
+                        "Architected end-to-end multiplatform applications utilizing <b>Compose Multiplatform (CMP)</b> across Android, iOS, and Web.".toAnnotated(),
+                        "Utilized <b>AI-assisted engineering workflows</b> to deliver production-ready apps built using <b>Jetpack Compose, MVI, Kotlin Flows, Koin, Ktor</b> to client solutions, optimizing app performance, payload size, and network resilience.".toAnnotated(),
+                        "Integrated <b>BLE IoT</b> medical hardware via proprietary SDKs, building low-latency Bluetooth pipelines for real-time vital sign telemetry.".toAnnotated(),
+                    ).toAnnotatedString()
+                )
+            )
+        ),
+        CompanyExperience(
+            work = WorkExperience(
                 "Red Elk Studios",
                 "Hyderabad, India (Remote)",
                 listOf(
                     Role(
                         "Senior Mobile Engineer - || (Android)",
-                        "Aug 2024 - Apr 2026"
+                        "Aug 2024 - Mar 2026"
                     )
                 )
             ),
@@ -243,7 +264,7 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                     ),
                     Role(
                         "Android Developer",
-                        "May 2018 - Oct 2020"
+                        "Apr 2018 - Oct 2020"
                     )
                 )
             ),
@@ -571,12 +592,14 @@ private fun CompanyExperienceItem(
                 modifier = Modifier.weight(1f)
             ) {
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(
-                        text = companyExperience.work.company,
-                        color = PortfolioTheme.colors.primaryText,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    companyExperience.work.company?.let {
+                        Text(
+                            text = companyExperience.work.company,
+                            color = PortfolioTheme.colors.primaryText,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                     Text(
                         text = companyExperience.work.location,
                         color = PortfolioTheme.colors.secondaryText,
@@ -584,12 +607,14 @@ private fun CompanyExperienceItem(
                     )
                 }
                 companyExperience.work.roles.forEach {
-                    Text(
-                        text = it.position,
-                        color = PortfolioTheme.colors.secondaryText,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp
-                    )
+                    it.position?.let { position ->
+                        Text(
+                            text = position,
+                            color = PortfolioTheme.colors.secondaryText,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 14.sp
+                        )
+                    }
                     Text(
                         text = it.period,
                         color = PortfolioTheme.colors.secondaryText,
@@ -633,13 +658,15 @@ private fun CompanyExperienceItem(
                                 project.link?.let { uriHandler.openUri(it) }
                             }
                     ) {
-                        Text(
-                            text = project.title,
-                            color = PortfolioTheme.colors.primaryText,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            textDecoration = if (isHovered && project.link != null) TextDecoration.Underline else null
-                        )
+                        project.title?.let {
+                            Text(
+                                text = project.title,
+                                color = PortfolioTheme.colors.primaryText,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                textDecoration = if (isHovered && project.link != null) TextDecoration.Underline else null
+                            )
+                        }
                         if (project.link != null) {
                             Icon(
                                 imageVector = Icons.Rounded.Link,
@@ -651,11 +678,13 @@ private fun CompanyExperienceItem(
                             )
                         }
                     }
-                    Text(
-                        text = project.subtitle,
-                        color = PortfolioTheme.colors.secondaryText,
-                        fontSize = 12.sp
-                    )
+                    project.subtitle?.let {
+                        Text(
+                            text = project.subtitle,
+                            color = PortfolioTheme.colors.secondaryText,
+                            fontSize = 12.sp
+                        )
+                    }
                     Spacer(modifier = Modifier.height(6.dp))
                     project.achievements.forEach { achievement ->
                         Row {
