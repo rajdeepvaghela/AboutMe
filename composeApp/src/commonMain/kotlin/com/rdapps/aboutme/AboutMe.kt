@@ -46,7 +46,6 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -187,11 +186,24 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
             ),
             projects = listOf(
                 WorkProject(
+                    title = "Janitri: For Hospitals (v2)",
+                    subtitle = "Freelance Project",
+                    link = "https://play.google.com/store/apps/details?id=in.janitri.hospitals",
+                    achievements = listOf(
+                        "Architected an <sb>offline-first</sb> clinical application completely <sb>from scratch</sb> using <sb>Jetpack Compose, Nav 3, MVI, Koin, Ktor, and Paging 3</sb>, designed with modular boundaries for future <sb>Compose Multiplatform (CMP)</sb> support.".toAnnotated(),
+                        "Engineered a resilient local caching layer with <sb>Room</sb> to seamlessly handle and query <sb>5,000+ patient records</sb> with zero latency under complete offline hospital conditions.".toAnnotated(),
+                        "Built <sb>low-latency Bluetooth (BLE) pipelines</sb> via proprietary SDKs for continuous, real-time vital sign telemetry (<sb>fetal heart rate, fetal echo, BP, SpO2</sb>) across connected <sb>IoT medical devices</sb>.".toAnnotated(),
+                        "Implemented <sb>live telemetry charts</sb> using the <sb>Vico Compose</sb> library and custom Compose canvas components, adding dynamic PDF report generation directly from Compose UI layouts.".toAnnotated(),
+                        "Integrated <sb>thermal printers</sb> to stream and print live fetal monitoring waveforms and diagnostic charts in real time during labor.".toAnnotated(),
+                        "Utilized <sb>AI-assisted engineering workflows</sb> (OpenCode, Claude, Copilot) to accelerate development from scratch and automate comprehensive unit/integration test suites.".toAnnotated()
+                    ).toAnnotatedString()
+                ),
+                WorkProject(
+                    title = "Other Projects",
                     achievements = listOf(
                         "Architected end-to-end multiplatform applications utilizing <b>Compose Multiplatform (CMP)</b> across Android, iOS, and Web.".toAnnotated(),
-                        "Utilized <b>AI-assisted engineering workflows</b> to deliver production-ready apps built using <b>Jetpack Compose, MVI, Kotlin Flows, Koin, Ktor</b> to client solutions, optimizing app performance, payload size, and network resilience.".toAnnotated(),
-                        "Integrated <b>BLE IoT</b> medical hardware via proprietary SDKs, building low-latency Bluetooth pipelines for real-time vital sign telemetry.".toAnnotated(),
-                    ).toAnnotatedString()
+                        "Utilized <b>AI-assisted engineering workflows</b> to deliver production-ready apps built using <b>Jetpack Compose, MVI, Kotlin Flows, Koin, Ktor</b> to client solutions, optimizing app performance, payload size, and network resilience.".toAnnotated()
+                    )
                 )
             )
         ),
@@ -212,10 +224,10 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                     subtitle = "Client at Red Elk Studios",
                     link = "https://play.google.com/store/apps/details?id=com.imvu.mobilecordova",
                     achievements = listOf(
-                        "Led modernization using <sb>Kotlin Flows</sb> and <sb>Jetpack Compose</sb> UI components.".toAnnotated(),
-                        "Refactored legacy <sb>Socket connection</sb> architecture to OkHttp.".toAnnotated(),
-                        "Migrated core features into <sb>MVI / MVVM architecture</sb> with Compose.".toAnnotated(),
-                        "Delivered new features and maintained existing experiences."
+                        "Led technical modernization by introducing <sb>Kotlin Flows</sb> into the existing <sb>Rx</sb> codebase and developing complex <sb>Jetpack Compose</sb> UI components.".toAnnotated(),
+                        "Refactored and migrated the legacy <sb>Socket Connection</sb> architecture to utilize OkHttp.".toAnnotated(),
+                        "Also transitioned features from the legacy codebase to the <sb>MVI / MVVM</sb> architectural pattern using Compose.".toAnnotated(),
+                        "Optimized app performance by resolving <sb>memory leaks</sb> using LeakCanary and mitigating <sb>ANRs</sb> in the app including 3D SurfaceView libraries.".toAnnotated()
                     ).toAnnotatedString()
                 )
             )
@@ -236,9 +248,11 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                     title = "Holofy Spaces - Mobile and Android TV",
                     subtitle = "Saas platform to add interactive videos to websites.",
                     achievements = listOf(
-                        "Implemented video compression pipelines using <sb>FFmpeg</sb> and <sb>MediaCodec.</sb>".toAnnotated(),
-                        "Designed and built a reusable Compose UI Kit.",
-                        "Integrated 100ms <sb>live streaming</sb> SDK with low-latency playback.".toAnnotated(),
+                        "A <sb>multi-module</sb> codebase adopting <sb>MVVM and Dagger 2 for DI.</sb>".toAnnotated(),
+                        "Optimized video playback using <sb>ExoPlayer efficiently and optimized animations UI/UX.</sb>".toAnnotated(),
+                        "Implemented video compression pipelines using <sb>FFmpeg</sb> and <sb>MediaCodec</sb> and Instagram like video editing".toAnnotated(),
+                        "Designed and built a reusable Compose UI Kit components.",
+                        "Implemented <sb>live streaming</sb> using 100ms SDK with low-latency playback.".toAnnotated(),
                         "Shipped an <sb>Android TV</sb> module optimized for large screens.".toAnnotated()
                     ).toAnnotatedString()
                 ),
@@ -246,9 +260,9 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                     title = "Pro Caller, Pro Emailer & Pro Scheduler",
                     subtitle = "AI-powered utility applications",
                     achievements = listOf(
-                        "Architected <sb>Single-Activity</sb> apps fully in <sb>Jetpack Compose.</sb>".toAnnotated(),
-                        "Integrated Twilio SDK for communication features.",
-                        "Designed a cohesive <sb>design system</sb> with theme support.".toAnnotated()
+                        "Built completely in <sb>Jetpack Compose</sb> with <sb>Single Activity architecture</sb>, <sb>multi-module</sb> and <sb>Hilt for Dependency Injection.</sb>".toAnnotated(),
+                        "Voip Calling and transcript using Twilio SDK.",
+                        "Implemented <sb>Design System</sb> with multiple fonts and themes.".toAnnotated()
                     ).toAnnotatedString()
                 )
             )
@@ -274,11 +288,10 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                     subtitle = "Real estate and home services-based application.",
                     link = "https://play.google.com/store/apps/details?id=com.nobroker.app",
                     achievements = listOf(
-                        "Owned the Android app and led the team for a brief period.",
+                        "Held <sb>ownership</sb> of the whole app and <sb>led the team</sb> for a brief period.".toAnnotated(),
                         "Developed a <sb>Hybrid WebView</sb> with custom caching for <sb>Dynamic Delivery</sb>, forming the foundation for many future features.".toAnnotated(),
                         "Introduced and migrated core features from Java to Kotlin.",
-                        "Improved <sb>crash-free</sb> user rate to <sb>99.4%.</sb>".toAnnotated(),
-                        "Integrated <sb>JusPay, RazorPay</sb>, and <sb>Paytm SDKs</sb> for payments, <sb>Truecaller SDK</sb> for sign up / sign in, and <sb>Adobe, Firebase</sb>, and <sb>Facebook SDKs</sb> for analytics.".toAnnotated()
+                        "Improved <sb>crash-free</sb> user rate to <sb>99.4%.</sb>".toAnnotated()
                     ).toAnnotatedString()
                 ),
                 WorkProject(
@@ -310,9 +323,7 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                     subtitle = "Comprehensive visitor and society management app designed to streamline security, accounting, and community living for residential and commercial complexes.",
                     link = "https://play.google.com/store/apps/details?id=com.app.nobrokerhood",
                     achievements = listOf(
-                        "Maintained and developed the application for short period of time.",
-                        "Developed a <sb>Hybrid WebView</sb> with custom caching for <sb>Dynamic Delivery</sb>, forming the foundation for many future features.".toAnnotated(),
-                        "Integrated <sb>Truecaller SDK</sb> for sign up / sign in".toAnnotated()
+                        "Worked on developing new features using the <sb>Hybrid WebView</sb> platform.".toAnnotated()
                     ).toAnnotatedString()
                 )
             )
@@ -336,8 +347,7 @@ private fun ExperienceContent(onEvent: (PortfolioScreenEvent) -> Unit) {
                     achievements = listOf(
                         "Integrated hardware components like <sb>POS machines</sb>, <sb>Thermal Printers</sb> and <sb>USB Barcode Scanners.</sb>".toAnnotated(),
                         "Developed <sb>plugin applications</sb> to reduce the size of the main app.".toAnnotated(),
-                        "Revamped the overall app design using <sb>Material Components.</sb>".toAnnotated(),
-                        "Integrated SDKs such as CleverTap, iTextPdf, and Branch.io."
+                        "Revamped the overall app design using <sb>Material Components.</sb>".toAnnotated()
                     ).toAnnotatedString()
                 )
             )
