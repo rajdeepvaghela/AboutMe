@@ -83,6 +83,8 @@
     <string name="tag_material">Material Design</string>
     <string name="tag_motion">MotionLayout</string>
     <string name="tag_on_play_store">On PlayStore</string>
+    <string name="tag_personal_project">Personal Project</string>
+    <string name="tag_1_9_L_downloads">1.9L+ Downloads</string>
 
     <!-- Project: Battery Tools -->
     <string name="proj_battery_tools_title">Battery Tools</string>

@@ -43,6 +43,7 @@ import aboutme.composeapp.generated.resources.tag_cmp
 import aboutme.composeapp.generated.resources.tag_compose
 import aboutme.composeapp.generated.resources.tag_datastore
 import aboutme.composeapp.generated.resources.tag_desktop
+import aboutme.composeapp.generated.resources.tag_1_9_L_downloads
 import aboutme.composeapp.generated.resources.tag_enc
 import aboutme.composeapp.generated.resources.tag_enum
 import aboutme.composeapp.generated.resources.tag_flex
@@ -56,6 +57,7 @@ import aboutme.composeapp.generated.resources.tag_motion
 import aboutme.composeapp.generated.resources.tag_on_play_store
 import aboutme.composeapp.generated.resources.tag_open_source
 import aboutme.composeapp.generated.resources.tag_os_library
+import aboutme.composeapp.generated.resources.tag_personal_project
 import aboutme.composeapp.generated.resources.tag_sharedpref
 import aboutme.composeapp.generated.resources.tag_wearos
 import aboutme.composeapp.generated.resources.tag_web
@@ -152,6 +154,78 @@ data class Project(
 
 private val projectList = listOf(
     Project(
+        titleRes = Res.string.proj_birthday_cal_title,
+        descriptionRes = Res.string.proj_birthday_cal_desc,
+        tagsRes = listOf(
+            Res.string.tag_personal_project,
+            Res.string.tag_on_play_store,
+            Res.string.tag_1_9_L_downloads,
+            Res.string.tag_wearos,
+            Res.string.tag_kotlin,
+            Res.string.tag_compose,
+            Res.string.tag_motion
+        ),
+        visual = { it, _ ->
+            BirthdayCalendarVisual(it)
+        },
+        link = "https://play.google.com/store/apps/details?id=com.rdapps.fbbirthdayfetcher"
+    ),
+    Project(
+        titleRes = Res.string.proj_about_me_title,
+        descriptionRes = Res.string.proj_about_me_desc,
+        tagsRes = listOf(
+            Res.string.tag_open_source,
+            Res.string.tag_cmp,
+            Res.string.tag_kotlin,
+            Res.string.tag_compose,
+            Res.string.tag_web,
+            Res.string.tag_android,
+            Res.string.tag_ios,
+            Res.string.tag_desktop
+        ),
+        link = "https://github.com/rajdeepvaghela/AboutMe",
+        visual = { it, onEvent ->
+            Box(
+                modifier = it.fillMaxWidth()
+                    .background(
+                        PortfolioTheme.colors.secondaryBackground,
+                        RoundedCornerShape(40.dp)
+                    )
+                    .height(if (LocalIsWideScreen.current) 300.dp else 250.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                var isDemoLive by remember { mutableStateOf(false) }
+
+                if (!isDemoLive) {
+                    DemoPlayStopOverlay(
+                        isDemoLive = isDemoLive,
+                        onPlay = {
+                            onEvent(
+                                PortfolioScreenEvent.TrackEvent(
+                                    AppViewModel.Events.ClickLivePreview(
+                                        "AboutMe"
+                                    )
+                                )
+                            )
+                            isDemoLive = true
+                        },
+                        onStop = { },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else {
+                    Text(
+                        text = stringResource(Res.string.msg_already_looking),
+                        color = PortfolioTheme.colors.primaryText,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 20.dp)
+                    )
+                }
+            }
+        }
+    ),
+    Project(
         titleRes = Res.string.proj_value_picker_title,
         descriptionRes = Res.string.proj_value_picker_desc,
         tagsRes = listOf(
@@ -227,22 +301,6 @@ private val projectList = listOf(
         link = "https://github.com/rajdeepvaghela/WeddingInvitation"
     ),
     Project(
-        titleRes = Res.string.proj_birthday_cal_title,
-        descriptionRes = Res.string.proj_birthday_cal_desc,
-        tagsRes = listOf(
-            Res.string.tag_on_play_store,
-            Res.string.tag_android,
-            Res.string.tag_wearos,
-            Res.string.tag_kotlin,
-            Res.string.tag_material,
-            Res.string.tag_motion
-        ),
-        visual = { it, _ ->
-            BirthdayCalendarVisual(it)
-        },
-        link = "https://play.google.com/store/apps/details?id=com.rdapps.fbbirthdayfetcher"
-    ),
-    Project(
         titleRes = Res.string.proj_battery_tools_title,
         descriptionRes = Res.string.proj_battery_tools_desc,
         tagsRes = listOf(
@@ -256,61 +314,6 @@ private val projectList = listOf(
             BatteryToolsVisual(it)
         },
         link = "https://github.com/rajdeepvaghela/BatteryTools"
-    ),
-    Project(
-        titleRes = Res.string.proj_about_me_title,
-        descriptionRes = Res.string.proj_about_me_desc,
-        tagsRes = listOf(
-            Res.string.tag_open_source,
-            Res.string.tag_cmp,
-            Res.string.tag_kotlin,
-            Res.string.tag_compose,
-            Res.string.tag_web,
-            Res.string.tag_android,
-            Res.string.tag_ios,
-            Res.string.tag_desktop
-        ),
-        link = "https://github.com/rajdeepvaghela/AboutMe",
-        visual = { it, onEvent ->
-            Box(
-                modifier = it.fillMaxWidth()
-                    .background(
-                        PortfolioTheme.colors.secondaryBackground,
-                        RoundedCornerShape(40.dp)
-                    )
-                    .height(if (LocalIsWideScreen.current) 300.dp else 250.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                var isDemoLive by remember { mutableStateOf(false) }
-
-                if (!isDemoLive) {
-                    DemoPlayStopOverlay(
-                        isDemoLive = isDemoLive,
-                        onPlay = {
-                            onEvent(
-                                PortfolioScreenEvent.TrackEvent(
-                                    AppViewModel.Events.ClickLivePreview(
-                                        "AboutMe"
-                                    )
-                                )
-                            )
-                            isDemoLive = true
-                        },
-                        onStop = { },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                } else {
-                    Text(
-                        text = stringResource(Res.string.msg_already_looking),
-                        color = PortfolioTheme.colors.primaryText,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 32.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 20.dp)
-                    )
-                }
-            }
-        }
     ),
     Project(
         titleRes = Res.string.proj_motion_text_title,
